@@ -1,0 +1,35 @@
+# When you update the plugin, this file gets downloaded and almost immediately deleted.
+# First the main plugin gets disabled and then there is a short 2 second wait.
+# After that the disabled main plugin file gets deleted and immediately replaced by the new version
+# Then when the new file is downloaded it will be reloaded.
+# The deletion of this file happens in the main plugin file.
+
+# Note: The deletion of the main plugin file doesn't result into your playerdata files being deleted!
+
+
+on load:
+    set {_version} to text from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml"
+    set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
+
+    set {_characters::*} to {_version} split at "."
+    set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
+
+    set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
+    set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
+
+    # Disable the main plugin file 'crypto.sk'
+    disable script "crypto"
+    wait 2 seconds
+
+    # Delete the main plugin file now called '-crypto.sk'
+    delete file "plugins/Skript/scripts/-crypto.sk"
+
+    # Download the new main plugin file called 'crypto.sk'
+    download file from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
+
+    # Enable and reload the main plugin file 'crypto.sk'
+    reload script "crypto"
+
+    # Set the version of the plugin in config.yml to the new version
+    set yaml value "DoNotChange.version" in "crypto-config" to {_version}
+    save yaml "crypto-config"
