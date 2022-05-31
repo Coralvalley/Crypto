@@ -1,1 +1,3 @@
 # Crypto
+
+# COMMANDS AND PERMISSION HERE
