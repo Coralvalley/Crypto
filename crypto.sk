@@ -287,23 +287,6 @@ on inventory click:
 
 
 every 2 seconds in world "world":
-
-    # set {lasttest} to {newtest}
-    # set {_random} to random integer from 1 to 3
-    # if {_random} is 1:
-    #     add 0.1 to {newtest}
-    # if {_random} is 2:
-    #     remove 0.1 from {newtest}
-    # if {_random} is 3:
-        # Do nothing
-
-    # set {startofday} to 5
-    # set {increase} to {newtest} - {startofday}
-    # set {increase2} to {increase} / {startofday}
-    # set {percentage} to {increase2} * 100
-
-    # Ik moet zometeen hetzelfde doen met de percentage
-
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin::*}
 
@@ -328,9 +311,6 @@ every 2 seconds in world "world":
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
             cryptoMarket("gui", loop-player)
-
-
-
 
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
@@ -521,12 +501,3 @@ function cryptoMarket(coin: text, p: player):
         set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 1 toe"
         set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
         set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
-
-# set {lasttest} to {newtest}
-    # set {_random} to random integer from 1 to 3
-    # if {_random} is 1:
-    #     add 0.1 to {newtest}
-    # if {_random} is 2:
-    #     remove 0.1 from {newtest}
-    # if {_random} is 3:
-        # Do nothing
