@@ -186,7 +186,7 @@ command /crypto [<text>]:
                     delete file path "plugins/Skript/scripts/update.sk"
                 else if file path "plugins/Skript/scripts/-update.sk" exists:
                     delete file path "plugins/Skript/scripts/-update.sk"
-                download file from "https://github.com/Coralvalley/Crypto/blob/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
+                download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
                 reload script "update"
         if arg-1 is "open":
             cryptoMarket("gui", player)
