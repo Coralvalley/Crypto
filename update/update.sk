@@ -8,7 +8,7 @@
 
 
 on load:
-    set {_version} to text from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml"
+    set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
     set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
 
     set {_characters::*} to {_version} split at "."
@@ -25,7 +25,7 @@ on load:
     delete file "plugins/Skript/scripts/-crypto.sk"
 
     # Download the new main plugin file called 'crypto.sk'
-    download file from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
 
     # Enable and reload the main plugin file 'crypto.sk'
     reload script "crypto"

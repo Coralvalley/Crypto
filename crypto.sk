@@ -13,14 +13,14 @@ on load:
         load yaml "plugins/crypto/config.yml" as "crypto-config" # Load the config file
         save yaml "crypto-config" # Save the config file
 
-    if online status of url "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml" is true:
+    if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml" is true:
         if yaml value "DoNotChange.version" in "crypto-config" is not set:
-            set {_version} to text from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml"
+            set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
             set yaml value "DoNotChange.version" in "crypto-config" to {_version}
             set the comments of yaml node "DoNotChange" in "crypto-config" to "Do not change this! If you still do so it could break the plugin!" and "If the version isn't right it will be shown in the config."
             save yaml "crypto-config"
         else:
-            set {_version} to text from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml"
+            set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
             set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
 
             set {_characters::*} to {_version} split at "."
@@ -103,7 +103,7 @@ on load:
     
 
 
-    #if get text contains "version:" from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml" is not yaml
+    #if get text contains "version:" from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml" is not yaml
 
 
 # This part checks on 3 o'clock midnight if there is an update available
@@ -111,7 +111,7 @@ on load:
 
 # at 03:00 in real world:
 #     if yaml value "autoupdate" in "crypto-config" is true or false:
-#         set {_version} to text from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml"
+#         set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
 
 #         set {_characters::*} to {_version} split at "."
 #         set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
@@ -142,7 +142,7 @@ on load:
 # This is only a message and not for the autoupdate!
 
 # every 60 minutes:
-#     set {_version} to text from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml"
+#     set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
 
 #     set {_characters::*} to {_version} split at "."
 #     set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
@@ -173,7 +173,7 @@ command /crypto [<text>]:
     trigger:
         if arg-1 is "update":
             if player has permission "op":
-                set {_version} to text from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml"
+                set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
                 set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
 
                 set {_characters::*} to {_version} split at "."
@@ -186,7 +186,7 @@ command /crypto [<text>]:
                     delete file path "plugins/Skript/scripts/update.sk"
                 else if file path "plugins/Skript/scripts/-update.sk" exists:
                     delete file path "plugins/Skript/scripts/-update.sk"
-                download file from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
+                download file from "https://github.com/Coralvalley/Crypto/blob/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
                 reload script "update"
         if arg-1 is "open":
             cryptoMarket("gui", player)
