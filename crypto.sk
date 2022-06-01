@@ -69,8 +69,31 @@ on load:
             add "litecoin" to skript-yaml list "coins" in "crypto-config"
         if skript-yaml value "coins" in "crypto-config" doesn't contain "dash":
             add "dash" to skript-yaml list "coins" in "crypto-config"
+        if skript-yaml value "coins" in "crypto-config" doesn't contain "dash":
+            add "dash" to skript-yaml list "coins" in "crypto-config"
 
     save yaml "crypto-config"
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
+    map json last http response's body to {bitcoin::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=80" with the headers "Content-Type: application/json"
+    map json last http response's body to {ethereum::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=12377" with the headers "Content-Type: application/json"
+    map json last http response's body to {maker::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=2321" with the headers "Content-Type: application/json"
+    map json last http response's body to {bitcoin-cash::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=1" with the headers "Content-Type: application/json"
+    map json last http response's body to {litecoin::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=8" with the headers "Content-Type: application/json"
+    map json last http response's body to {dash::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
+    map json last http response's body to {cardano::*}
 
             # Auto update gaat hier starten over 5 minuten
             # Config moet geunload worden en daarna opnieuw ingeladen worden
@@ -80,22 +103,7 @@ on load:
     
 
 
-    #if get text contains "version:" from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml" is not yaml 
-    
-    
-
-    # set {_url} to "https://api.coinlore.net/api/ticker/?id=90"
-    # send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
-
-    # set {_response} to the last http response
-    # set {_body} to {_response}'s body
-
-    # send "%{_body}%" to console
-
-    # create "config.json" from json "{""Example"": 30}" and store the error in {_error} # Don't forget to double the " !
-    # if {_err} is set:
-    #     send "An error occured while parsing JSON: %{_err}%" to console
-    # file write "hallo" to file "config.json"
+    #if get text contains "version:" from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/version.yml" is not yaml
 
 
 # This part checks on 3 o'clock midnight if there is an update available
@@ -103,7 +111,6 @@ on load:
 
 # on join:
 #     if player has permission "op":
-
 
 # at 03:00 in real world:
 #     if yaml value "autoupdate" in "crypto-config" is true or false:
@@ -184,3 +191,286 @@ command /crypto [<text>]:
                     delete file path "plugins/Skript/scripts/-update.sk"
                 download file from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
                 reload script "update"
+        if arg-1 is "open":
+            cryptoMarket("gui", player)
+
+function cryptoMarket(coin: text, p: player):
+    set {_u} to uuid of {_p}
+    if {_coin} is "gui":
+        open chest with 3 rows named "Crypto Markt" to {_p}
+        set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
+        if {_bitcoin::1::percent_change_24h} is greater than 0.0:
+            set slot 0 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&f€ %{bitcoin::1::price_usd}%" and "&a%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        else:
+            set slot 0 of {_p}'s current inventory to a dirt named "&dBitcoin" with lore "&f€ %{bitcoin::1::price_usd}%" and "&c%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+
+        set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
+        if {_ethereum::1::percent_change_24h} is greater than 0.0:
+            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&f€ %{ethereum::1::price_usd}%" and "&a%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
+        else:
+            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&f€ %{ethereum::1::price_usd}%" and "&c%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
+
+        set {_maker::1::percent_change_24h} to {maker::1::percent_change_24h} parsed as number
+        if {_maker::1::percent_change_24h} is greater than 0.0:
+            set slot 2 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&f€ %{maker::1::price_usd}%" and "&a%%%{maker::1::percent_change_24h}%" with nbt "{mtcustom:maker}"
+        else:
+            set slot 2 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&f€ %{maker::1::price_usd}%" and "&c%%%{maker::1::percent_change_24h}%" with nbt "{mtcustom:maker}"
+
+        set {_bitcoin-cash::1::percent_change_24h} to {bitcoin-cash::1::percent_change_24h} parsed as number
+        if {_bitcoin-cash::1::percent_change_24h} is greater than 0.0:
+            set slot 3 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&f€ %{bitcoin-cash::1::price_usd}%" and "&a%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoincash}"
+        else:
+            set slot 3 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&f€ %{bitcoin-cash::1::price_usd}%" and "&c%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoincash}"
+
+        set {_litecoin::1::percent_change_24h} to {litecoin::1::percent_change_24h} parsed as number
+        if {_litecoin::1::percent_change_24h} is greater than 0.0:
+            set slot 4 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&f€ %{litecoin::1::price_usd}%" and "&a%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
+        else:
+            set slot 4 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&f€ %{litecoin::1::price_usd}%" and "&c%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
+
+        set {_dash::1::percent_change_24h} to {dash::1::percent_change_24h} parsed as number
+        if {_dash::1::percent_change_24h} is greater than 0.0:
+            set slot 5 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&f€ %{dash::1::price_usd}%" and "&a%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
+        else:
+            set slot 5 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&f€ %{dash::1::price_usd}%" and "&c%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
+
+        set {_cardano::1::percent_change_24h} to {cardano::1::percent_change_24h} parsed as number
+        if {_cardano::1::percent_change_24h} is greater than 0.0:
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&f€ %{cardano::1::price_usd}%" and "&a%%%{cardano::1::percent_change_24h}%"
+        else:
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&f€ %{cardano::1::price_usd}%" and "&c%%%{cardano::1::percent_change_24h}%"
+    if {_coin} is "bitcoin":
+        open chest with 3 rows named "Bitcoin" to {_p}
+        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 1 toe"
+        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 32 toe"
+        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 64 toe"
+        set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
+        if {_bitcoin::1::percent_change_24h} is greater than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&f€ %{bitcoin::1::price_usd}%" and "&a%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        else:
+            set slot 13 of {_p}'s current inventory to a dirt named "&dBitcoin" with lore "&f€ %{bitcoin::1::price_usd}%" and "&c%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 1 toe"
+        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 32 toe"
+        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 64 toe"
+        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
+        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+    if {_coin} is "ethereum":
+        open chest with 3 rows named "Ethereum" to {_p}
+        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 1 toe"
+        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 32 toe"
+        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 64 toe"
+        set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
+        if {_ethereum::1::percent_change_24h} is greater than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&f€ %{ethereum::1::price_usd}%" and "&a%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
+        else:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&f€ %{ethereum::1::price_usd}%" and "&c%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
+        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 1 toe"
+        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 32 toe"
+        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 64 toe"
+        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
+        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+    if {_coin} is "maker":
+        open chest with 3 rows named "Maker" to {_p}
+        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 1 toe"
+        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 32 toe"
+        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 64 toe"
+        set {_maker::1::percent_change_24h} to {maker::1::percent_change_24h} parsed as number
+        if {_maker::1::percent_change_24h} is greater than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&f€ %{maker::1::price_usd}%" and "&a%%%{maker::1::percent_change_24h}%" with nbt "{mtcustom:maker}"
+        else:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&f€ %{maker::1::price_usd}%" and "&c%%%{maker::1::percent_change_24h}%" with nbt "{mtcustom:maker}"
+        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 1 toe"
+        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 32 toe"
+        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 64 toe"
+        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
+        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+    if {_coin} is "bitcoin-cash":
+        open chest with 3 rows named "Bitcoin-Cash" to {_p}
+        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 1 toe"
+        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 32 toe"
+        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 64 toe"
+        set {_bitcoin-cash::1::percent_change_24h} to {bitcoin-cash::1::percent_change_24h} parsed as number
+        if {_bitcoin-cash::1::percent_change_24h} is greater than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&f€ %{bitcoin-cash::1::price_usd}%" and "&a%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoincash}"
+        else:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&f€ %{bitcoin-cash::1::price_usd}%" and "&c%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoincash}"
+        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 1 toe"
+        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 32 toe"
+        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 64 toe"
+        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
+        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+    if {_coin} is "litecoin":
+        open chest with 3 rows named "Litecoin" to {_p}
+        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 1 toe"
+        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 32 toe"
+        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 64 toe"
+        set {_litecoin::1::percent_change_24h} to {litecoin::1::percent_change_24h} parsed as number
+        if {_litecoin::1::percent_change_24h} is greater than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&f€ %{litecoin::1::price_usd}%" and "&a%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
+        else:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&f€ %{litecoin::1::price_usd}%" and "&c%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
+        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 1 toe"
+        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 32 toe"
+        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 64 toe"
+        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
+        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+    if {_coin} is "dash":
+        open chest with 3 rows named "Dash" to {_p}
+        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 1 toe"
+        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 32 toe"
+        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 64 toe"
+        set {_dash::1::percent_change_24h} to {dash::1::percent_change_24h} parsed as number
+        if {_dash::1::percent_change_24h} is greater than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&f€ %{dash::1::price_usd}%" and "&a%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
+        else:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&f€ %{dash::1::price_usd}%" and "&c%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
+        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 1 toe"
+        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 32 toe"
+        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 64 toe"
+        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
+        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+    if {_coin} is "cardano":
+        open chest with 3 rows named "Cardano" to {_p}
+        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 1 toe"
+        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 32 toe"
+        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 64 toe"
+        set {_cardano::1::percent_change_24h} to {cardano::1::percent_change_24h} parsed as number
+        if {_cardano::1::percent_change_24h} is greater than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&f€ %{cardano::1::price_usd}%" and "&a%%%{cardano::1::percent_change_24h}%"
+        else:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&f€ %{cardano::1::price_usd}%" and "&c%%%{cardano::1::percent_change_24h}%"
+        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 1 toe"
+        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 32 toe"
+        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 64 toe"
+        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
+        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+
+
+on inventory click:
+    if name of player's current inventory is "Crypto Markt":
+        if clicked slot is 0:
+            cryptoMarket("bitcoin", player)
+        if clicked slot is 1:
+            cryptoMarket("ethereum", player)
+        if clicked slot is 2:
+            cryptoMarket("maker", player)
+        if clicked slot is 3:
+            cryptoMarket("bitcoin-cash", player)
+        if clicked slot is 4:
+            cryptoMarket("litecoin", player)
+        if clicked slot is 5:
+            cryptoMarket("dash", player)
+        if clicked slot is 6:
+            cryptoMarket("cardano", player)
+        cancel event
+    if name of player's current inventory is "Bitcoin":
+        if clicked slot is 9:
+            # Verwijder 64
+        if clicked slot is 10:
+            # Verwijder 32
+        if clicked slot is 11:
+            # Verwijder 1
+        if clicked slot is 23:
+            cryptoMarket("gui", player)
+        cancel event
+
+
+
+
+
+every 2 seconds in world "world":
+
+    # set {lasttest} to {newtest}
+    # set {_random} to random integer from 1 to 3
+    # if {_random} is 1:
+    #     add 0.1 to {newtest}
+    # if {_random} is 2:
+    #     remove 0.1 from {newtest}
+    # if {_random} is 3:
+        # Do nothing
+
+    # set {startofday} to 5
+    # set {increase} to {newtest} - {startofday}
+    # set {increase2} to {increase} / {startofday}
+    # set {percentage} to {increase2} * 100
+
+    # Ik moet zometeen hetzelfde doen met de percentage
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
+    map json last http response's body to {bitcoin::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=80" with the headers "Content-Type: application/json"
+    map json last http response's body to {ethereum::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=12377" with the headers "Content-Type: application/json"
+    map json last http response's body to {maker::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=2321" with the headers "Content-Type: application/json"
+    map json last http response's body to {bitcoin-cash::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=1" with the headers "Content-Type: application/json"
+    map json last http response's body to {litecoin::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=8" with the headers "Content-Type: application/json"
+    map json last http response's body to {dash::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
+    map json last http response's body to {cardano::*}
+
+    loop all players:
+        if name of loop-player's current inventory is "Crypto Markt":
+            cryptoMarket("gui", loop-player)
+
+# command /lasttest:
+#     trigger:
+#         set {lasttest} to {newtest}
+#         add 1 to {newtest}
+#         if {newtest} > {lasttest}:
+#             send "groter"
+#             send "oud %{lasttest}%"
+#             send "nieuw %{newtest}%"
+
+# command /randomtest:
+#     trigger:
+#         set {lasttest} to {newtest}
+#         set {_random} to random integer from 1 to 3
+#         if {_random} is 1:
+#             add 1 to {newtest}
+#         if {_random} is 2:
+#             remove 1 from {newtest}
+#         if {newtest} is greater than {lasttest}:
+#             send "groter" to player
+#             send "oud %{lasttest}%" to player
+#             send "nieuw %{newtest}%" to player
+#         else if {newtest} is less than {lasttest}:
+#             send "kleiner dan" to player
+#             send "oud %{lasttest}%" to player
+#             send "nieuw %{newtest}%" to player
+#         else:
+#             send "oud %{lasttest}%" to player
+#             send "nieuw %{newtest}%" to player
+
+# command /ethereumtest:
+#     trigger:
+#         set {ethereum::last} to {ethereum::1::percent_change_24h}
+#         send a request to "https://api.coinlore.net/api/ticker/?id=80" with the headers "Content-Type: application/json"
+#         map json last http response's body to {ethereum::*}
+#         if {ethereum::1::percent_change_24h} is greater than {ethereum::last}:
+#             send "groter" to player
+#             send "oud %{lasttest}%" to player
+#             send "nieuw %{newtest}%" to player
+#         if {ethereum::1::percent_change_24h} is less than {ethereum::last}:
+#             send "kleiner dan" to player
+#             send "oud %{lasttest}%" to player
+#             send "nieuw %{newtest}%" to player
+#         else:
+#             send "oud %{lasttest}%" to player
+#             send "nieuw %{newtest}%" to player
+
+# command /cleartest:
+#     trigger:
+#         set {lasttest} to 0
+
+# command /newtest:
+#     trigger:
+#         set {newtest} to 0
