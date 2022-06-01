@@ -379,23 +379,6 @@ on inventory click:
 
 
 every 2 seconds in world "world":
-
-    # set {lasttest} to {newtest}
-    # set {_random} to random integer from 1 to 3
-    # if {_random} is 1:
-    #     add 0.1 to {newtest}
-    # if {_random} is 2:
-    #     remove 0.1 from {newtest}
-    # if {_random} is 3:
-        # Do nothing
-
-    # set {startofday} to 5
-    # set {increase} to {newtest} - {startofday}
-    # set {increase2} to {increase} / {startofday}
-    # set {percentage} to {increase2} * 100
-
-    # Ik moet zometeen hetzelfde doen met de percentage
-
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin::*}
 
@@ -420,57 +403,3 @@ every 2 seconds in world "world":
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
             cryptoMarket("gui", loop-player)
-
-# command /lasttest:
-#     trigger:
-#         set {lasttest} to {newtest}
-#         add 1 to {newtest}
-#         if {newtest} > {lasttest}:
-#             send "groter"
-#             send "oud %{lasttest}%"
-#             send "nieuw %{newtest}%"
-
-# command /randomtest:
-#     trigger:
-#         set {lasttest} to {newtest}
-#         set {_random} to random integer from 1 to 3
-#         if {_random} is 1:
-#             add 1 to {newtest}
-#         if {_random} is 2:
-#             remove 1 from {newtest}
-#         if {newtest} is greater than {lasttest}:
-#             send "groter" to player
-#             send "oud %{lasttest}%" to player
-#             send "nieuw %{newtest}%" to player
-#         else if {newtest} is less than {lasttest}:
-#             send "kleiner dan" to player
-#             send "oud %{lasttest}%" to player
-#             send "nieuw %{newtest}%" to player
-#         else:
-#             send "oud %{lasttest}%" to player
-#             send "nieuw %{newtest}%" to player
-
-# command /ethereumtest:
-#     trigger:
-#         set {ethereum::last} to {ethereum::1::percent_change_24h}
-#         send a request to "https://api.coinlore.net/api/ticker/?id=80" with the headers "Content-Type: application/json"
-#         map json last http response's body to {ethereum::*}
-#         if {ethereum::1::percent_change_24h} is greater than {ethereum::last}:
-#             send "groter" to player
-#             send "oud %{lasttest}%" to player
-#             send "nieuw %{newtest}%" to player
-#         if {ethereum::1::percent_change_24h} is less than {ethereum::last}:
-#             send "kleiner dan" to player
-#             send "oud %{lasttest}%" to player
-#             send "nieuw %{newtest}%" to player
-#         else:
-#             send "oud %{lasttest}%" to player
-#             send "nieuw %{newtest}%" to player
-
-# command /cleartest:
-#     trigger:
-#         set {lasttest} to 0
-
-# command /newtest:
-#     trigger:
-#         set {newtest} to 0
