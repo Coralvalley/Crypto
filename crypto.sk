@@ -524,6 +524,11 @@ on inventory click:
             cryptoMarket("gui", player)
         cancel event
     else if name of player's current inventory is "Bitcoin verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.bitcoin.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel bitcoin wil je verkopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
@@ -546,6 +551,11 @@ on chat:
 
                 remove {_buyPrice} from player's balance
 
+                set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
+                add message parsed as number to {_bitcoin.%player%}
+                set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
+                save yaml "crypto-%uuid of player%"
+
                 set {crypto.buy.bitcoin.eenheden.%player%} to false
             else:
                 send "&cSorry je hebt hier niet genoeg geld voor"
@@ -558,11 +568,15 @@ on chat:
     if {crypto.buy.bitcoin.bedrag.%player%} is true:
         cancel event # Chat event gets cancelled
         if message parsed as number is a number: # Checks if the players message is an integer
-            set {_buyPrice} to message parsed as number / {bitcoin::1::price_usd} parsed as number # Sets the buy price to the player's message divided buy the current price of BTC
-            if player's balance is greater than or equal to {_buyPrice}:
+            set {_amount} to message parsed as number / {bitcoin::1::price_usd} parsed as number # Sets the buy price to the player's message divided buy the current price of BTC
+            if player's balance is greater than or equal to {_amount}:
                 send "&aJe hebt zojuist %message% euro aan bitcoin(s) gekocht."
 
                 remove message parsed as number from player's balance
+                set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
+                add {_amount} to {_bitcoin.%player%}
+                set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
+                save yaml "crypto-%uuid of player%"
 
                 set {crypto.buy.bitcoin.bedrag.%player%} to false
             else:
@@ -572,3 +586,25 @@ on chat:
             send "&cJe hebt de aankoop gecanceld"
         else:
             send "&cDit is geen geldig getal!"
+
+    if {crypto.sell.bitcoin.eenheden.%player%} is true:
+        cancel event
+        if message parsed as number is number:
+            if yaml value "bitcoin" in "crypto-%uuid of player%" is greater than or equal to message parsed as number:
+                set {_sellPrice} to {bitcoin::1::price_usd} parsed as number * message parsed as number
+                send "&aJe hebt zojuist %message% bitcoin(s) verkocht."
+
+                add {_sellPrice} parsed as number to player's balance
+                set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
+                remove message parsed as number from {_bitcoin.%player%}
+                set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
+                save yaml "crypto-%uuid of player%"
+            else:
+                send "&cJe hebt niet genoeg bitcoin!"
+        else if message contains "cancel":
+            set {crypto.sell.bitcoin.eenheden.%player%} to false
+            send "&cJe hebt de aankoop gecanceld"
+        else:
+            send "&cDit is geen geldig getal!"
+
+# Dit stond nog niet in de server
