@@ -105,10 +105,6 @@ on load:
 
     #if get text contains "version:" from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml" is not yaml
 
-
-# This part checks on 3 o'clock midnight if there is an update available
-# This is only if autoupdate is true in config.yml
-
 # at 03:00 in real world:
 #     if yaml value "autoupdate" in "crypto-config" is true or false:
 #         set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
@@ -141,35 +137,15 @@ on load:
 # This part checks every 60 minutes if there is an update available
 # This is only a message and not for the autoupdate!
 
-# every 60 minutes:
-#     set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Command
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-#     set {_characters::*} to {_version} split at "."
-#     set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
-
-#     set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
-#     set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
-
-#     if {_currentVersionCharacters} is less than {_newVersionCharacters}:
-#         send "{@prefix} &4UPDATE: There is an update available!" to console
-#         send "{@prefix} &cVersion %{_version}% &cis now available!" to console
-#         send "{@prefix} &cYou can download it on by executing the command /crypto update" to console
-
-#         loop all players:
-#             if loop-player has permission "op":
-#                 send "{@prefix} &4UPDATE: There is an update available!" to loop-player
-#                 send "{@prefix} &cVersion %{_version}% &cis now available!" to loop-player
-#                 send "{@prefix} &cYou can download it on by executing the command /crypto update" to loop-player
-
-
-# Everytime that a player joins that has op or the permission crypto.admin, there will be checked if there is an update available.
-# If there is and update available a message will be send to the player.
-
-on join:
-    if player has permission "op" or "crypto.admin":
-        # Check if there is an update available, if that is the case a message will be shown to the player
-
-command /crypto [<text>]:
+command /crypto [<text>] [<offline player>]:
     trigger:
         if arg-1 is "update":
             if player has permission "op":
@@ -191,99 +167,13 @@ command /crypto [<text>]:
         if arg-1 is "open":
             cryptoMarket("gui", player)
 
-
-
-
-on inventory click:
-    if name of player's current inventory is "Crypto Markt":
-        if clicked slot is 0:
-            cryptoMarket("bitcoin", player)
-        if clicked slot is 1:
-            cryptoMarket("ethereum", player)
-        if clicked slot is 2:
-            cryptoMarket("maker", player)
-        if clicked slot is 3:
-            cryptoMarket("bitcoin-cash", player)
-        if clicked slot is 4:
-            cryptoMarket("litecoin", player)
-        if clicked slot is 5:
-            cryptoMarket("dash", player)
-        if clicked slot is 6:
-            cryptoMarket("cardano", player)
-        cancel event
-    if name of player's current inventory is "Bitcoin":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Ethereum":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Maker":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Bitcoin-Cash":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Litecoin":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Dash":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Cardano":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-
-
-
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# API
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
 
 every 2 seconds in world "world":
@@ -311,7 +201,6 @@ every 2 seconds in world "world":
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
             cryptoMarket("gui", loop-player)
-
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -501,3 +390,99 @@ function cryptoMarket(coin: text, p: player):
         set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 1 toe"
         set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
         set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Inventory events
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+on inventory click:
+    if name of player's current inventory is "Crypto Markt":
+        if clicked slot is 0:
+            cryptoMarket("bitcoin", player)
+        if clicked slot is 1:
+            cryptoMarket("ethereum", player)
+        if clicked slot is 2:
+            cryptoMarket("maker", player)
+        if clicked slot is 3:
+            cryptoMarket("bitcoin-cash", player)
+        if clicked slot is 4:
+            cryptoMarket("litecoin", player)
+        if clicked slot is 5:
+            cryptoMarket("dash", player)
+        if clicked slot is 6:
+            cryptoMarket("cardano", player)
+        cancel event
+    if name of player's current inventory is "Bitcoin":
+        if clicked slot is 9:
+            # Verwijder 64
+        if clicked slot is 10:
+            # Verwijder 32
+        if clicked slot is 11:
+            # Verwijder 1
+        if clicked slot is 23:
+            cryptoMarket("gui", player)
+        cancel event
+    if name of player's current inventory is "Ethereum":
+        if clicked slot is 9:
+            # Verwijder 64
+        if clicked slot is 10:
+            # Verwijder 32
+        if clicked slot is 11:
+            # Verwijder 1
+        if clicked slot is 23:
+            cryptoMarket("gui", player)
+        cancel event
+    if name of player's current inventory is "Maker":
+        if clicked slot is 9:
+            # Verwijder 64
+        if clicked slot is 10:
+            # Verwijder 32
+        if clicked slot is 11:
+            # Verwijder 1
+        if clicked slot is 23:
+            cryptoMarket("gui", player)
+        cancel event
+    if name of player's current inventory is "Bitcoin-Cash":
+        if clicked slot is 9:
+            # Verwijder 64
+        if clicked slot is 10:
+            # Verwijder 32
+        if clicked slot is 11:
+            # Verwijder 1
+        if clicked slot is 23:
+            cryptoMarket("gui", player)
+        cancel event
+    if name of player's current inventory is "Litecoin":
+        if clicked slot is 9:
+            # Verwijder 64
+        if clicked slot is 10:
+            # Verwijder 32
+        if clicked slot is 11:
+            # Verwijder 1
+        if clicked slot is 23:
+            cryptoMarket("gui", player)
+        cancel event
+    if name of player's current inventory is "Dash":
+        if clicked slot is 9:
+            # Verwijder 64
+        if clicked slot is 10:
+            # Verwijder 32
+        if clicked slot is 11:
+            # Verwijder 1
+        if clicked slot is 23:
+            cryptoMarket("gui", player)
+        cancel event
+    if name of player's current inventory is "Cardano":
+        if clicked slot is 9:
+            # Verwijder 64
+        if clicked slot is 10:
+            # Verwijder 32
+        if clicked slot is 11:
+            # Verwijder 1
+        if clicked slot is 23:
+            cryptoMarket("gui", player)
+        cancel event
