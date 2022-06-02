@@ -95,6 +95,56 @@ on load:
     send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
     map json last http response's body to {cardano::*}
 
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Playerdata
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+on join:
+    if file path "plugins/crypto/players/%uuid of player%:%player%.yml" is missing:
+        create file "plugins/crypto/players/%uuid of player%:%player%.yml"
+    load yaml "plugins/crypto/players/%uuid of player%:%player%.yml" as "crypto-%uuid of player%"
+
+    if yaml value "name" in "crypto-%uuid of player%" is not set:
+        set yaml value "name" in "crypto-%uuid of player%" to name of player
+    
+    if yaml value "uuid" in "crypto-%uuid of player%" is not set:
+        set yaml value "uuid" in "crypto-%uuid of player%" to uuid of player
+    
+    if yaml value "bitcoin" in "crypto-%uuid of player%" is not set:
+        set yaml value "bitcoin" in "crypto-%uuid of player%" to 0
+
+    if yaml value "ethereum" in "crypto-%uuid of player%" is not set:
+        set yaml value "ethereum" in "crypto-%uuid of player%" to 0
+
+    if yaml value "maker" in "crypto-%uuid of player%" is not set:
+        set yaml value "maker" in "crypto-%uuid of player%" to 0
+    
+    if yaml value "bitcoin-cash" in "crypto-%uuid of player%" is not set:
+        set yaml value "bitcoin-cash" in "crypto-%uuid of player%" to 0
+
+    if yaml value "litecoin" in "crypto-%uuid of player%" is not set:
+        set yaml value "litecoin" in "crypto-%uuid of player%" to 0
+
+    if yaml value "dash" in "crypto-%uuid of player%" is not set:
+        set yaml value "dash" in "crypto-%uuid of player%" to 0
+
+    if yaml value "cardano" in "crypto-%uuid of player%" is not set:
+        set yaml value "cardano" in "crypto-%uuid of player%" to 0
+    
+    save yaml "crypto-%uuid of player%"
+
+every 5 minutes:
+    loop all players:
+        save yaml "crypto-%uuid of loop-player%"
+
+on quit:
+    save yaml "crypto-%uuid of player%"
+    unload yaml "crypto-%uuid of player%"
+
             # Auto update gaat hier starten over 5 minuten
             # Config moet geunload worden en daarna opnieuw ingeladen worden
             # Mensen met op moeten een bericht krijgen en als confirm in de config aan staat dan moeten ze eerst /crypto update confirm moeten typen of in de chat confirm typen
@@ -271,23 +321,45 @@ function cryptoMarket(coin: text, p: player):
             set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %{cardano::1::price_usd}%" and "&7%%%{cardano::1::percent_change_24h}%"
 
         
-    if {_coin} is "bitcoin":
-        open chest with 3 rows named "Bitcoin" to {_p}
-        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 0.01"
-        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 0.1"
-        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 1"
+    if {_coin} is "bitcoinBuy":
+        open chest with 3 rows named "Bitcoin kopen" to {_p}
         set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
         if {_bitcoin::1::percent_change_24h} is greater than 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&a%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&dEenheden" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&a%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
         else if {_bitcoin::1::percent_change_24h} is less than 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&c%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&dEenheden" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&c%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
         else if {_bitcoin::1::percent_change_24h} is equal to 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&7%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
-        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 0.01 toe"
-        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 0.1 toe"
-        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 1 toe"
-        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
-        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&dEenheden" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&7%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        
+        set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
+        if {_bitcoin::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&dBedrag" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&a%%%{bitcoin::1::percent_change_24h}%"
+        else if {_bitcoin::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&dBedrag" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&c%%%{bitcoin::1::percent_change_24h}%"
+        else if {_bitcoin::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&dBedrag" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&7%%%{bitcoin::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    if {_coin} is "bitcoinSell":
+        open chest with 3 rows named "Bitcoin verkopen" to {_p}
+        set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
+        if {_bitcoin::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&dEenheden" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&a%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        else if {_bitcoin::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&dEenheden" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&c%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        else if {_bitcoin::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&dEenheden" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&7%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        
+        set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
+        if {_bitcoin::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&dBedrag" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&a%%%{bitcoin::1::percent_change_24h}%"
+        else if {_bitcoin::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&dBedrag" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&c%%%{bitcoin::1::percent_change_24h}%"
+        else if {_bitcoin::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&dBedrag" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&7%%%{bitcoin::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
+
+    
     if {_coin} is "ethereum":
         open chest with 3 rows named "Ethereum" to {_p}
         set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 0.01 toe"
@@ -402,87 +474,101 @@ function cryptoMarket(coin: text, p: player):
 on inventory click:
     if name of player's current inventory is "Crypto Markt":
         if clicked slot is 0:
-            cryptoMarket("bitcoin", player)
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("bitcoinBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("bitcoinSell", player)
         if clicked slot is 1:
-            cryptoMarket("ethereum", player)
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("ethereumBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("ethereumSell", player)
         if clicked slot is 2:
-            cryptoMarket("maker", player)
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("bitcoinBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("bitcoinSell", player)
         if clicked slot is 3:
-            cryptoMarket("bitcoin-cash", player)
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("bitcoinBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("bitcoinSell", player)
         if clicked slot is 4:
-            cryptoMarket("litecoin", player)
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("bitcoinBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("bitcoinSell", player)
         if clicked slot is 5:
-            cryptoMarket("dash", player)
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("bitcoinBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("bitcoinSell", player)
         if clicked slot is 6:
-            cryptoMarket("cardano", player)
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("bitcoinBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("bitcoinSell", player)
         cancel event
-    if name of player's current inventory is "Bitcoin":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
+    if name of player's current inventory is "Bitcoin kopen":
         if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
+            close player's inventory
+            set {crypto.buy.bitcoin.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel bitcoin wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.bitcoin.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan bitcoin wil je kopen?"
+        if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
-    if name of player's current inventory is "Ethereum":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
+    else if name of player's current inventory is "Bitcoin verkopen":
+        if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
-    if name of player's current inventory is "Maker":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
+
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Chat events
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+on chat:
+    if {crypto.buy.bitcoin.eenheden.%player%} is true:
         cancel event
-    if name of player's current inventory is "Bitcoin-Cash":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Litecoin":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Dash":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
-    if name of player's current inventory is "Cardano":
-        if clicked slot is 9:
-            # Verwijder 64
-        if clicked slot is 10:
-            # Verwijder 32
-        if clicked slot is 11:
-            # Verwijder 1
-        if clicked slot is 23:
-            cryptoMarket("gui", player)
-        cancel event
+        if message parsed as number is a number:
+            set {_buyPrice} to {bitcoin::1::price_usd} parsed as number * message parsed as number
+            if player's balance is greater than or equal to {_buyPrice}:
+                send "&aJe hebt zojuist %message% bitcoin(s) gekocht."
+
+                remove {_buyPrice} from player's balance
+
+                set {crypto.buy.bitcoin.eenheden.%player%} to false
+            else:
+                send "&cSorry je hebt hier niet genoeg geld voor"
+        else if message contains "cancel":
+            set {crypto.buy.bitcoin.eenheden.%player%} to false
+            send "&cJe hebt de aankoop gecanceld"
+        else:
+            send "&cDit is geen geldig getal!"
+
+    if {crypto.buy.bitcoin.bedrag.%player%} is true:
+        cancel event # Chat event gets cancelled
+        if message parsed as number is a number: # Checks if the players message is an integer
+            set {_buyPrice} to message parsed as number / {bitcoin::1::price_usd} parsed as number # Sets the buy price to the player's message divided buy the current price of BTC
+            if player's balance is greater than or equal to {_buyPrice}:
+                send "&aJe hebt zojuist %message% euro aan bitcoin(s) gekocht."
+
+                remove message parsed as number from player's balance
+
+                set {crypto.buy.bitcoin.bedrag.%player%} to false
+            else:
+                send "&cSorry je hebt hier niet genoeg geld voor"
+        else if message contains "cancel":
+            set {crypto.buy.bitcoin.bedrag.%player%} to false
+            send "&cJe hebt de aankoop gecanceld"
+        else:
+            send "&cDit is geen geldig getal!"
