@@ -546,29 +546,37 @@ on inventory click:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
+function buyEenheden(coin: text, message: text, p: player):
+    if {_message} parsed as number is a number:
+        set {_buyPrice} to {%{_coin}%::1::price_usd} parsed as number * {_message} parsed as number
+        if {_p}'s balance is greater than or equal to {_buyPrice}:
+            send "&aJe hebt zojuist %{_message}% %{_coin}%(s) gekocht"
+
 on chat:
     if {crypto.buy.bitcoin.eenheden.%player%} is true:
         cancel event
-        if message parsed as number is a number:
-            set {_buyPrice} to {bitcoin::1::price_usd} parsed as number * message parsed as number
-            if player's balance is greater than or equal to {_buyPrice}:
-                send "&aJe hebt zojuist %message% bitcoin(s) gekocht."
+        set {_message} to message
+        buyEenheden("bitcoin",{_message}, player)
+        # if message parsed as number is a number:
+        #     set {_buyPrice} to {bitcoin::1::price_usd} parsed as number * message parsed as number
+        #     if player's balance is greater than or equal to {_buyPrice}:
+        #         send "&aJe hebt zojuist %message% bitcoin(s) gekocht."
 
-                remove {_buyPrice} from player's balance
+        #         remove {_buyPrice} from player's balance
 
-                set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
-                add message parsed as number to {_bitcoin.%player%}
-                set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
-                save yaml "crypto-%uuid of player%"
+        #         set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
+        #         add message parsed as number to {_bitcoin.%player%}
+        #         set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
+        #         save yaml "crypto-%uuid of player%"
 
-                set {crypto.buy.bitcoin.eenheden.%player%} to false
-            else:
-                send "&cSorry je hebt hier niet genoeg geld voor"
-        else if message contains "cancel":
-            set {crypto.buy.bitcoin.eenheden.%player%} to false
-            send "&cJe hebt de aankoop gecanceld"
-        else:
-            send "&cDit is geen geldig getal!"
+        #         set {crypto.buy.bitcoin.eenheden.%player%} to false
+        #     else:
+        #         send "&cSorry je hebt hier niet genoeg geld voor"
+        # else if message contains "cancel":
+        #     set {crypto.buy.bitcoin.eenheden.%player%} to false
+        #     send "&cJe hebt de aankoop gecanceld"
+        # else:
+        #     send "&cDit is geen geldig getal!"
 
     if {crypto.buy.bitcoin.bedrag.%player%} is true:
         cancel event # Chat event gets cancelled
