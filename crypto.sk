@@ -550,7 +550,7 @@ function buyEenheden(coin: text, message: text, p: player):
     if {_message} parsed as number is a number:
         set {_buyPrice} to {%{_coin}%::1::price_usd} parsed as number * {_message} parsed as number
         # if {_p}'s balance is greater than or equal to {_buyPrice}:
-        send "&aJe hebt zojuist %{_message}% %{_coin}%(s) gekocht"
+        send "&aJe hebt zojuist %{_message}% %{_coin}%(s) gekocht" to {_p}
 
 on chat:
     if {crypto.buy.bitcoin.eenheden.%player%} is true:
