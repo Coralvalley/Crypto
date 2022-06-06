@@ -616,6 +616,93 @@ on inventory click:
             cryptoMarket("gui", player)
         cancel event
 
+    else if name of player's current inventory is "Litecoin kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.litecoin.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel litecoin wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.litecoin.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan litecoin wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "Litecoin verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.litecoin.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel litecoin wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.litecoin.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan litecoin wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+
+    else if name of player's current inventory is "Dash kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.dash.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel dash wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.dash.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan dash wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "Dash verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.dash.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel dash wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.dash.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan dash wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+
+    else if name of player's current inventory is "Cardano kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.cardano.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel cardano wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.cardano.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan cardano wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "Cardano verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.cardano.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel cardano wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.cardano.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan cardano wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
 #
@@ -777,3 +864,54 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("bitcoin-cash", {_message}, player)
+
+    if {crypto.buy.litecoin.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("litecoin", {_message}, player)
+    if {crypto.buy.litecoin.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("litecoin", {_message}, player)
+    if {crypto.sell.litecoin.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("litecoin", {_message}, player)
+    if {crypto.sell.litecoin.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("litecoin", {_message}, player)
+
+    if {crypto.buy.dash.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("dash", {_message}, player)
+    if {crypto.buy.dash.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("dash", {_message}, player)
+    if {crypto.sell.dash.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("dash", {_message}, player)
+    if {crypto.sell.dash.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("dash", {_message}, player)
+
+    if {crypto.buy.cardano.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("cardano", {_message}, player)
+    if {crypto.buy.cardano.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("cardano", {_message}, player)
+    if {crypto.sell.cardano.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("cardano", {_message}, player)
+    if {crypto.sell.cardano.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("cardano", {_message}, player)
