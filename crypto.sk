@@ -357,6 +357,44 @@ function cryptoMarket(coin: text, p: player):
         else if {_bitcoin::1::percent_change_24h} is equal to 0.0:
             set slot 15 of {_p}'s current inventory to a gold ingot named "&dBedrag" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&7%%%{bitcoin::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    
+
+    if {_coin} is "ethereumBuy":
+        open chest with 3 rows named "Ethereum kopen" to {_p}
+        set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
+        if {_ethereum::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&eEenheden" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&a%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        else if {_ethereum::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&eEenheden" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&c%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        else if {_ethereum::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&eEenheden" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&7%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        
+        set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
+        if {_ethereum::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&eBedrag" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&a%%%{ethereum::1::percent_change_24h}%"
+        else if {_ethereum::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&eBedrag" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&c%%%{ethereum::1::percent_change_24h}%"
+        else if {_ethereum::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&eBedrag" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&7%%%{ethereum::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    if {_coin} is "ethereumSell":
+        open chest with 3 rows named "Ethereum verkopen" to {_p}
+        set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
+        if {_ethereum::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&eEenheden" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&a%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        else if {_ethereum::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&eEenheden" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&c%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        else if {_ethereum::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&eEenheden" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&7%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
+        
+        set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
+        if {_ethereum::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&eBedrag" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&a%%%{ethereum::1::percent_change_24h}%"
+        else if {_ethereum::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&eBedrag" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&c%%%{ethereum::1::percent_change_24h}%"
+        else if {_ethereum::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&eBedrag" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&7%%%{ethereum::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
 
     
@@ -537,6 +575,34 @@ on inventory click:
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
+    else if name of player's current inventory is "Ethereum kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.ethereum.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel ethereum wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.ethereum.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan ethereum wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "Ethereum verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.ethereum.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel ethereum wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.ethereum.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan ethereum wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -549,95 +615,119 @@ on inventory click:
 function buyEenheden(coin: text, message: text, p: player):
     if {_message} parsed as number is a number:
         set {_buyPrice} to {%{_coin}%::1::price_usd} parsed as number * {_message} parsed as number
-        # if {_p}'s balance is greater than or equal to {_buyPrice}:
-        send "&aJe hebt zojuist %{_message}% %{_coin}%(s) gekocht" to {_p}
+        if {_p}'s balance is greater than or equal to {_buyPrice}:
+            send "&aJe hebt zojuist %{_message}% %{_coin}% gekocht" to {_p}
+
+            remove {_buyPrice} from {_p}'s balance
+
+            set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
+            add {_message} parsed as number to {_%{_coin}%.%{_p}%}
+            set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
+            save yaml "crypto-%uuid of {_p}%"
+
+            set {crypto.buy.%{_coin}%.eenheden.%{_p}%} to false
+        else:
+            send "&cSorry, je hebt hier niet genoeg geld voor." to {_p}
+    else if {_message} contains "cancel":
+        set {crypto.buy.%{_coin}%.eenheden.%{_p}%} to false
+        send "&cJe hebt de aankoop gecanceld" to {_p}
+    else:
+        send "&cDit is geen geldig getal." to {_p}
+
+function sellEenheden(coin: text, message: text, p: player):
+    if {_message} parsed as number is a number:
+        if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_message} parsed as number:
+            set {_sellPrice} to {%{_coin}%::1::price_usd} parsed as number * {_message} parsed as number
+            send "&aJe hebt zojuist %{_message}% %{_coin}% verkocht" to {_p}
+
+            add {_sellPrice} parsed as number to {_p}'s balance
+            set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
+            remove {_message} parsed as number from {_%{_coin}%.%{_p}%}
+            set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
+            save yaml "crypto-%uuid of {_p}%"
+
+            set {crypto.sell.%{_coin}%.eenheden.%{_p}%} to false
+        else:
+            send "&cJe hebt niet genoeg %{_coin}%" to {_p}
+    else if {_message} contains "cancel":
+        set {crypto.sell.%{_coin}%.eenheden.%{_p}%} to false
+        send "&cJe hebt de de verkoop gecanceld." to {_p}
+    else:
+        send "&cDit is geen geldig getal." to {_p}
+
+function buyBedrag(coin: text, message: text, p: player):
+    if {_message} parsed as number is a number:
+        set {_amount} to {_message} parsed as number / {%{_coin}%::1::price_usd} parsed as number
+        if {_p}'s balance is greater than or equal to {_amount}:
+            send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% gekocht." to {_p}
+
+            remove {_message} parsed as number from {_p}'s balance
+            set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
+            add {_amount} to {_%{_coin}%.%{_p}%}
+            set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
+            save yaml "crypto-%uuid of {_p}%"
+
+            set {crypto.buy.%{_coin}%.bedrag.%{_p}%} to false
+        else:
+            send "&cSorry je hebt hier niet genoeg geld voor" to {_p}
+    else if {_message} contains "cancel":
+        set {crypto.buy.%{_coin}%.bedrag.%{_p}%} to false
+        send "&cJe hebt de aankoop gecanceld." to {_p}
+    else:
+        send "&cDit is geen geldig bedrag!" to {_p}
+
+function sellBedrag(coin: text, message: text, p: player):
+    if {_message} parsed as number is a number:
+        set {_amount} to {_message} parsed as number / {%{_coin}%::1::price_usd} parsed as number
+        if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_amount}:
+            send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% verkocht." to {_p}
+
+            remove {_message} parsed as number from {_p}'s balance
+            set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
+            remove {_amount} from {_%{_coin}%.%{_p}%}
+            set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
+            save yaml "crypto-%uuid of {_p}%"
+            
+            set {crypto.sell.%{_coin}%.bedrag.%{_p}%} to false
+        else:
+            send "&cSorry je hebt niet genoeg %{_coin}%" to {_p}
+    else if {_message} contains "cancel":
+        set {crypto.sell.%{_coin}%.bedrag.%{_p}%} to false
+        send "&cJe hebt de verkoop gecanceld" to {_p}
+    else:
+        send "&cDit is geen geldig bedrag." to {_p}
 
 on chat:
     if {crypto.buy.bitcoin.eenheden.%player%} is true:
         cancel event
         set {_message} to message
-        buyEenheden("bitcoin",{_message}, player)
-        # if message parsed as number is a number:
-        #     set {_buyPrice} to {bitcoin::1::price_usd} parsed as number * message parsed as number
-        #     if player's balance is greater than or equal to {_buyPrice}:
-        #         send "&aJe hebt zojuist %message% bitcoin(s) gekocht."
-
-        #         remove {_buyPrice} from player's balance
-
-        #         set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
-        #         add message parsed as number to {_bitcoin.%player%}
-        #         set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
-        #         save yaml "crypto-%uuid of player%"
-
-        #         set {crypto.buy.bitcoin.eenheden.%player%} to false
-        #     else:
-        #         send "&cSorry je hebt hier niet genoeg geld voor"
-        # else if message contains "cancel":
-        #     set {crypto.buy.bitcoin.eenheden.%player%} to false
-        #     send "&cJe hebt de aankoop gecanceld"
-        # else:
-        #     send "&cDit is geen geldig getal!"
-
+        buyEenheden("bitcoin", {_message}, player)
     if {crypto.buy.bitcoin.bedrag.%player%} is true:
         cancel event # Chat event gets cancelled
-        if message parsed as number is a number: # Checks if the players message is an integer
-            set {_amount} to message parsed as number / {bitcoin::1::price_usd} parsed as number # Sets the buy price to the player's message divided buy the current price of BTC
-            if player's balance is greater than or equal to {_amount}:
-                send "&aJe hebt zojuist %message% euro aan bitcoin(s) gekocht."
-
-                remove message parsed as number from player's balance
-                set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
-                add {_amount} to {_bitcoin.%player%}
-                set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
-                save yaml "crypto-%uuid of player%"
-
-                set {crypto.buy.bitcoin.bedrag.%player%} to false
-            else:
-                send "&cSorry je hebt hier niet genoeg geld voor"
-        else if message contains "cancel":
-            set {crypto.buy.bitcoin.bedrag.%player%} to false
-            send "&cJe hebt de aankoop gecanceld."
-        else:
-            send "&cDit is geen geldig bedrag!"
-
+        set {_message} to message
+        buyBedrag("bitcoin", {_message}, player)
     if {crypto.sell.bitcoin.eenheden.%player%} is true:
         cancel event
-        if message parsed as number is number:
-            if yaml value "bitcoin" in "crypto-%uuid of player%" is greater than or equal to message parsed as number:
-                set {_sellPrice} to {bitcoin::1::price_usd} parsed as number * message parsed as number
-                send "&aJe hebt zojuist %message% bitcoin(s) verkocht."
-
-                add {_sellPrice} parsed as number to player's balance
-                set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
-                remove message parsed as number from {_bitcoin.%player%}
-                set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
-                save yaml "crypto-%uuid of player%"
-                set {crypto.sell.bitcoin.eenheden.%player%} to false
-            else:
-                send "&cJe hebt niet genoeg bitcoin!"
-        else if message contains "cancel":
-            set {crypto.sell.bitcoin.eenheden.%player%} to false
-            send "&cJe hebt de verkoop gecanceld."
-        else:
-            send "&cDit is geen geldig getal!"
-
+        set {_message} to message
+        sellEenheden("bitcoin", {_message}, player)
     if {crypto.sell.bitcoin.bedrag.%player%} is true:
         cancel event
-        if message parsed as number is number:
-            set {_amount} to message parsed as number / {bitcoin::1::price_usd} parsed as number
-            if yaml value "bitcoin" in "crypto-%uuid of player%" is greater than or equal to {_amount}:
-                send "&aJe hebt zojuist %message% euro aan bitcoin(s) verkocht."
+        set {_message} to message
+        sellBedrag("bitcoin", {_message}, player)
 
-                remove message parsed as number from player's balance
-                set {_bitcoin.%player%} to yaml value "bitcoin" in "crypto-%uuid of player%"
-                remove {_amount} from {_bitcoin.%player%}
-                set yaml value "bitcoin" in "crypto-%uuid of player%" to {_bitcoin.%player%}
-                save yaml "crypto-%uuid of player%"
-                set {crypto.sell.bitcoin.bedrag.%player%} to false
-            else:
-                send "&cSorry je hebt niet genoeg bitcoins!"
-        else if message contains "cancel":
-            set {crypto.sell.bitcoin.bedrag.%player%} to false
-            send "&cJe hebt de verkoop gecanceld."
-        else:
-            send "&cDit is geen geldig bedrag!"
+    if {crypto.buy.ethereum.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("ethereum", {_message}, player)
+    if {crypto.buy.ethereum.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("ethereum", {_message}, player)
+    if {crypto.sell.ethereum.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("ethereum", {_message}, player)
+    if {crypto.sell.ethereum.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("ethereum", {_message}, player)
