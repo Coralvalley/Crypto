@@ -397,24 +397,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
 
-    
-    if {_coin} is "ethereum":
-        open chest with 3 rows named "Ethereum" to {_p}
-        set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 0.01 toe"
-        set slot 10 of {_p}'s current inventory to 32 red stained glass pane named "&cVerwijder 0.1"
-        set slot 11 of {_p}'s current inventory to a red stained glass pane named "&cVerwijder 1"
-        set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
-        if {_ethereum::1::percent_change_24h} is greater than 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&a%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
-        else if {_ethereum::1::percent_change_24h} is less than 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&c%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
-        else if {_ethereum::1::percent_change_24h} is equal to 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&7%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
-        set slot 15 of {_p}'s current inventory to a lime stained glass pane named "&aVoeg 0.01 toe"
-        set slot 16 of {_p}'s current inventory to 32 lime stained glass pane named "&aVoeg 0.1 toe"
-        set slot 17 of {_p}'s current inventory to 64 lime stained glass pane named "&aVoeg 1 toe"
-        set slot 21 of {_p}'s current inventory to a iron ingot named "&aBevestig" with nbt "{emoji:check}"
-        set slot 23 of {_p}'s current inventory to a iron ingot named "&cAnnuleer" with nbt "{emoji:kruis}"
+
     if {_coin} is "maker":
         open chest with 3 rows named "Maker" to {_p}
         set slot 9 of {_p}'s current inventory to 64 red stained glass pane named "&cVerwijder 0.01 toe"
@@ -523,29 +506,29 @@ on inventory click:
                 cryptoMarket("ethereumSell", player)
         if clicked slot is 2:
             if "%event-clicktype%" is "right mouse button":
-                cryptoMarket("bitcoinBuy", player)
+                cryptoMarket("makerBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("bitcoinSell", player)
+                cryptoMarket("makerSell", player)
         if clicked slot is 3:
             if "%event-clicktype%" is "right mouse button":
-                cryptoMarket("bitcoinBuy", player)
+                cryptoMarket("bitcoin-cashBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("bitcoinSell", player)
+                cryptoMarket("bitcoin-cashSell", player)
         if clicked slot is 4:
             if "%event-clicktype%" is "right mouse button":
-                cryptoMarket("bitcoinBuy", player)
+                cryptoMarket("litecoinBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("bitcoinSell", player)
+                cryptoMarket("litecoinSell", player)
         if clicked slot is 5:
             if "%event-clicktype%" is "right mouse button":
-                cryptoMarket("bitcoinBuy", player)
+                cryptoMarket("dashBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("bitcoinSell", player)
+                cryptoMarket("dashSell", player)
         if clicked slot is 6:
             if "%event-clicktype%" is "right mouse button":
-                cryptoMarket("bitcoinBuy", player)
+                cryptoMarket("cardanoBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("bitcoinSell", player)
+                cryptoMarket("cardanoSell", player)
         cancel event
     if name of player's current inventory is "Bitcoin kopen":
         if clicked slot is 11:
@@ -600,6 +583,35 @@ on inventory click:
             set {crypto.sell.ethereum.bedrag.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
             send "&6Hoeveel euro aan ethereum wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+
+    else if name of player's current inventory is "Maker kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.maker.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel maker wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.maker.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan maker wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "Maker verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.maker.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel maker wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.maker.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan maker wil je verkopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
@@ -731,3 +743,37 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("ethereum", {_message}, player)
+
+    if {crypto.buy.maker.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("maker", {_message}, player)
+    if {crypto.buy.maker.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("maker", {_message}, player)
+    if {crypto.sell.maker.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("maker", {_message}, player)
+    if {crypto.sell.maker.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("maker", {_message}, player)
+
+    if {crypto.buy.bitcoin-cash.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("bitcoin-cash", {_message}, player)
+    if {crypto.buy.bitcoin-cash.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("bitcoin-cash", {_message}, player)
+    if {crypto.sell.bitcoin-cash.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("bitcoin-cash", {_message}, player)
+    if {crypto.sell.bitcoin-cash.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("bitcoin-cash", {_message}, player)
