@@ -76,8 +76,8 @@ on load:
             add "dash" to skript-yaml list "coins" in "crypto-config"
         if skript-yaml value "coins" in "crypto-config" doesn't contain "cardano":
             add "cardano" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "usdt":
-            add "usdt" to skript-yaml list "coins" in "crypto-config"
+        if skript-yaml value "coins" in "crypto-config" doesn't contain "tether":
+            add "tether" to skript-yaml list "coins" in "crypto-config"
 
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
@@ -99,8 +99,8 @@ on load:
         set yaml value "staking.dash" in "crypto-config" to 0
     if yaml value "staking.cardano" in "crypto-config" is not set:
         set yaml value "staking.cardano" in "crypto-config" to 0
-    if yaml value "staking.usdt" in "crypto-config" is not set:
-        set yaml value "staking.usdt" in "crypto-config" to 0
+    if yaml value "staking.tether" in "crypto-config" is not set:
+        set yaml value "staking.tether" in "crypto-config" to 0
 
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
@@ -135,7 +135,7 @@ on load:
     map json last http response's body to {cardano::*}
 
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
-    map json last http response's body to {usdt::*}
+    map json last http response's body to {tether::*}
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -169,8 +169,8 @@ on join:
         set yaml value "dash" in "crypto-%uuid of player%" to 0
     if yaml value "cardano" in "crypto-%uuid of player%" is not set:
         set yaml value "cardano" in "crypto-%uuid of player%" to 0
-    if yaml value "usdt" in "crypto-%uuid of player%" is not set:
-        set yaml value "usdt" in "crypto-%uuid of player%" to 0
+    if yaml value "tether" in "crypto-%uuid of player%" is not set:
+        set yaml value "tether" in "crypto-%uuid of player%" to 0
 
     if yaml value "staking" in "crypto-%uuid of player%" is not set:
         set yaml value "staking" in "crypto-%uuid of player%" to false
@@ -299,7 +299,7 @@ every 10 seconds in world "world":
     map json last http response's body to {cardano::*}
 
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
-    map json last http response's body to {usdt::*}
+    map json last http response's body to {tether::*}
 
     set {bitcoin::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/open.php"
     set {bitcoin::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/close.php"
@@ -322,8 +322,8 @@ every 10 seconds in world "world":
     set {cardano::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/cardano/open.php"
     set {cardano::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/cardano/close.php"
 
-    set {usdt::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/usdt/open.php"
-    set {usdt::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/usdt/close.php"
+    set {tether::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/tether/open.php"
+    set {tether::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/tether/close.php"
 
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
@@ -397,13 +397,13 @@ function cryptoMarket(coin: text, p: player):
         else if {_cardano::1::percent_change_24h} is equal to 0.0:
             set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %{cardano::1::price_usd}%" and "&7%%%{cardano::1::percent_change_24h}%"
 
-        set {_usdt::1::percent_change_24h} to {usdt::1::percent_change_24h} parsed as number
-        if {_usdt::1::percent_change_24h} is greater than 0.0:
-            set slot 6 of {_p}'s current inventory to a iron ingot named "&busdt" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&a%%%{usdt::1::percent_change_24h}%"
-        else if {_usdt::1::percent_change_24h} is less than 0.0:
-            set slot 6 of {_p}'s current inventory to a iron ingot named "&busdt" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&c%%%{usdt::1::percent_change_24h}%"
-        else if {_usdt::1::percent_change_24h} is equal to 0.0:
-            set slot 6 of {_p}'s current inventory to a iron ingot named "&busdt" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&7%%%{usdt::1::percent_change_24h}%"
+        set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
+        if {_tether::1::percent_change_24h} is greater than 0.0:
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&btether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&a%%%{tether::1::percent_change_24h}%"
+        else if {_tether::1::percent_change_24h} is less than 0.0:
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&btether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&c%%%{tether::1::percent_change_24h}%"
+        else if {_tether::1::percent_change_24h} is equal to 0.0:
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&btether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%"
 
         
     if {_coin} is "bitcoinBuy":
@@ -666,41 +666,41 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{cardano::1::price_usd}%" and "&7%%%{cardano::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
-    if {_coin} is "usdtBuy":
-        open chest with 3 rows named "Usdt kopen" to {_p}
-        set {_usdt::1::percent_change_24h} to {usdt::1::percent_change_24h} parsed as number
-        if {_usdt::1::percent_change_24h} is greater than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&a%%%{usdt::1::percent_change_24h}%" with nbt "{mtcustom:usdt}"
-        else if {_usdt::1::percent_change_24h} is less than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&c%%%{usdt::1::percent_change_24h}%" with nbt "{mtcustom:usdt}"
-        else if {_usdt::1::percent_change_24h} is equal to 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&7%%%{usdt::1::percent_change_24h}%" with nbt "{mtcustom:usdt}"
+    if {_coin} is "tetherBuy":
+        open chest with 3 rows named "tether kopen" to {_p}
+        set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
+        if {_tether::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&a%%%{tether::1::percent_change_24h}%" with nbt "{mtcustom:tether}"
+        else if {_tether::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&c%%%{tether::1::percent_change_24h}%" with nbt "{mtcustom:tether}"
+        else if {_tether::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%" with nbt "{mtcustom:tether}"
         
-        set {_usdt::1::percent_change_24h} to {usdt::1::percent_change_24h} parsed as number
-        if {_usdt::1::percent_change_24h} is greater than 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&a%%%{usdt::1::percent_change_24h}%"
-        else if {_usdt::1::percent_change_24h} is less than 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&c%%%{usdt::1::percent_change_24h}%"
-        else if {_usdt::1::percent_change_24h} is equal to 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&7%%%{usdt::1::percent_change_24h}%"
+        set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
+        if {_tether::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&a%%%{tether::1::percent_change_24h}%"
+        else if {_tether::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&c%%%{tether::1::percent_change_24h}%"
+        else if {_tether::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
-    if {_coin} is "usdtSell":
-        open chest with 3 rows named "Usdt verkopen" to {_p}
-        set {_usdt::1::percent_change_24h} to {usdt::1::percent_change_24h} parsed as number
-        if {_usdt::1::percent_change_24h} is greater than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&a%%%{usdt::1::percent_change_24h}%" with nbt "{mtcustom:usdt}"
-        else if {_usdt::1::percent_change_24h} is less than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&c%%%{usdt::1::percent_change_24h}%" with nbt "{mtcustom:usdt}"
-        else if {_usdt::1::percent_change_24h} is equal to 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&7%%%{usdt::1::percent_change_24h}%" with nbt "{mtcustom:usdt}"
+    if {_coin} is "tetherSell":
+        open chest with 3 rows named "tether verkopen" to {_p}
+        set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
+        if {_tether::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&a%%%{tether::1::percent_change_24h}%" with nbt "{mtcustom:tether}"
+        else if {_tether::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&c%%%{tether::1::percent_change_24h}%" with nbt "{mtcustom:tether}"
+        else if {_tether::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%" with nbt "{mtcustom:tether}"
         
-        set {_usdt::1::percent_change_24h} to {usdt::1::percent_change_24h} parsed as number
-        if {_usdt::1::percent_change_24h} is greater than 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&a%%%{usdt::1::percent_change_24h}%"
-        else if {_usdt::1::percent_change_24h} is less than 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&c%%%{usdt::1::percent_change_24h}%"
-        else if {_usdt::1::percent_change_24h} is equal to 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&7%%%{usdt::1::percent_change_24h}%"
+        set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
+        if {_tether::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&a%%%{tether::1::percent_change_24h}%"
+        else if {_tether::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&c%%%{tether::1::percent_change_24h}%"
+        else if {_tether::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
@@ -750,9 +750,9 @@ on inventory click:
                 cryptoMarket("cardanoSell", player)
         if clicked slot is 7:
             if "%event-clicktype%" is "right mouse button":
-                cryptoMarket("usdtBuy", player)
+                cryptoMarket("tetherBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("usdtSell", player)
+                cryptoMarket("tetherSell", player)
         cancel event
     if name of player's current inventory is "Bitcoin kopen":
         if clicked slot is 11:
@@ -927,31 +927,31 @@ on inventory click:
             cryptoMarket("gui", player)
         cancel event
 
-    else if name of player's current inventory is "Usdt kopen":
+    else if name of player's current inventory is "tether kopen":
         if clicked slot is 11:
             close player's inventory
-            set {crypto.buy.usdt.eenheden.%player%} to true
+            set {crypto.buy.tether.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel usdt wil je kopen?"
+            send "&6Hoeveel tether wil je kopen?"
         if clicked slot is 15:
             close player's inventory
-            set {crypto.buy.usdt.bedrag.%player%} to true
+            set {crypto.buy.tether.bedrag.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan usdt wil je kopen?"
+            send "&6Hoeveel euro aan tether wil je kopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
-    else if name of player's current inventory is "Usdt verkopen":
+    else if name of player's current inventory is "tether verkopen":
         if clicked slot is 11:
             close player's inventory
-            set {crypto.sell.usdt.eenheden.%player%} to true
+            set {crypto.sell.tether.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel usdt wil je verkopen?"
+            send "&6Hoeveel tether wil je verkopen?"
         if clicked slot is 15:
             close player's inventory
-            set {crypto.sell.usdt.bedrag.%player%} to true
+            set {crypto.sell.tether.bedrag.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan usdt wil je verkopen?"
+            send "&6Hoeveel euro aan tether wil je verkopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
@@ -1169,19 +1169,19 @@ on chat:
         set {_message} to message
         sellBedrag("cardano", {_message}, player)
 
-    if {crypto.buy.usdt.eenheden.%player%} is true:
+    if {crypto.buy.tether.eenheden.%player%} is true:
         cancel event
         set {_message} to message
-        buyEenheden("usdt", {_message}, player)
-    if {crypto.buy.usdt.bedrag.%player%} is true:
+        buyEenheden("tether", {_message}, player)
+    if {crypto.buy.tether.bedrag.%player%} is true:
         cancel event
         set {_message} to message
-        buyBedrag("usdt", {_message}, player)
-    if {crypto.sell.usdt.eenheden.%player%} is true:
+        buyBedrag("tether", {_message}, player)
+    if {crypto.sell.tether.eenheden.%player%} is true:
         cancel event
         set {_message} to message
-        sellEenheden("usdt", {_message}, player)
-    if {crypto.sell.usdt.bedrag.%player%} is true:
+        sellEenheden("tether", {_message}, player)
+    if {crypto.sell.tether.bedrag.%player%} is true:
         cancel event
         set {_message} to message
-        sellBedrag("usdt", {_message}, player)
+        sellBedrag("tether", {_message}, player)
