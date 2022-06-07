@@ -1012,6 +1012,3 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("cardano", {_message}, player)
-
-# Newline
-# Nog een nieuwe lijn
