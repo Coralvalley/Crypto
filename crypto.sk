@@ -197,6 +197,10 @@ on quit:
 
 command /crypto [<text>] [<offline player>]:
     trigger:
+        if arg-1 is not set:
+            send "&6Gebruik /crypto help"
+        if arg-1 is "help":
+            # Help bericht
         if arg-1 is "update":
             if executor is console:
                 set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
@@ -214,6 +218,25 @@ command /crypto [<text>] [<offline player>]:
                     delete file path "plugins/Skript/scripts/-update.sk"
                 download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
                 reload script "update"
+            else if executor is player:
+                if player has permission "crypto.admin":
+                    set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
+                    set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
+
+                    set {_characters::*} to {_version} split at "."
+                    set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
+
+                    set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
+                    set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
+
+                    if file path "plugins/Skript/scripts/update.sk" exists:
+                        delete file path "plugins/Skript/scripts/update.sk"
+                    else if file path "plugins/Skript/scripts/-update.sk" exists:
+                        delete file path "plugins/Skript/scripts/-update.sk"
+                    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
+                    reload script "update"
+                else:
+                    send "&cSorry, je hebt geen permissies om dit commando uit te voeren."
         if arg-1 is "open":
             cryptoMarket("gui", player)
 
@@ -226,7 +249,7 @@ command /crypto [<text>] [<offline player>]:
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
 
-every 2 seconds in world "world":
+every 4 seconds in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin::*}
 
