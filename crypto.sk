@@ -397,6 +397,14 @@ function cryptoMarket(coin: text, p: player):
         else if {_cardano::1::percent_change_24h} is equal to 0.0:
             set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %{cardano::1::price_usd}%" and "&7%%%{cardano::1::percent_change_24h}%"
 
+        set {_usdt::1::percent_change_24h} to {usdt::1::percent_change_24h} parsed as number
+        if {_usdt::1::percent_change_24h} is greater than 0.0:
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&busdt" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&a%%%{usdt::1::percent_change_24h}%"
+        else if {_usdt::1::percent_change_24h} is less than 0.0:
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&busdt" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&c%%%{usdt::1::percent_change_24h}%"
+        else if {_usdt::1::percent_change_24h} is equal to 0.0:
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&busdt" with lore "&fWaarde: € %{usdt::1::price_usd}%" and "&7%%%{usdt::1::percent_change_24h}%"
+
         
     if {_coin} is "bitcoinBuy":
         open chest with 3 rows named "Bitcoin kopen" to {_p}
