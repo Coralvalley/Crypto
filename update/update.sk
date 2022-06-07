@@ -18,11 +18,11 @@ on load:
     set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
 
     # Disable the main plugin file 'crypto.sk'
-    if file path "plugins/Skript/scripts/crypto.sk" exists:
-        disable script "crypto"
-        delete file "plugins/Skript/scripts/-crypto.sk"
-    else if file path "plugins/Skript/scripts/-crypto.sk" exists:
-        delete file "plugins/Skript/scripts/-crypto.sk"
+    disable script "crypto"
+
+    # Delete the main plugin file now called '-crypto.sk'
+    delete file "plugins/Skript/scripts/-crypto.sk"
+    
     wait 2 seconds
     # Download the new main plugin file called 'crypto.sk'
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
