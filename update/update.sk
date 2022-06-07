@@ -25,5 +25,4 @@ on load:
     reload script "crypto"
 
     # Set the version of the plugin in config.yml to the new version
-    set yaml value "DoNotChange.version" in "crypto-config" to {_version}
     save yaml "crypto-config"
