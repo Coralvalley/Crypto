@@ -19,11 +19,14 @@ on load:
 
     # Disable the main plugin file 'crypto.sk'
     disable script "crypto"
+    send "Disabling crypto" to console
+    wait 2 seconds
 
     # Delete the main plugin file now called '-crypto.sk'
     delete file "plugins/Skript/scripts/-crypto.sk"
-    
+    send "Deleting crypto.sk" to console
     wait 2 seconds
+
     # Download the new main plugin file called 'crypto.sk'
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
 
