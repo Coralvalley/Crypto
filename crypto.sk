@@ -180,16 +180,6 @@ on quit:
     save yaml "crypto-%uuid of player%"
     unload yaml "crypto-%uuid of player%"
 
-            # Auto update gaat hier starten over 5 minuten
-            # Config moet geunload worden en daarna opnieuw ingeladen worden
-            # Mensen met op moeten een bericht krijgen en als confirm in de config aan staat dan moeten ze eerst /crypto update confirm moeten typen of in de chat confirm typen
-        # Check for udpate
-        # Autoupdate
-    
-
-
-    #if get text contains "version:" from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml" is not yaml
-
 # at 03:00 in real world:
 #     if yaml value "autoupdate" in "crypto-config" is true or false:
 #         set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
@@ -218,9 +208,6 @@ on quit:
 #         send "{@prefix} &4CONFIG ERROR:" to console
 #         send "{@prefix} &cLine 4" to console
 #         send "{@prefix} &cAutoupdate can only be true or false!" to console
-
-# This part checks every 60 minutes if there is an update available
-# This is only a message and not for the autoupdate!
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
