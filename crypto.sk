@@ -290,6 +290,25 @@ every 10 seconds in world "world":
     map json last http response's body to {cardano::*}
 
     set {bitcoin::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/open.php"
+    set {bitcoin::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/close.php"
+
+    set {ethereum::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/ethereum/open.php"
+    set {ethereum::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/ethereum/close.php"
+
+    set {maker::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/maker/open.php"
+    set {maker::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/maker/close.php"
+
+    set {bitcoin-cash::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin-cash/open.php"
+    set {bitcoin-cash::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin-cash/close.php"
+
+    set {litecoin::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/litecoin/open.php"
+    set {litecoin::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/litecoin/close.php"
+
+    set {dash::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/dash/open.php"
+    set {dash::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/dash/close.php"
+
+    set {cardano::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/cardano/open.php"
+    set {cardano::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/cardano/close.php"
 
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
