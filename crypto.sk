@@ -1014,3 +1014,4 @@ on chat:
         sellBedrag("cardano", {_message}, player)
 
 # Newline
+# Nog een nieuwe lijn
