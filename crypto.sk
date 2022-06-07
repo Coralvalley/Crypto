@@ -73,19 +73,19 @@ on load:
             add "cardano" to skript-yaml list "coins" in "crypto-config"
 
     if yaml value "staking.bitcoin" in "crypto-config" is not set:
-        set "staking.bitcoin" in "crypto-config" to 0
+        set yaml value "staking.bitcoin" in "crypto-config" to 0
     if yaml value "staking.ethereum" in "crypto-config" is not set:
-        set "staking.ethereum" in "crypto-config" to 0
+        set yaml value "staking.ethereum" in "crypto-config" to 0
     if yaml value "staking.maker" in "crypto-config" is not set:
-        set "staking.maker" in "crypto-config" to 0
+        set yaml value "staking.maker" in "crypto-config" to 0
     if yaml value "staking.bitcoin-cash" in "crypto-config" is not set:
-        set "staking.bitcoin-cash" in "crypto-config" to 0
+        set yaml value "staking.bitcoin-cash" in "crypto-config" to 0
     if yaml value "staking.litecoin" in "crypto-config" is not set:
-        set "staking.litecoin" in "crypto-config" to 0
+        set yaml value "staking.litecoin" in "crypto-config" to 0
     if yaml value "staking.dash" in "crypto-config" is not set:
-        set "staking.dash" in "crypto-config" to 0
+        set yaml value "staking.dash" in "crypto-config" to 0
     if yaml value "staking.cardano" in "crypto-config" is not set:
-        set "staking.cardano" in "crypto-config" to 0
+        set yaml value "staking.cardano" in "crypto-config" to 0
 
     if yaml value "spread" in "crypto-config" is not set:
         set "spread" in "crypto-config" to 0.2
