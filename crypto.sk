@@ -69,7 +69,7 @@ on load:
             add "litecoin" to skript-yaml list "coins" in "crypto-config"
         if skript-yaml value "coins" in "crypto-config" doesn't contain "dash":
             add "dash" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "dash":
+        if skript-yaml value "coins" in "crypto-config" doesn't contain "cardano":
             add "cardano" to skript-yaml list "coins" in "crypto-config"
 
     if yaml value "staking.bitcoin" in "crypto-config" is not set:
