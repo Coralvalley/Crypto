@@ -301,6 +301,11 @@ every 10 seconds in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
     map json last http response's body to {tether::*}
 
+    loop all players:
+        if name of loop-player's current inventory is "Crypto Markt":
+            cryptoMarket("gui", loop-player)
+
+every 1 hours in world "world":
     set {bitcoin::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/open.php"
     set {bitcoin::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/close.php"
 
@@ -324,10 +329,6 @@ every 10 seconds in world "world":
 
     set {tether::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/tether/open.php"
     set {tether::1::close} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/tether/close.php"
-
-    loop all players:
-        if name of loop-player's current inventory is "Crypto Markt":
-            cryptoMarket("gui", loop-player)
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
