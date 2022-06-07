@@ -145,30 +145,26 @@ on join:
 
     if yaml value "name" in "crypto-%uuid of player%" is not set:
         set yaml value "name" in "crypto-%uuid of player%" to name of player
-    
     if yaml value "uuid" in "crypto-%uuid of player%" is not set:
         set yaml value "uuid" in "crypto-%uuid of player%" to uuid of player
     
     if yaml value "bitcoin" in "crypto-%uuid of player%" is not set:
         set yaml value "bitcoin" in "crypto-%uuid of player%" to 0
-
     if yaml value "ethereum" in "crypto-%uuid of player%" is not set:
         set yaml value "ethereum" in "crypto-%uuid of player%" to 0
-
     if yaml value "maker" in "crypto-%uuid of player%" is not set:
         set yaml value "maker" in "crypto-%uuid of player%" to 0
-    
     if yaml value "bitcoin-cash" in "crypto-%uuid of player%" is not set:
         set yaml value "bitcoin-cash" in "crypto-%uuid of player%" to 0
-
     if yaml value "litecoin" in "crypto-%uuid of player%" is not set:
         set yaml value "litecoin" in "crypto-%uuid of player%" to 0
-
     if yaml value "dash" in "crypto-%uuid of player%" is not set:
         set yaml value "dash" in "crypto-%uuid of player%" to 0
-
     if yaml value "cardano" in "crypto-%uuid of player%" is not set:
         set yaml value "cardano" in "crypto-%uuid of player%" to 0
+
+    if yaml value "staking" in "crypto-%uuid of player%" is not set:
+        set yaml value "staking" "crypto-%uuid of player%" to false
     
     save yaml "crypto-%uuid of player%"
 
@@ -271,7 +267,7 @@ command /crypto [<text>] [<offline player>]:
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
 
-every 4 seconds in world "world":
+every 10 seconds in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin::*}
 
@@ -292,6 +288,8 @@ every 4 seconds in world "world":
 
     send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
     map json last http response's body to {cardano::*}
+
+    set {bitcoin::1::open} to url contents of "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/open.php"
 
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
