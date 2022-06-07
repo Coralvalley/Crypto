@@ -198,23 +198,22 @@ on quit:
 command /crypto [<text>] [<offline player>]:
     trigger:
         if arg-1 is "update":
-            if player has permission "op":
-                if executor is console:
-                    set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
-                    set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
+            if executor is console:
+                set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
+                set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
 
-                    set {_characters::*} to {_version} split at "."
-                    set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
+                set {_characters::*} to {_version} split at "."
+                set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
 
-                    set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
-                    set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
+                set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
+                set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
 
-                    if file path "plugins/Skript/scripts/update.sk" exists:
-                        delete file path "plugins/Skript/scripts/update.sk"
-                    else if file path "plugins/Skript/scripts/-update.sk" exists:
-                        delete file path "plugins/Skript/scripts/-update.sk"
-                    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
-                    reload script "update"
+                if file path "plugins/Skript/scripts/update.sk" exists:
+                    delete file path "plugins/Skript/scripts/update.sk"
+                else if file path "plugins/Skript/scripts/-update.sk" exists:
+                    delete file path "plugins/Skript/scripts/-update.sk"
+                download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
+                reload script "update"
         if arg-1 is "open":
             cryptoMarket("gui", player)
 
