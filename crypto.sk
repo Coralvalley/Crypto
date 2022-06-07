@@ -87,6 +87,9 @@ on load:
     if yaml value "staking.cardano" in "crypto-config" is not set:
         set "staking.cardano" in "crypto-config" to 0
 
+    if yaml value "spread" in "crypto-config" is not set:
+        set "spread" in "crypto-config" to 0.2
+
     save yaml "crypto-config"
 
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
