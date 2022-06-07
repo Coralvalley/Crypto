@@ -105,7 +105,7 @@ on load:
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
     if yaml value "spread" in "crypto-config" is not set:
-        set "spread" in "crypto-config" to 0.2
+        set yaml value "spread" in "crypto-config" to 0.2
 
     save yaml "crypto-config"
 
@@ -164,7 +164,7 @@ on join:
         set yaml value "cardano" in "crypto-%uuid of player%" to 0
 
     if yaml value "staking" in "crypto-%uuid of player%" is not set:
-        set yaml value "staking" "crypto-%uuid of player%" to false
+        set yaml value "staking" in "crypto-%uuid of player%" to false
     
     save yaml "crypto-%uuid of player%"
 
@@ -289,7 +289,7 @@ every 10 seconds in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
     map json last http response's body to {cardano::*}
 
-    set {bitcoin::1::open} to url contents of "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/open.php"
+    set {bitcoin::1::open} to text from "https://bitterfixedgeneric.silvinvanhaestr.repl.co/backend/bitcoin/open.php"
 
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
