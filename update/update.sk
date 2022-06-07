@@ -8,15 +8,6 @@
 
 
 on load:
-    set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
-    set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
-
-    set {_characters::*} to {_version} split at "."
-    set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
-
-    set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
-    set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
-
     # Disable the main plugin file 'crypto.sk'
     disable script "crypto"
     send "Disabling crypto" to console
