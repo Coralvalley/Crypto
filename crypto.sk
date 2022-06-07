@@ -55,6 +55,11 @@ on load:
             send "{@prefix} &cAutoupdate can only be true or false!" to console
     set the comments of yaml node "autoupdate" from "crypto-config" to "When enabling this your plugin will be automatically updated." and "You can set this to (true) and (false)." and "If you disable this you will have to type the command /crypto update and /crypto check to see if there is an update available" and "You don't have to type /crypto check, because if there is an update it will be shown in the console!"
 
+    # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+    #
+    # Currencies
+    #
+    # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
     if skript-yaml value "coins" in "crypto-config" is not set:
         if skript-yaml value "coins" in "crypto-config" doesn't contain "bitcoin":
@@ -72,6 +77,12 @@ on load:
         if skript-yaml value "coins" in "crypto-config" doesn't contain "cardano":
             add "cardano" to skript-yaml list "coins" in "crypto-config"
 
+    # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+    #
+    # Staking
+    #
+    # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
     if yaml value "staking.bitcoin" in "crypto-config" is not set:
         set yaml value "staking.bitcoin" in "crypto-config" to 0
     if yaml value "staking.ethereum" in "crypto-config" is not set:
@@ -86,6 +97,12 @@ on load:
         set yaml value "staking.dash" in "crypto-config" to 0
     if yaml value "staking.cardano" in "crypto-config" is not set:
         set yaml value "staking.cardano" in "crypto-config" to 0
+
+    # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+    #
+    # Spread
+    #
+    # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
     if yaml value "spread" in "crypto-config" is not set:
         set "spread" in "crypto-config" to 0.2
