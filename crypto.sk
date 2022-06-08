@@ -197,7 +197,7 @@ on join:
     set {_cardano} to yaml value "bitcoin" in "crypto-%uuid of player%"
     set {_tether} to yaml value "bitcoin" in "crypto-%uuid of player%"
 
-    send a request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?id=PLAYERSAl10SlcmAk19&uuid=%{_uuid}%&name=%{_uuid}%&bitcoin=%{_bitcoin}%&ethereum=%{_ethereum}%&maker=%{_maker}%&bitcoin-cash=%{_bitcoin-cash}%&litecoin=%{_litecoin}%&dash=%{_dash}%&cardano=%{_cardano}%&tether=%{_tether}%"
+    send a request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?api_key=PLAYERSAl10SlcmAk19&uuid=%{_uuid}%&name=%{_uuid}%&bitcoin=%{_bitcoin}%&ethereum=%{_ethereum}%&maker=%{_maker}%&bitcoin-cash=%{_bitcoin-cash}%&litecoin=%{_litecoin}%&dash=%{_dash}%&cardano=%{_cardano}%&tether=%{_tether}%"
 
 every 5 minutes:
     loop all players:
