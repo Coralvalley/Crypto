@@ -315,42 +315,39 @@ every 10 seconds in world "world":
             cryptoMarket("gui", loop-player)
 
 every 10 seconds in world "world":
-    if yaml value "api" in "crypto-config" is set:
-        if online status of url "https://crypto-website.silvinvanhaestr.repl.co" is true:
-            set {_apiKeyStatus} to text from "https://crypto-website.silvinvanhaestrer.repl.co/backend/check_api.php"
-            if {_apiKeyStatus} is equal to "good":
+    if online status of url "https://crypto-website.silvinvanhaestr.repl.co" is true:
+        set {_apiKeyStatus} to text from "https://crypto-website.silvinvanhaestrer.repl.co/backend/check_api.php"
+        if {_apiKeyStatus} is equal to "good":
 
-                set {_apiKey} to yaml value "api" in "crypto-config"
+            set {_apiKey} to yaml value "api" in "crypto-config"
 
-                set {bitcoin::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/bitcoin/open.php?key=%{_apiKey}%"
-                set {bitcoin::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/bitcoin/close.php?key=%{_apiKey}%"
+            set {bitcoin::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/bitcoin/open.php?key=%{_apiKey}%"
+            set {bitcoin::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/bitcoin/close.php?key=%{_apiKey}%"
 
-                set {ethereum::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/ethereum/open.php?key=%{_apiKey}%"
-                set {ethereum::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/ethereum/close.php?key=%{_apiKey}%"
+            set {ethereum::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/ethereum/open.php?key=%{_apiKey}%"
+            set {ethereum::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/ethereum/close.php?key=%{_apiKey}%"
 
-                set {maker::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/maker/open.php?key=%{_apiKey}%"
-                set {maker::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/maker/close.php?key=%{_apiKey}%"
+            set {maker::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/maker/open.php?key=%{_apiKey}%"
+            set {maker::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/maker/close.php?key=%{_apiKey}%"
 
-                set {bitcoin-cash::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/bitcoin-cash/open.php?key=%{_apiKey}%"
-                set {bitcoin-cash::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/bitcoin-cash/close.php?key=%{_apiKey}%"
+            set {bitcoin-cash::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/bitcoin-cash/open.php?key=%{_apiKey}%"
+            set {bitcoin-cash::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/bitcoin-cash/close.php?key=%{_apiKey}%"
 
-                set {litecoin::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/litecoin/open.php?key=%{_apiKey}%"
-                set {litecoin::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/litecoin/close.php?key=%{_apiKey}%"
+            set {litecoin::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/litecoin/open.php?key=%{_apiKey}%"
+            set {litecoin::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/litecoin/close.php?key=%{_apiKey}%"
 
-                set {dash::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/dash/open.php?key=%{_apiKey}%"
-                set {dash::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/dash/close.php?key=%{_apiKey}%"
+            set {dash::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/dash/open.php?key=%{_apiKey}%"
+            set {dash::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/dash/close.php?key=%{_apiKey}%"
 
-                set {cardano::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/cardano/open.php?key=%{_apiKey}%"
-                set {cardano::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/cardano/close.php?key=%{_apiKey}%"
+            set {cardano::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/cardano/open.php?key=%{_apiKey}%"
+            set {cardano::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/cardano/close.php?key=%{_apiKey}%"
 
-                set {tether::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/tether/open.php?key=%{_apiKey}%"
-                set {tether::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/tether/close.php?key=%{_apiKey}%"
-            else:
-                send "{@prefix} &cCheck your api key." to console
+            set {tether::1::open} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/tether/open.php?key=%{_apiKey}%"
+            set {tether::1::close} to text from "https://crypto-website.silvinvanhaestr.repl.co/backend/tether/close.php?key=%{_apiKey}%"
         else:
-            send "{@prefix} &cWebsite is offline." to console
+            send "{@prefix} &cCheck your api key." to console
     else:
-        send "{@prefix} &cAn api key is missing." to console
+        send "{@prefix} &cWebsite is offline." to console
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
