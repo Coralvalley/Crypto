@@ -186,18 +186,16 @@ on join:
     
     save yaml "crypto-%uuid of player%"
 
-    set {_name} to name of player
-    set {_uuid} to uuid of player
-    set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    set {_ethereum} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    set {_maker} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    set {_bitcoin-cash} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    set {_litecoin} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    set {_dash} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    set {_cardano} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    set {_tether} to yaml value "bitcoin" in "crypto-%uuid of player%"
-
-    send a request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?api_key=PLAYERSAl10SlcmAk19&uuid=%{_uuid}%&name=%{_uuid}%&bitcoin=%{_bitcoin}%&ethereum=%{_ethereum}%&maker=%{_maker}%&bitcoin-cash=%{_bitcoin-cash}%&litecoin=%{_litecoin}%&dash=%{_dash}%&cardano=%{_cardano}%&tether=%{_tether}%"
+    # set {_name} to name of player
+    # set {_uuid} to uuid of player
+    # set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of player%"
+    # set {_ethereum} to yaml value "bitcoin" in "crypto-%uuid of player%"
+    # set {_maker} to yaml value "bitcoin" in "crypto-%uuid of player%"
+    # set {_bitcoin-cash} to yaml value "bitcoin" in "crypto-%uuid of player%"
+    # set {_litecoin} to yaml value "bitcoin" in "crypto-%uuid of player%"
+    # set {_dash} to yaml value "bitcoin" in "crypto-%uuid of player%"
+    # set {_cardano} to yaml value "bitcoin" in "crypto-%uuid of player%"
+    # set {_tether} to yaml value "bitcoin" in "crypto-%uuid of player%"
 
 every 5 minutes:
     loop all players:
