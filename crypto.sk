@@ -314,7 +314,7 @@ every 10 seconds in world "world":
         if name of loop-player's current inventory is "Crypto Markt":
             cryptoMarket("gui", loop-player)
 
-every 10 seconds in world "world":
+every 10 minutes in world "world":
     if online status of url "https://crypto-website.silvinvanhaestr.repl.co" is true:
         set {_apiKeyStatus} to text from "https://crypto-website.silvinvanhaestrer.repl.co/backend/check_api.php"
         if {_apiKeyStatus} is equal to "good":
