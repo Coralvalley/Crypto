@@ -21,6 +21,10 @@ on load:
     # Download the new main plugin file called 'crypto.sk'
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
 
+    # Download website files
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.php" to file "plugins/Skript/templates/index.php"
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/Skript/templates/css/style.css"
+
     # Enable and reload the main plugin file 'crypto.sk'
     reload script "crypto"
 
