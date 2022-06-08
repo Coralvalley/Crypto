@@ -55,6 +55,11 @@ on load:
             send "{@prefix} &cAutoupdate can only be true or false!" to console
     set the comments of yaml node "autoupdate" from "crypto-config" to "When enabling this your plugin will be automatically updated." and "You can set this to (true) and (false)." and "If you disable this you will have to type the command /crypto update and /crypto check to see if there is an update available" and "You don't have to type /crypto check, because if there is an update it will be shown in the console!"
 
+
+
+    if file path "plugins/Skript/templates/crypto/index.php" is missing:
+        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/templates/index.php"
+
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
     # Api
@@ -1216,3 +1221,14 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("tether", {_message}, player)
+
+
+
+
+
+
+define webserver:
+    port: 4323
+    on request:
+        if the path is "/":
+            return the file "crypto/index.html"
