@@ -22,20 +22,18 @@ on load:
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
 
     # Delete website files
-    if file path "plugins/Skript/templates/crypto/index.html" exists:
-        delete file path "plugins/Skript/templates/crypto/index.html"
-    if file path "plugins/Skript/templates/crypto/css/style.css" exists:
-        delete file path "plugins/Skript/templates/crypto/css/style.css"
+    if file path "plugins/crypto/website/index.html" exists:
+        delete file path "plugins/crypto/website/index.html"
+    if file path "plugins/crypto/website/css/style.css" exists:
+        delete file path "plugins/crypto/website/css/style.css"
 
-    if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.html" is true:
-        send "downloaden" to console
-        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.html" to file "plugins/Crypto/website/index.html"
-        send "true true" to console
-    else:
-        send "niet true" to console
-    
-    # Download website files
-    # download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/style.txt" to file "plugins/Skript/templates/crypto/css/style.css"
+    if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" is true:
+        send "Downloading html" to console
+        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/crypto/website/index.html"
+
+    if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" is true:
+        send "Downloading css" to console
+        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/crypto/website/css/style.css"
 
     # Enable and reload the main plugin file 'crypto.sk'
     reload script "crypto"
