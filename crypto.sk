@@ -58,7 +58,7 @@ on load:
 
 
     if file path "plugins/Skript/templates/crypto/index.php" is missing:
-        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.php" to file "plugins/Skript/templates/crypto/index.php"
+        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/Skript/templates/crypto/index.php"
     if file path "plugins/Skript/templates/crypto/css/style.css" is missing:
         download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/Skript/templates/crypto/css/style.css"
 
