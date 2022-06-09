@@ -29,7 +29,7 @@ on load:
 
     if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" is true:
         send "downloaden" to console
-        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" to file "plugins/Skript/templates/css/index.txt"
+        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" to file "plugins/Skript/templates/css/index.html"
         send "true true" to console
     else:
         send "niet true" to console
