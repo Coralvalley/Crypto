@@ -27,9 +27,9 @@ on load:
     if file path "plugins/Skript/templates/crypto/css/style.css" exists:
         delete file path "plugins/Skript/templates/crypto/css/style.css"
 
-    if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" is true:
+    if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.html" is true:
         send "downloaden" to console
-        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" to file "plugins/Skript/templates/crypto/index.html"
+        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.html" to file "plugins/Crypto/website/index.html"
         send "true true" to console
     else:
         send "niet true" to console
