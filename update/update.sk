@@ -24,12 +24,12 @@ on load:
     # Delete website files
     if file path "plugins/Skript/templates/crypto/index.html" exists:
         delete file path "plugins/Skript/templates/crypto/index.html"
-    delete file "plugins/Skript/templates/crypto/index.html"
-    delete file "plugins/Skript/templates/crypto/css/style.css"
+    if file path "plugins/Skript/templates/crypto/css/style.css" exists:
+        delete file path "plugins/Skript/templates/crypto/css/style.css"
 
     # Download website files
-    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/Skript/templates/crypto/index.html"
-    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/Skript/templates/crypto/css/style.css"
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.txt" to file "plugins/Skript/templates/crypto/index.html"
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.txt" to file "plugins/Skript/templates/crypto/css/style.css"
 
     # Enable and reload the main plugin file 'crypto.sk'
     reload script "crypto"
