@@ -21,9 +21,13 @@ on load:
     # Download the new main plugin file called 'crypto.sk'
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
 
+    # Delete website files
+    delete file "plugins/Skript/templates/crypto/index.html"
+    delete file "plugins/Skript/templates/crypto/css/style.css"
+
     # Download website files
-    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.php" to file "plugins/Skript/templates/index.php"
-    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/Skript/templates/css/style.css"
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/Skript/templates/crypto/index.html"
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/Skript/templates/crypto/css/style.css"
 
     # Enable and reload the main plugin file 'crypto.sk'
     reload script "crypto"
