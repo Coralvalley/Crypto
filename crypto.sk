@@ -111,6 +111,21 @@ on load:
     if yaml value "staking.tether" in "crypto-config" is not set:
         set yaml value "staking.tether" in "crypto-config" to 0
 
+    if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" is true:
+        if file path "plugins/crypto/index.html" doesn't exist:
+            send "Downloading html" to console
+            download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/crypto/index.html"
+        else:
+            delete file path "plugins/crypto/index.html"
+            download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/crypto/index.html"
+
+    if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" is true:
+        if file path "plugins/crypto/style.css" doesn't exist:
+            send "Downloading css" to console
+            download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/crypto/style.css"
+        else:
+            delete file path "plugins/crypto/style.css"
+            download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/crypto/style.css"
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
     # Spread
@@ -1225,5 +1240,5 @@ on chat:
 define webserver:
     port: 4323
     on request:
-        if the path is "/":
-            return the file "crypto/index.html"
+        if the path is "":
+            return the file "plugins/crypto/index.html"
