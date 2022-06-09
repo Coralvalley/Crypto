@@ -29,6 +29,8 @@ on load:
 
     if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" is true:
         send "true" to console
+    else:
+        send "niet true" to console
     # Download website files
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" to file "plugins/Skript/templates/crypto/index.txt"
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/style.txt" to file "plugins/Skript/templates/crypto/css/style.css"
