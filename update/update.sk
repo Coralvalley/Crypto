@@ -22,6 +22,8 @@ on load:
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
 
     # Delete website files
+    if file path "plugins/Skript/templates/crypto/index.html" exists:
+        delete file path "plugins/Skript/templates/crypto/index.html"
     delete file "plugins/Skript/templates/crypto/index.html"
     delete file "plugins/Skript/templates/crypto/css/style.css"
 
