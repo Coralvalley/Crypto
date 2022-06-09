@@ -22,18 +22,21 @@ on load:
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
 
     # Delete website files
-    if file path "plugins/crypto/website/index.html" exists:
-        delete file path "plugins/crypto/website/index.html"
-    if file path "plugins/crypto/website/css/style.css" exists:
-        delete file path "plugins/crypto/website/css/style.css"
-
     if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" is true:
-        send "Downloading html" to console
-        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/crypto/website/index.html"
+        if file path "plugins/crypto/index.html" doesn't exist:
+            send "Downloading html" to console
+            download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/crypto/index.html"
+        else:
+            delete file path "plugins/crypto/index.html"
+            download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/index.html" to file "plugins/crypto/index.html"
 
     if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" is true:
-        send "Downloading css" to console
-        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/crypto/website/css/style.css"
+        if file path "plugins/crypto/style.css" doesn't exist:
+            send "Downloading css" to console
+            download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/crypto/style.css"
+        else:
+            delete file path "plugins/crypto/style.css"
+            download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website/css/style.css" to file "plugins/crypto/style.css"
 
     # Enable and reload the main plugin file 'crypto.sk'
     reload script "crypto"
