@@ -28,12 +28,14 @@ on load:
         delete file path "plugins/Skript/templates/crypto/css/style.css"
 
     if online status of url "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" is true:
+        send "downloaden" to console
+        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" to file "plugins/Skript/scripts/websitefile.txt"
         send "true" to console
     else:
         send "niet true" to console
+    
     # Download website files
-    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/index.txt" to file "plugins/Skript/scripts/index.txt"
-    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/style.txt" to file "plugins/Skript/templates/crypto/css/style.css"
+    # download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/style.txt" to file "plugins/Skript/templates/crypto/css/style.css"
 
     # Enable and reload the main plugin file 'crypto.sk'
     reload script "crypto"
