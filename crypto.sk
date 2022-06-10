@@ -110,7 +110,7 @@ on load:
         set yaml value "staking.cardano" in "crypto-config" to 0
     if yaml value "staking.tether" in "crypto-config" is not set:
         set yaml value "staking.tether" in "crypto-config" to 0
-        
+
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
     # Spread
@@ -145,6 +145,8 @@ on load:
 
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
     map json last http response's body to {tether::*}
+
+    # send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?uuid=uuid" with the body "{""body"":""don't forget to escape your quotes!""}"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -186,17 +188,7 @@ on join:
     
     save yaml "crypto-%uuid of player%"
 
-    # set {_name} to name of player
-    # set {_uuid} to uuid of player
-    # set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    # set {_ethereum} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    # set {_maker} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    # set {_bitcoin-cash} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    # set {_litecoin} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    # set {_dash} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    # set {_cardano} to yaml value "bitcoin" in "crypto-%uuid of player%"
-    # set {_tether} to yaml value "bitcoin" in "crypto-%uuid of player%"
-
+    CryptoPlayerData(player)
 every 5 minutes:
     loop all players:
         save yaml "crypto-%uuid of loop-player%"
@@ -205,34 +197,17 @@ on quit:
     save yaml "crypto-%uuid of player%"
     unload yaml "crypto-%uuid of player%"
 
-# at 03:00 in real world:
-#     if yaml value "autoupdate" in "crypto-config" is true or false:
-#         set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
+function CryptoPlayerData(p: player):
+    set {bitcoin.%{_p}%} to yaml value "bitcoin" in "crypto-%uuid of {_p}%"
+    set {ethereum.%{_p}%} to yaml value "ethereum" in "crypto-%uuid of {_p}%"
+    set {maker.%{_p}%} to yaml value "maker" in "crypto-%uuid of {_p}%"
+    set {bitcoin-cash.%{_p}%} to yaml value "bitcoin-cash" in "crypto-%uuid of {_p}%"
+    set {litecoin.%{_p}%} to yaml value "litecoin" in "crypto-%uuid of {_p}%"
+    set {dash.%{_p}%} to yaml value "dash" in "crypto-%uuid of {_p}%"
+    set {cardano.%{_p}%} to yaml value "cardano" in "crypto-%uuid of {_p}%"
+    set {tether.%{_p}%} to yaml value "tether" in "crypto-%uuid of {_p}%"
 
-#         set {_characters::*} to {_version} split at "."
-#         set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
-
-#         set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
-#         set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
-
-#         if {_currentVersionCharacters} is less than {_newVersionCharacters}:
-#             if yaml value "autoupdate" in "crypto-config" is true:
-#                 send "{@prefix} &4UPDATE: Plugin is going to auto update" to console
-#                 send "{@prefix} &cThere is a new update available" to console
-#                 send "{@prefix} &cThe plugin is going to automatically update!" to console
-#                 if file "plugins/Skript/scripts/update.sk" exists:
-#                     execute console command "skript disable update"
-#                     delete file path "plugins/Skript/scripts/update.sk"
-#                     download file from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
-#                     execute console command "sk reload update"
-#                 else:
-#                     download file from "https://raw.githubusercontent.com/SilvinvanHaestregt/Minecraft-Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
-#                     execute console command "sk reload update"
-#                 set yaml value "DoNotChange.version" in "crypto-config" to {_version}
-#     else:
-#         send "{@prefix} &4CONFIG ERROR:" to console
-#         send "{@prefix} &cLine 4" to console
-#         send "{@prefix} &cAutoupdate can only be true or false!" to console
+    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{_p}%'s" with the body "{""name"":""%{_p}%'s""} {""bitcoin"":""%{bitcoin.%{_p}%}%""} {""ethereum"":""%{ethereum.%{_p}%}%""} {""maker"":""%{maker.%{_p}%}%""} {""bitcoin-cash"":""%{bitcoin-cash.%{_p}%}%""} {""litecoin"":""%{litecoin.%{_p}%}%""} {""dash"":""%{dash.%{_p}%}%""} {""cardano"":""%{cardano.%{_p}%}%""} {""tether"":""%{tether.%{_p}%}%""}"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -286,6 +261,8 @@ command /crypto [<text>] [<offline player>]:
                     send "&cSorry, je hebt geen permissies om dit commando uit te voeren."
         if arg-1 is "open":
             cryptoMarket("gui", player)
+        if arg-1 is "wallet":
+
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -1216,14 +1193,3 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("tether", {_message}, player)
-
-
-
-
-
-
-define webserver:
-    port: 4323
-    on request:
-        if the path is "":
-            return the file "plugins/crypto/index.html"
