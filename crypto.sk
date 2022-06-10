@@ -187,7 +187,7 @@ on join:
     save yaml "crypto-%uuid of player%"
 
     CryptoPlayerData(player)
-    
+
 every 5 minutes:
     loop all players:
         save yaml "crypto-%uuid of loop-player%"
@@ -206,7 +206,7 @@ function CryptoPlayerData(p: player):
     set {cardano.%{_p}%} to yaml value "cardano" in "crypto-%uuid of {_p}%"
     set {tether.%{_p}%} to yaml value "tether" in "crypto-%uuid of {_p}%"
 
-    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{_p}%'s" with the body "{""name"":""%{_p}%'s""} {""bitcoin"":""%{bitcoin.%{_p}%}%""} {""ethereum"":""%{ethereum.%{_p}%}%""} {""maker"":""%{maker.%{_p}%}%""} {""bitcoin-cash"":""%{bitcoin-cash.%{_p}%}%""} {""litecoin"":""%{litecoin.%{_p}%}%""} {""dash"":""%{dash.%{_p}%}%""} {""cardano"":""%{cardano.%{_p}%}%""} {""tether"":""%{tether.%{_p}%}%""}"
+    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{_p}%" with the body "{""name"":""%{_p}%""} {""bitcoin"":""%{bitcoin.%{_p}%}%""} {""ethereum"":""%{ethereum.%{_p}%}%""} {""maker"":""%{maker.%{_p}%}%""} {""bitcoin-cash"":""%{bitcoin-cash.%{_p}%}%""} {""litecoin"":""%{litecoin.%{_p}%}%""} {""dash"":""%{dash.%{_p}%}%""} {""cardano"":""%{cardano.%{_p}%}%""} {""tether"":""%{tether.%{_p}%}%""}"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
