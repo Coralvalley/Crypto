@@ -199,6 +199,7 @@ function CryptoPlayerData(p: player):
     set {cardano.%{player}%} to yaml value "cardano" in "crypto-%uuid of {player}%"
     set {tether.%{player}%} to yaml value "tether" in "crypto-%uuid of {player}%"
     send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%""}}"
+
 every 5 minutes:
     loop all players:
         save yaml "crypto-%uuid of loop-player%"
