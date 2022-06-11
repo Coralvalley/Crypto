@@ -63,6 +63,7 @@ on load:
 
     if yaml value "api" in "crypto-config" is not set:
         set yaml value "api" in "crypto-config" to ""
+    set the comments of yaml node "api" from "crypto-config" to "This api is for the wallet website." and "If you don't have when you can buy it"
 
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
@@ -145,6 +146,25 @@ on load:
 
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
     map json last http response's body to {tether::*}
+
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+#
+#
+# Transactions
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+on load:
+    if file path "plugins/crypto/transactions.json" doesn't exist:
+        create file path "plugins/crypto/transactions.json"
+
+    
+function transaction(p: player, coin: text, amount: number):
+    set {transaction.player} to {_p}
+    set {transaction.coin.%{player}%} to {_coin}
+    set {transaction.amount.%{player}%} to {_amount}
+    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions/transactions.php/" with the body "{""name"": ""%{transaction.player}'s name%"", ""information"": { ""coin"":""%{transaction-coin.%{player}%}%"", ""amount"":""%{transaction-amount.%{player}%}%}}"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
