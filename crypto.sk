@@ -146,8 +146,6 @@ on load:
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
     map json last http response's body to {tether::*}
 
-    # send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?uuid=uuid" with the body "{""body"":""don't forget to escape your quotes!""}"
-
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
 #
