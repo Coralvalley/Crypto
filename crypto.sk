@@ -150,7 +150,7 @@ on load:
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 #
 #
-# Transactions
+# Transactions blockchain
 #
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
@@ -161,10 +161,15 @@ on load:
 
     
 function transaction(p: player, coin: text, amount: number):
-    set {transaction.player} to {_p}
-    set {transaction.coin.%{player}%} to {_coin}
-    set {transaction.amount.%{player}%} to {_amount}
-    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions/transactions.php/" with the body "{""name"": ""%{transaction.player}'s name%"", ""information"": { ""coin"":""%{transaction-coin.%{player}%}%"", ""amount"":""%{transaction-amount.%{player}%}%}}"
+    clear {transaction::*}
+    set {player} to {_p}
+    set {coin.%{player}%} to {_coin}
+    set {amount.%{player}%} to {_amount}
+
+    # set {_json} to "{""name"": ""%{player}'s name%"", ""information"": { ""coin"":""%{coin.%{player}%}%"", ""amount"":""%{amount.%{player}%}%""}}"
+
+    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions.php" with the body "{""name"":%{player}'s name%,""information""}" and the headers "Authorization: %{api_key.%{player}%}%"
+    # send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions.php" with the body "{""name"": ""%{player}'s name%"", ""information"": { ""coin"":""%{coin.%{player}%}%"", ""amount"":""%{amount.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -221,6 +226,10 @@ function CryptoPlayerData(p: player):
     set {api_key.%{player}%} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
         send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
+    else:
+        send "Using backup site" to console
+        send a "post" request to "https://www.silvinvanhaestregt.com/Crypto/index.php/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%" 
+
 
 every 5 minutes:
     loop all players:
@@ -973,6 +982,7 @@ function buyEenheden(coin: text, message: text, p: player):
 
             set {crypto.buy.%{_coin}%.eenheden.%{_p}%} to false
             CryptoPlayerData({_p})
+            transaction({_p}, {_coin}, {_message})
         else:
             send "&cSorry, je hebt hier niet genoeg geld voor." to {_p}
     else if {_message} contains "cancel":
