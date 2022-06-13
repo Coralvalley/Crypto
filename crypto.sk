@@ -147,6 +147,9 @@ on load:
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
     map json last http response's body to {tether::*}
 
+    send a request to "https://api.coinlore.net/api/ticker/?=48543" with the headers "Content-Type: application/json"
+    map json last http reponse's body to {solana::*}
+
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 #
 #
@@ -205,6 +208,8 @@ on join:
         set yaml value "cardano" in "crypto-%uuid of player%" to 0
     if yaml value "tether" in "crypto-%uuid of player%" is not set:
         set yaml value "tether" in "crypto-%uuid of player%" to 0
+    if yaml value "solana" in "crypto-%uuid of player%" is not set:
+        set yaml value "solana" in "crypto-%uuid of player%" to 0
 
     if yaml value "staking" in "crypto-%uuid of player%" is not set:
         set yaml value "staking" in "crypto-%uuid of player%" to false
@@ -223,9 +228,10 @@ function CryptoPlayerData(p: player):
     set {dash.%{player}%} to yaml value "dash" in "crypto-%uuid of {player}%"
     set {cardano.%{player}%} to yaml value "cardano" in "crypto-%uuid of {player}%"
     set {tether.%{player}%} to yaml value "tether" in "crypto-%uuid of {player}%"
+    set {solana.%{player}%} to yaml value "solana" in "crypto-%uuid of {player}%"
     set {api_key.%{player}%} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""solana"":""%{solana.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
     else:
         send "Using backup site" to console
         send a "post" request to "https://www.silvinvanhaestregt.com/Crypto/index.php/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%" 
@@ -289,6 +295,15 @@ command /crypto [<text>] [<offline player>]:
                     reload script "update"
                 else:
                     send "&cSorry, je hebt geen permissies om dit commando uit te voeren."
+        if arg-1 is "reload":
+            if arg-2 is not set:
+                if player has permission "*" or "crypto.reload":
+                    reload script "crypto"
+                    send "&aCrypto is succesvol gereload." to player
+            if arg-2 is "config":
+                if player has permission "*" or "crypto.reload":
+                    save yaml "crypto-config"
+                    send "&aDe config van Crypto is succesvol gereload." to player
         if arg-1 is "open":
             cryptoMarket("gui", player)
         if arg-1 is "wallet":
@@ -327,6 +342,9 @@ every 10 seconds in world "world":
 
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
     map json last http response's body to {tether::*}
+    
+    send a request to "https://api.coinlore.net/api/ticker/?id=48543" with the headers "Content-Type: application/json"
+    map json last http response's body to {solana::*}
 
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
@@ -402,11 +420,19 @@ function cryptoMarket(coin: text, p: player):
 
         set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
         if {_tether::1::percent_change_24h} is greater than 0.0:
-            set slot 7 of {_p}'s current inventory to a iron ingot named "&btether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&a%%%{tether::1::percent_change_24h}%"
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&a%%%{tether::1::percent_change_24h}%"
         else if {_tether::1::percent_change_24h} is less than 0.0:
-            set slot 7 of {_p}'s current inventory to a iron ingot named "&btether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&c%%%{tether::1::percent_change_24h}%"
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&c%%%{tether::1::percent_change_24h}%"
         else if {_tether::1::percent_change_24h} is equal to 0.0:
-            set slot 7 of {_p}'s current inventory to a iron ingot named "&btether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%"
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%"
+
+        set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
+        if {_solana::1::percent_change_24h} is greater than 0.0:
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&a%%%{solana::1::percent_change_24h}%"
+        else if {_solana::1::percent_change_24h} is less than 0.0:
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&c%%%{solana::1::percent_change_24h}%"
+        else if {_solana::1::percent_change_24h} is equal to 0.0:
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&7%%%{solana::1::percent_change_24h}%"
 
         
     if {_coin} is "bitcoinBuy":
@@ -706,6 +732,43 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
+    if {_coin} is "solanaBuy":
+        open chest with 3 rows named "solana kopen" to {_p}
+        set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
+        if {_solana::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&a%%%{solana::1::percent_change_24h}%" with nbt "{mtcustom:solana}"
+        else if {_solana::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&c%%%{solana::1::percent_change_24h}%" with nbt "{mtcustom:solana}"
+        else if {_solana::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&7%%%{solana::1::percent_change_24h}%" with nbt "{mtcustom:solana}"
+        
+        set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
+        if {_solana::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&a%%%{solana::1::percent_change_24h}%"
+        else if {_solana::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&c%%%{solana::1::percent_change_24h}%"
+        else if {_solana::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&7%%%{solana::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    if {_coin} is "solanaSell":
+        open chest with 3 rows named "solana verkopen" to {_p}
+        set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
+        if {_solana::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&a%%%{solana::1::percent_change_24h}%" with nbt "{mtcustom:solana}"
+        else if {_solana::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&c%%%{solana::1::percent_change_24h}%" with nbt "{mtcustom:solana}"
+        else if {_solana::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&7%%%{solana::1::percent_change_24h}%" with nbt "{mtcustom:solana}"
+        
+        set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
+        if {_solana::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&a%%%{solana::1::percent_change_24h}%"
+        else if {_solana::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&c%%%{solana::1::percent_change_24h}%"
+        else if {_solana::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{solana::1::price_usd}%" and "&7%%%{solana::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
 #
@@ -753,9 +816,14 @@ on inventory click:
                 cryptoMarket("cardanoSell", player)
         if clicked slot is 7:
             if "%event-clicktype%" is "right mouse button":
-                cryptoMarket("tetherBuy", player)
+                cryptoMarket("solanaBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("tetherSell", player)
+                cryptoMarket("solanaSell", player)
+        if clicked slot is 7:
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("solanaBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("solanaSell", player)
         cancel event
     if name of player's current inventory is "Bitcoin kopen":
         if clicked slot is 11:
@@ -930,7 +998,7 @@ on inventory click:
             cryptoMarket("gui", player)
         cancel event
 
-    else if name of player's current inventory is "tether kopen":
+    else if name of player's current inventory is "Tether kopen":
         if clicked slot is 11:
             close player's inventory
             set {crypto.buy.tether.eenheden.%player%} to true
@@ -944,7 +1012,7 @@ on inventory click:
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
-    else if name of player's current inventory is "tether verkopen":
+    else if name of player's current inventory is "Tether verkopen":
         if clicked slot is 11:
             close player's inventory
             set {crypto.sell.tether.eenheden.%player%} to true
@@ -955,6 +1023,35 @@ on inventory click:
             set {crypto.sell.tether.bedrag.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
             send "&6Hoeveel euro aan tether wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+
+    else if name of player's current inventory is "Solana kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.solana.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel solana wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.solana.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan solana wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "Solana verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.solana.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel solana wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.solana.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan solana wil je verkopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
@@ -1193,3 +1290,20 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("tether", {_message}, player)
+
+    if {crypto.buy.solana.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("solana", {_message}, player)
+    if {crypto.buy.solana.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("solana", {_message}, player)
+    if {crypto.sell.solana.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("solana", {_message}, player)
+    if {crypto.sell.solana.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("solana", {_message}, player)
