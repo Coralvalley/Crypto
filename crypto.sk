@@ -1204,12 +1204,12 @@ on inventory click:
             close player's inventory
             set {crypto.buy.ethereum-classic.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel ethereum-classic wil je kopen?"
+            send "&6Hoeveel Ethereum classic wil je kopen?"
         if clicked slot is 15:
             close player's inventory
             set {crypto.buy.ethereum-classic.bedrag.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan ethereum-classic wil je kopen?"
+            send "&6Hoeveel euro aan Ethereum classic wil je kopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
