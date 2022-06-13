@@ -962,7 +962,7 @@ on inventory click:
                 cryptoMarket("ethereum-classicBuy", player)
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("ethereum-classicSell", player)
-        if clicked slot is 9:
+        if clicked slot is 10:
             if "%event-clicktype%" is "right mouse button":
                 cryptoMarket("vechainBuy", player)
             if "%event-clicktype%" is "left mouse button":
