@@ -1524,7 +1524,7 @@ on chat:
     if {crypto.sell.ethereum-classic.bedrag.%player%} is true:
         cancel event
         set {_message} to message
-        sellBedrag("ethereum-classic", {_message}, player)\
+        sellBedrag("ethereum-classic", {_message}, player)
 
     if {crypto.buy.vechain.eenheden.%player%} is true:
         cancel event
