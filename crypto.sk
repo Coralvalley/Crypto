@@ -445,11 +445,11 @@ function cryptoMarket(coin: text, p: player):
 
         set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
         if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
-            set slot 8 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%"
+            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%"
         else if {_ethereum-classic::1::percent_change_24h} is less than 0.0:
-            set slot 8 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&c%%%{ethereum-classic::1::percent_change_24h}%"
+            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&c%%%{ethereum-classic::1::percent_change_24h}%"
         else if {_ethereum-classic::1::percent_change_24h} is equal to 0.0:
-            set slot 8 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&7%%%{ethereum-classic::1::percent_change_24h}%"
+            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&7%%%{ethereum-classic::1::percent_change_24h}%"
 
         
 
