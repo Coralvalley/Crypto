@@ -148,7 +148,7 @@ on load:
     map json last http response's body to {tether::*}
 
     send a request to "https://api.coinlore.net/api/ticker/?=48543" with the headers "Content-Type: application/json"
-    map json last http reponse's body to {solana::*}
+    map json last http response's body to {solana::*}
 
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 #
