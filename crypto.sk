@@ -150,6 +150,9 @@ on load:
     send a request to "https://api.coinlore.net/api/ticker/?=2" with the headers "Content-Type: application/json"
     map json last http response's body to {dogecoin::*}
 
+    send a request to "https://api.coinlore.net/api/ticker/?=118" with the headers "Content-Type: application/json"
+    map json last http response's body to {ethereum-classic::*}
+
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 #
 #
@@ -209,8 +212,9 @@ on join:
     if yaml value "tether" in "crypto-%uuid of player%" is not set:
         set yaml value "tether" in "crypto-%uuid of player%" to 0
     if yaml value "dogecoin" in "crypto-%uuid of player%" is not set:
-        Dogecoin
         set yaml value "dogecoin" in "crypto-%uuid of player%" to 0
+    if yaml value "ethereum-classic" in "crypto-%uuid of player%" is not set:
+        set yaml value "ethereum-classic" in "crypto-%uuid of player%" to 0
 
     if yaml value "staking" in "crypto-%uuid of player%" is not set:
         set yaml value "staking" in "crypto-%uuid of player%" to false
@@ -230,6 +234,7 @@ function CryptoPlayerData(p: player):
     set {cardano.%{player}%} to yaml value "cardano" in "crypto-%uuid of {player}%"
     set {tether.%{player}%} to yaml value "tether" in "crypto-%uuid of {player}%"
     set {dogecoin.%{player}%} to yaml value "dogecoin" in "crypto-%uuid of {player}%"
+    set {ethereum-classic.%{player}%} to yaml value "ethereum-classic" in "crypto-%uuid of {player}%"
     set {api_key.%{player}%} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
         send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
@@ -347,6 +352,9 @@ every 10 seconds in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=2" with the headers "Content-Type: application/json"
     map json last http response's body to {dogecoin::*}
 
+    send a request to "https://api.coinlore.net/api/ticker/?id=118" with the headers "Content-Type: application/json"
+    map json last http response's body to {ethereum-classic::*}
+
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
             cryptoMarket("gui", loop-player)
@@ -435,7 +443,18 @@ function cryptoMarket(coin: text, p: player):
         else if {_dogecoin::1::percent_change_24h} is equal to 0.0:
             set slot 8 of {_p}'s current inventory to a iron ingot named "&bDogecoin" with lore "&fWaarde: € %{dogecoin::1::price_usd}%" and "&7%%%{dogecoin::1::percent_change_24h}%"
 
+        set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
+        if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
+            set slot 8 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%"
+        else if {_ethereum-classic::1::percent_change_24h} is less than 0.0:
+            set slot 8 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&c%%%{ethereum-classic::1::percent_change_24h}%"
+        else if {_ethereum-classic::1::percent_change_24h} is equal to 0.0:
+            set slot 8 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&7%%%{ethereum-classic::1::percent_change_24h}%"
+
         
+
+
+
     if {_coin} is "bitcoinBuy":
         open chest with 3 rows named "Bitcoin kopen" to {_p}
         set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
@@ -511,6 +530,7 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&eBedrag" with lore "&fWaarde: € %{ethereum::1::price_usd}%" and "&7%%%{ethereum::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
+
     if {_coin} is "makerBuy":
         open chest with 3 rows named "Maker kopen" to {_p}
         set {_maker::1::percent_change_24h} to {maker::1::percent_change_24h} parsed as number
@@ -547,6 +567,7 @@ function cryptoMarket(coin: text, p: player):
         else if {_maker::1::percent_change_24h} is equal to 0.0:
             set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{maker::1::price_usd}%" and "&7%%%{maker::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
 
     if {_coin} is "bitcoin-cashBuy":
         open chest with 3 rows named "bitcoin-cash kopen" to {_p}
@@ -585,6 +606,7 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&5Bedrag" with lore "&fWaarde: € %{bitcoin-cash::1::price_usd}%" and "&7%%%{bitcoin-cash::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
+
     if {_coin} is "litecoinBuy":
         open chest with 3 rows named "Litecoin kopen" to {_p}
         set {_litecoin::1::percent_change_24h} to {litecoin::1::percent_change_24h} parsed as number
@@ -621,6 +643,7 @@ function cryptoMarket(coin: text, p: player):
         else if {_litecoin::1::percent_change_24h} is equal to 0.0:
             set slot 15 of {_p}'s current inventory to a gold ingot named "&1Bedrag" with lore "&fWaarde: € %{litecoin::1::price_usd}%" and "&7%%%{litecoin::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
 
     if {_coin} is "dashBuy":
         open chest with 3 rows named "Dash kopen" to {_p}
@@ -659,6 +682,7 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&cBedrag" with lore "&fWaarde: € %{dash::1::price_usd}%" and "&7%%%{dash::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
+
     if {_coin} is "cardanoBuy":
         open chest with 3 rows named "Cardano kopen" to {_p}
         set {_cardano::1::percent_change_24h} to {cardano::1::percent_change_24h} parsed as number
@@ -695,6 +719,7 @@ function cryptoMarket(coin: text, p: player):
         else if {_cardano::1::percent_change_24h} is equal to 0.0:
             set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{cardano::1::price_usd}%" and "&7%%%{cardano::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
 
     if {_coin} is "tetherBuy":
         open chest with 3 rows named "tether kopen" to {_p}
@@ -733,8 +758,9 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{tether::1::price_usd}%" and "&7%%%{tether::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
+
     if {_coin} is "dogecoinBuy":
-        open chest with 3 rows named "dogecoin kopen" to {_p}
+        open chest with 3 rows named "Dogecoin kopen" to {_p}
         set {_dogecoin::1::percent_change_24h} to {dogecoin::1::percent_change_24h} parsed as number
         if {_dogecoin::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{dogecoin::1::price_usd}%" and "&a%%%{dogecoin::1::percent_change_24h}%" with nbt "{mtcustom:dogecoin}"
@@ -752,7 +778,7 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{dogecoin::1::price_usd}%" and "&7%%%{dogecoin::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "dogecoinSell":
-        open chest with 3 rows named "dogecoin verkopen" to {_p}
+        open chest with 3 rows named "Dogecoin verkopen" to {_p}
         set {_dogecoin::1::percent_change_24h} to {dogecoin::1::percent_change_24h} parsed as number
         if {_dogecoin::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{dogecoin::1::price_usd}%" and "&a%%%{dogecoin::1::percent_change_24h}%" with nbt "{mtcustom:dogecoin}"
@@ -769,6 +795,45 @@ function cryptoMarket(coin: text, p: player):
         else if {_dogecoin::1::percent_change_24h} is equal to 0.0:
             set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{dogecoin::1::price_usd}%" and "&7%%%{dogecoin::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
+    
+    if {_coin} is "ethereum-classicBuy":
+        open chest with 3 rows named "Ethereum classic kopen" to {_p}
+        set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
+        if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%" with nbt "{mtcustom:ethereum-classic}"
+        else if {_ethereum-classic::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&c%%%{ethereum-classic::1::percent_change_24h}%" with nbt "{mtcustom:ethereum-classic}"
+        else if {_ethereum-classic::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&7%%%{ethereum-classic::1::percent_change_24h}%" with nbt "{mtcustom:ethereum-classic}"
+        
+        set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
+        if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%"
+        else if {_ethereum-classic::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&c%%%{ethereum-classic::1::percent_change_24h}%"
+        else if {_ethereum-classic::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&7%%%{ethereum-classic::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    if {_coin} is "ethereum-classicSell":
+        open chest with 3 rows named "Ethereum classic verkopen" to {_p}
+        set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
+        if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%" with nbt "{mtcustom:ethereum-classic}"
+        else if {_ethereum-classic::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&c%%%{ethereum-classic::1::percent_change_24h}%" with nbt "{mtcustom:ethereum-classic}"
+        else if {_ethereum-classic::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&7%%%{ethereum-classic::1::percent_change_24h}%" with nbt "{mtcustom:ethereum-classic}"
+        
+        set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
+        if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%"
+        else if {_ethereum-classic::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&c%%%{ethereum-classic::1::percent_change_24h}%"
+        else if {_ethereum-classic::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{ethereum-classic::1::price_usd}%" and "&7%%%{ethereum-classic::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -820,11 +885,16 @@ on inventory click:
                 cryptoMarket("tetherBuy", player)
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("tetherSell", player)
-        if clicked slot is 7:
+        if clicked slot is 8:
             if "%event-clicktype%" is "right mouse button":
                 cryptoMarket("dogecoinBuy", player)
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("dogecoinSell", player)
+        if clicked slot is 9:
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("ethereum-classicBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("ethereum-classicSell", player)
         cancel event
     if name of player's current inventory is "Bitcoin kopen":
         if clicked slot is 11:
@@ -1053,6 +1123,35 @@ on inventory click:
             set {crypto.sell.dogecoin.bedrag.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
             send "&6Hoeveel euro aan dogecoin wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+
+    else if name of player's current inventory is "Ethereum classic kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.ethereum-classic.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel ethereum-classic wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.ethereum-classic.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan ethereum-classic wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "Ethereum classic verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.ethereum-classic.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel ethereum-classic wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.ethereum-classic.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan ethereum-classic wil je verkopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
@@ -1308,3 +1407,20 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("dogecoin", {_message}, player)
+
+    if {crypto.buy.ethereum-classic.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("ethereum-classic", {_message}, player)
+    if {crypto.buy.ethereum-classic.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("ethereum-classic", {_message}, player)
+    if {crypto.sell.ethereum-classic.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("ethereum-classic", {_message}, player)
+    if {crypto.sell.ethereum-classic.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("ethereum-classic", {_message}, player)
