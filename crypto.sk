@@ -139,41 +139,41 @@ on load:
 
     save yaml "crypto-config"
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
-    map json last http response's body to {bitcoin::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
+    # map json last http response's body to {bitcoin::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=80" with the headers "Content-Type: application/json"
-    map json last http response's body to {ethereum::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?id=80" with the headers "Content-Type: application/json"
+    # map json last http response's body to {ethereum::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=12377" with the headers "Content-Type: application/json"
-    map json last http response's body to {maker::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?id=12377" with the headers "Content-Type: application/json"
+    # map json last http response's body to {maker::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=2321" with the headers "Content-Type: application/json"
-    map json last http response's body to {bitcoin-cash::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?id=2321" with the headers "Content-Type: application/json"
+    # map json last http response's body to {bitcoin-cash::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=1" with the headers "Content-Type: application/json"
-    map json last http response's body to {litecoin::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?id=1" with the headers "Content-Type: application/json"
+    # map json last http response's body to {litecoin::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=8" with the headers "Content-Type: application/json"
-    map json last http response's body to {dash::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?id=8" with the headers "Content-Type: application/json"
+    # map json last http response's body to {dash::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
-    map json last http response's body to {cardano::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
+    # map json last http response's body to {cardano::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
-    map json last http response's body to {tether::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
+    # map json last http response's body to {tether::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?=2" with the headers "Content-Type: application/json"
-    map json last http response's body to {dogecoin::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?=2" with the headers "Content-Type: application/json"
+    # map json last http response's body to {dogecoin::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?=118" with the headers "Content-Type: application/json"
-    map json last http response's body to {ethereum-classic::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?=118" with the headers "Content-Type: application/json"
+    # map json last http response's body to {ethereum-classic::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?=2741" with the headers "Content-Type: application/json"
-    map json last http response's body to {vechain::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?=2741" with the headers "Content-Type: application/json"
+    # map json last http response's body to {vechain::*}
 
-    send a request to "https://api.coinlore.net/api/ticker/?=58" with the headers "Content-Type: application/json"
-    map json last http response's body to {xrp::*}
+    # send a request to "https://api.coinlore.net/api/ticker/?=58" with the headers "Content-Type: application/json"
+    # map json last http response's body to {xrp::*}
 
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 #
@@ -242,6 +242,9 @@ on join:
     if yaml value "xrp" in "crypto-%uuid of player%" is not set:
         set yaml value "xrp" in "crypto-%uuid of player%" to 0
 
+    if yaml value "tegoed" in "crypto-%uuid of player%" is not set:
+        set yaml value "tegoed" in "crypto-%uuid of player%" to 0
+
     if yaml value "staking" in "crypto-%uuid of player%" is not set:
         set yaml value "staking" in "crypto-%uuid of player%" to false
     
@@ -287,7 +290,7 @@ on quit:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-command /crypto [<text>] [<offline player>]:
+command /crypto [<text>] [<offline player>] [<number>]:
     trigger:
         if arg-1 is not set:
             send "&6Gebruik /crypto help"
@@ -340,7 +343,205 @@ command /crypto [<text>] [<offline player>]:
                     send "&aDe config van Crypto is succesvol gereload." to player
         if arg-1 is "open":
             cryptoMarket("gui", player)
-        if arg-1 is "wallet":
+
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# WALLET
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+command /wallet:
+    trigger:
+        wallet("main", player)
+
+function wallet(inv: text, p: player):
+    set {_u} to uuid of {_p}
+    if {_inv} is equal to "main":
+        open chest with 3 rows named "Wallet %{_p}%" to {_p}
+        wait 1 tick
+        set slot 11 of {_p}'s current inventory to a iron ingot named "&7Munten" with nbt "{mtcustom:bitcoin}"
+        set slot 15 of {_p}'s current inventory to a ghast tear named "&7Te goed"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    if {_inv} is "tegoed":
+        open chest with 3 rows named "Tegoed" to {_p}
+        wait 1 tick
+        set slot 1 of {_p}'s current inventory to a dirt named "Storten"
+        set slot 2 of {_p}'s current inventory to a dirt named "Opnemen"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    if {_inv} is "coins":
+        set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of {_p}%"
+        set {_bitcoin.price} to {bitcoin::1::price_usd} parsed as number * {_bitcoin}
+
+        set {_ethereum} to yaml value "ethereum" in "crypto-%uuid of {_p}%"
+        set {_ethereum.price} to {ethereum::1::price_usd} parsed as number * {_ethereum}
+
+        set {_maker} to yaml value "maker" in "crypto-%uuid of {_p}%"
+        set {_maker.price} to {maker::1::price_usd} parsed as number * {_maker}
+
+        set {_bitcoin-cash} to yaml value "bitcoin-cash" in "crypto-%uuid of {_p}%"
+        set {_bitcoin-cash.price} to {bitcoin-cash::1::price_usd} parsed as number * {_bitcoin-cash}
+
+        set {_litecoin} to yaml value "litecoin" in "crypto-%uuid of {_p}%"
+        set {_litecoin.price} to {ethereum::1::price_usd} parsed as number * {_litecoin}
+
+        set {_dash} to yaml value "dash" in "crypto-%uuid of {_p}%"
+        set {_dash.price} to {dash::1::price_usd} parsed as number * {_dash}
+
+        set {_cardano} to yaml value "cardano" in "crypto-%uuid of {_p}%"
+        set {_cardano.price} to {cardano::1::price_usd} parsed as number * {_cardano}
+
+        set {_tether} to yaml value "tether" in "crypto-%uuid of {_p}%"
+        set {_tether.price} to {tether::1::price_usd} parsed as number * {_tether}
+
+        set {_dogecoin} to yaml value "dogecoin" in "crypto-%uuid of {_p}%"
+        set {_dogecoin.price} to {dogecoin::1::price_usd} parsed as number * {_dogecoin}
+
+        set {_ethereum-classic} to yaml value "ethereum-classic" in "crypto-%uuid of {_p}%"
+        set {_ethereum-classic.price} to {ethereum-classic::1::price_usd} parsed as number * {_ethereum-classic}
+
+        set {_vechain} to yaml value "vechain" in "crypto-%uuid of {_p}%"
+        set {_vechain.price} to {vechain::1::price_usd} parsed as number * {_vechain}
+
+        set {_xrp} to yaml value "xrp" in "crypto-%uuid of {_p}%"
+        set {_xrp.price} to {xrp::1::price_usd} parsed as number * {_xrp}
+
+        add {_bitcoin.price} and {_ethereum.price} and {_maker.price} and {_bitcoin-cash.price} and {_litecoin.price} and {_dash.price} and {_cardano.price} and {_tether.price} and {_dogecoin.price} and {_ethereum-classic.price} and {_vechain.price} and {_xrp.price} to {wallet.total.price.%{_p}%}
+        wait 1 tick
+        open chest with 3 rows named "Totaal: $%{wallet.total.price.%{_p}%}%" to {_p}
+        wait 1 tick
+
+        set slot 0 of {_p}'s current inventory to a iron ingot named "&7Bitcoin" with nbt "{mtcustom:bitcoin}" with lore "" and "&8Totaal: %{_bitcoin}%" and "&8Waarde: $%{_bitcoin.price}%"
+        set slot 1 of {_p}'s current inventory to a iron ingot named "&7Ethereum" with nbt "{mtcustom:ethereum}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+        set slot 2 of {_p}'s current inventory to a iron ingot named "&7Maker" with nbt "{mtcustom:maker}" with lore "" and "&8Totaal: %{_maker}%" and "&8Waarde: $%{_maker.price}%"
+        set slot 3 of {_p}'s current inventory to a iron ingot named "&7Bitcoin cash" with nbt "{mtcustom:bitcoin-cash}" with lore "" and "&8Totaal: %{_bitcoin-cash}%" and "&8Waarde: $%{_bitcoin-cash.price}%"
+        set slot 4 of {_p}'s current inventory to a iron ingot named "&7Litecoin" with nbt "{mtcustom:litecoin}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+        set slot 5 of {_p}'s current inventory to a iron ingot named "&7Dash" with nbt "{mtcustom:dashcoin}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+        set slot 6 of {_p}'s current inventory to a iron ingot named "&7Cardano" with nbt "{mtcustom:cardano}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+        set slot 7 of {_p}'s current inventory to a iron ingot named "&7Tether" with nbt "{mtcustom:tether}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+        set slot 8 of {_p}'s current inventory to a iron ingot named "&7Dogecoin" with nbt "{mtcustom:dogecoin}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+        set slot 9 of {_p}'s current inventory to a iron ingot named "&7Ethereum classic" with nbt "{mtcustom:ethereum-classic}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+        set slot 10 of {_p}'s current inventory to a iron ingot named "&7VeChain" with nbt "{mtcustom:vechain}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+        set slot 11 of {_p}'s current inventory to a iron ingot named "&7XRP" with nbt "{mtcustom:xrp}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: $%{_ethereum.price}%"
+
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
+on inventory click:
+    if name of player's current inventory is "Wallet %player%":
+        if clicked slot is 11:
+            wallet("coins", player)
+        if clicked slot is 15:
+            wallet("tegoed", player)
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    if name of player's current inventory is "Tegoed":
+        if clicked slot is 1: # Storten
+            close player's inventory
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel €euro wil je storten? Let op het bedrag dat je invoerd zijn euro's"
+            set {crypto.deposit.%player%} to true
+        if clicked slot is 2: # Opnemen
+            close player's inventory
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel $dollar wil je opnemen? Let op het bedrag dat je invoerd zijn dollars"
+            set {crypto.withdraw.%player%} to true
+        if clicked slot is 22:
+            wallet("main", player)
+        cancel event
+    if name of player's current inventory is "Totaal: $%{wallet.total.price.%player%}%":
+        if clicked slot is 0:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("bitcoinSell", player)
+        if clicked slot is 1:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("ethereumSell", player)
+        if clicked slot is 2:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("makerSell", player)
+        if clicked slot is 3:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("bitcoin-cashSell", player)
+        if clicked slot is 4:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("litecoinSell", player)
+        if clicked slot is 5:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("dashSell", player)
+        if clicked slot is 6:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("cardanoSell", player)
+        if clicked slot is 7:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("tetherSell", player)
+        if clicked slot is 8:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("dogecoinSell", player)
+        if clicked slot is 9:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("ethereum-classicSell", player)
+        if clicked slot is 10:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("vechainSell", player)
+        if clicked slot is 11:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("xrpSell", player)
+        if clicked slot is 22:
+            wallet("main", player)
+        cancel event
+            
+
+on chat:
+    if {crypto.deposit.%player%} is true:
+        cancel event
+        set {_message} to message
+        walletDeposit(player, {_message})
+    if {crypto.withdraw.%player%} is true:
+        cancel event
+        set {_message} to message
+        walletWithdraw(player, {_message})
+
+function walletDeposit(p: player, message: text):
+    if {_message} parsed as number is a number:
+        if {_p}'s balance is greater than or equal to {_message} parsed as number:
+            set {_message} to {_message} parsed as number * 1.04
+            send "&aJe hebt succesvol $%{_message}% gestort op je wallet." to {_p}
+
+            set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
+            add {_message} to {_balance}
+            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+            save yaml "crypto-%uuid of {_p}%"
+
+            set {crypto.deposit.%{_p}%} to false
+        else:
+            send "&cJe hebt niet genoeg geld op je bank rekening!" to {_p}
+    else if {_message} contains "cancel":
+        set {crypto.deposit.%{_p}%} to false
+        send "&cJe hebt het storten gecanceld." to {_p}
+    else:
+        send "&cDit is geen geldig getal." to {_p}
+
+function walletWithdraw(p: player, message: text):
+    set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
+    if {_message} parsed as number is a number:
+        if {_balance} is greater than or equal to {_message} parsed as number:
+            send "&aJe hebt succesvol $%{_message}% opgenomen van je wallet." to {_p}
+
+            remove {_message} from {_balance}
+            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+            save yaml "crypto-%uuid of {_p}%"
+
+            set {_message} to {_message} / 1.04
+            add {_message} to {_p}'s balance
+
+            set {crypto.withdraw.%{_p}%} to false
+    else if {_message} contains "cancel":
+        set {crypto.withdraw.%{_p}%} to false
+        send "&cJe hebt de opname gecanceld." to {_p}
+    else:
+        send "&cDit is geen geldig getal." to {_p}
+
 
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
@@ -405,6 +606,9 @@ function cryptoMarket(coin: text, p: player):
     set {_u} to uuid of {_p}
     if {_coin} is "gui":
         open chest with 3 rows named "Crypto Markt" to {_p}
+
+        set slot 26 of {_p}'s current inventory to a dirt named "&bWallet"
+
         set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
         if {_bitcoin::1::percent_change_24h} is greater than 0.0:
             set slot 0 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %{bitcoin::1::price_usd}%" and "&a%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
@@ -924,6 +1128,7 @@ function cryptoMarket(coin: text, p: player):
 
 
     if {_coin} is "xrpBuy":
+        wait 1 tick
         open chest with 3 rows named "XRP kopen" to {_p}
         set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
         if {_xrp::1::percent_change_24h} is greater than 0.0:
@@ -942,6 +1147,7 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&7%%%{xrp::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "xrpSell":
+        wait 1 tick
         open chest with 3 rows named "XRP verkopen" to {_p}
         set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
         if {_xrp::1::percent_change_24h} is greater than 0.0:
@@ -971,6 +1177,10 @@ function cryptoMarket(coin: text, p: player):
 
 on inventory click:
     if name of player's current inventory is "Crypto Markt":
+
+        if clicked slot is 26:
+            wallet("main", player)
+
         if clicked slot is 0:
             if "%event-clicktype%" is "right mouse button":
                 cryptoMarket("bitcoinBuy", player)
@@ -1323,6 +1533,7 @@ on inventory click:
 
     else if name of player's current inventory is "XRP kopen":
         if clicked slot is 11:
+            wait 1 tick
             close player's inventory
             set {crypto.buy.xrp.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
