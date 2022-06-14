@@ -94,6 +94,8 @@ on load:
             add "ethereum-classic" to skript-yaml list "coins" in "crypto-config"
         if skript-yaml value "coins" in "crypto-config" doesn't contain "vechain":
             add "vechain" to skript-yaml list "coins" in "crypto-config"
+        if skript-yaml value "coins" in "crypto-config" doesn't contain "xrp":
+            add "xrp" to skript-yaml list "coins" in "crypto-config"
 
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
@@ -123,6 +125,8 @@ on load:
         set yaml value "staking.ethereum-classic" in "crypto-config" to 0
     if yaml value "staking.vechain" in "crypto-config" is not set:
         set yaml value "staking.vechain" in "crypto-config" to 0
+    if yaml value "staking.xrp" in "crypto-config" is not set:
+        set yaml value "staking.xrp" in "crypto-config" to 0
 
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
@@ -167,6 +171,9 @@ on load:
 
     send a request to "https://api.coinlore.net/api/ticker/?=2741" with the headers "Content-Type: application/json"
     map json last http response's body to {vechain::*}
+
+    send a request to "https://api.coinlore.net/api/ticker/?=58" with the headers "Content-Type: application/json"
+    map json last http response's body to {xrp::*}
 
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 #
@@ -232,6 +239,8 @@ on join:
         set yaml value "ethereum-classic" in "crypto-%uuid of player%" to 0
     if yaml value "vechain" in "crypto-%uuid of player%" is not set:
         set yaml value "vechain" in "crypto-%uuid of player%" to 0
+    if yaml value "xrp" in "crypto-%uuid of player%" is not set:
+        set yaml value "xrp" in "crypto-%uuid of player%" to 0
 
     if yaml value "staking" in "crypto-%uuid of player%" is not set:
         set yaml value "staking" in "crypto-%uuid of player%" to false
@@ -253,9 +262,10 @@ function CryptoPlayerData(p: player):
     set {dogecoin.%{player}%} to yaml value "dogecoin" in "crypto-%uuid of {player}%"
     set {ethereum-classic.%{player}%} to yaml value "ethereum-classic" in "crypto-%uuid of {player}%"
     set {vechain.%{player}%} to yaml value "vechain" in "crypto-%uuid of {player}%"
+    set {xrp.%{player}%} to yaml value "vechain" in "crypto-%uuid of {player}%"
     set {api_key.%{player}%} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%"", ""ethereum-classic"":""%{ethereum-classic.%{player}%}%, ""vechain"":""%{vechain.%{player}%}%"", ""xrp"":""%{xrp.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
     else:
         send "Using backup site" to console
         send a "post" request to "https://www.silvinvanhaestregt.com/Crypto/index.php/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%" 
@@ -376,6 +386,9 @@ every 10 seconds in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=2741" with the headers "Content-Type: application/json"
     map json last http response's body to {vechain::*}
 
+    send a request to "https://api.coinlore.net/api/ticker/?id=58" with the headers "Content-Type: application/json"
+    map json last http response's body to {xrp::*}
+
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
             cryptoMarket("gui", loop-player)
@@ -479,6 +492,14 @@ function cryptoMarket(coin: text, p: player):
             set slot 10 of {_p}'s current inventory to a iron ingot named "&bVeChain" with lore "&fWaarde: € %{vechain::1::price_usd}%" and "&c%%%{vechain::1::percent_change_24h}%"
         else if {_vechain::1::percent_change_24h} is equal to 0.0:
             set slot 10 of {_p}'s current inventory to a iron ingot named "&bVeChain" with lore "&fWaarde: € %{vechain::1::price_usd}%" and "&7%%%{vechain::1::percent_change_24h}%"
+
+        set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
+        if {_xrp::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&a%%%{xrp::1::percent_change_24h}%"
+        else if {_xrp::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&c%%%{xrp::1::percent_change_24h}%"
+        else if {_xrp::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&7%%%{xrp::1::percent_change_24h}%"
 
         
 
@@ -900,6 +921,44 @@ function cryptoMarket(coin: text, p: player):
         else if {_vechain::1::percent_change_24h} is equal to 0.0:
             set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{vechain::1::price_usd}%" and "&7%%%{vechain::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
+
+    if {_coin} is "xrpBuy":
+        open chest with 3 rows named "XRP kopen" to {_p}
+        set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
+        if {_xrp::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&a%%%{xrp::1::percent_change_24h}%" with nbt "{mtcustom:xrp}"
+        else if {_xrp::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&c%%%{xrp::1::percent_change_24h}%" with nbt "{mtcustom:xrp}"
+        else if {_xrp::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&7%%%{xrp::1::percent_change_24h}%" with nbt "{mtcustom:xrp}"
+        
+        set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
+        if {_xrp::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&a%%%{xrp::1::percent_change_24h}%"
+        else if {_xrp::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&c%%%{xrp::1::percent_change_24h}%"
+        else if {_xrp::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&7%%%{xrp::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    if {_coin} is "xrpSell":
+        open chest with 3 rows named "XRP verkopen" to {_p}
+        set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
+        if {_xrp::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&a%%%{xrp::1::percent_change_24h}%" with nbt "{mtcustom:xrp}"
+        else if {_xrp::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&c%%%{xrp::1::percent_change_24h}%" with nbt "{mtcustom:xrp}"
+        else if {_xrp::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&7%%%{xrp::1::percent_change_24h}%" with nbt "{mtcustom:xrp}"
+        
+        set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
+        if {_xrp::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&a%%%{xrp::1::percent_change_24h}%"
+        else if {_xrp::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&c%%%{xrp::1::percent_change_24h}%"
+        else if {_xrp::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{xrp::1::price_usd}%" and "&7%%%{xrp::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
@@ -967,6 +1026,11 @@ on inventory click:
                 cryptoMarket("vechainBuy", player)
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("vechainSell", player)
+        if clicked slot is 11:
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("xrpBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("xrpSell", player)
         cancel event
     if name of player's current inventory is "Bitcoin kopen":
         if clicked slot is 11:
@@ -1257,6 +1321,35 @@ on inventory click:
             cryptoMarket("gui", player)
         cancel event
 
+    else if name of player's current inventory is "XRP kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.xrp.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel xrp wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.xrp.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan xrp wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "XRP verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.xrp.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel xrp wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.xrp.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan xrp wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
 #
@@ -1542,3 +1635,20 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("vechain", {_message}, player)
+
+    if {crypto.buy.xrp.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("xrp", {_message}, player)
+    if {crypto.buy.xrp.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("xrp", {_message}, player)
+    if {crypto.sell.xrp.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("xrp", {_message}, player)
+    if {crypto.sell.xrp.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("xrp", {_message}, player)
