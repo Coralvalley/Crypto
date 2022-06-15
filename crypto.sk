@@ -239,10 +239,7 @@ function CryptoPlayerData(p: player):
     set {solana.%{player}%} to yaml value "solana" in "crypto-%uuid of {player}%"
     set {api_key.%{player}%} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%"", ""ethereum-classic"":""%{ethereum-classic.%{player}%}%, ""vechain"":""%{vechain.%{player}%}%"", ""xrp"":""%{xrp.%{player}%}%"", ""solana"":""%{solana.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
-    else:
-        send "Using backup site" to console
-        send a "post" request to "https://www.silvinvanhaestregt.com/Crypto/index.php/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%" 
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%"", ""ethereum-classic"":""%{ethereum-classic.%{player}%}%"", ""vechain"":""%{vechain.%{player}%}%"", ""xrp"":""%{xrp.%{player}%}%"", ""solana"":""%{solana.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
 
 
 every 5 minutes:
@@ -323,9 +320,13 @@ command /crypto [<text>] [<offline player>] [<number>]:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-command /wallet:
+command /wallet [<offline player>]:
     trigger:
-        wallet("main", player)
+        if arg-1 is not set:
+            wallet("main", player)
+        if arg-1 is set:
+            if player has permission "crypto.admin":
+                wallet("coins", arg-1)
 
 function wallet(inv: text, p: player):
     set {_u} to uuid of {_p}
@@ -467,8 +468,7 @@ on inventory click:
                 cryptoMarket("solanaSell", player)
         if clicked slot is 22:
             wallet("main", player)
-        cancel event
-            
+        cancel event            
 
 on chat:
     if {crypto.deposit.%player%} is true:
@@ -519,8 +519,6 @@ function walletWithdraw(p: player, message: text):
         send "&cJe hebt de opname gecanceld." to {_p}
     else:
         send "&cDit is geen geldig getal." to {_p}
-
-
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
