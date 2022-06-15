@@ -251,9 +251,9 @@ function transaction(p: player, coin: text, amount: number, price: number, type:
     set {time.%{_p}%} to now
 
     if {type2.%{_p}%} is "eenheden":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=TweedeKamer" with the body "%{time.%{player}%}%: %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player}%" with the body "%{time.%{player}%}%: %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, $%{price.%{player}%}%, %{type2.%{player}%}%"
     if {type2.%{_p}%} is "bedrag":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=TweedeKamer" with the body "%{time.%{player}%}%: %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player}%" with the body "%{time.%{player}%}%: %{type.%{player}%}%, $%{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%, %{type2.%{player}%}%"
 
 every 5 minutes:
     loop all players:
@@ -1670,7 +1670,7 @@ function buyEenheden(coin: text, message: text, p: player):
             CryptoPlayerData({_p})
 
 
-            transaction({_p}, {_coin}, {_message}, {{_coin}::1::price_usd}, "buy", "eenheden")
+            transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_usd} parsed as number, "buy", "eenheden")
 
         else:
             send "&cSorry, je hebt hier niet genoeg geld voor." to {_p}
@@ -1694,6 +1694,8 @@ function sellEenheden(coin: text, message: text, p: player):
 
             set {crypto.sell.%{_coin}%.eenheden.%{_p}%} to false
             CryptoPlayerData({_p})
+
+            transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_usd} parsed as number, "sell", "eenheden")
         else:
             send "&cJe hebt niet genoeg %{_coin}%" to {_p}
     else if {_message} contains "cancel":
@@ -1716,6 +1718,8 @@ function buyBedrag(coin: text, message: text, p: player):
 
             set {crypto.buy.%{_coin}%.bedrag.%{_p}%} to false
             CryptoPlayerData({_p})
+
+            transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_usd} parsed as number, "buy", "bedrag")
         else:
             send "&cSorry je hebt hier niet genoeg geld voor" to {_p}
     else if {_message} contains "cancel":
@@ -1738,6 +1742,8 @@ function sellBedrag(coin: text, message: text, p: player):
             
             set {crypto.sell.%{_coin}%.bedrag.%{_p}%} to false
             CryptoPlayerData({_p})
+
+            transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_usd} parsed as number, "sell", "bedrag")
         else:
             send "&cSorry je hebt niet genoeg %{_coin}%" to {_p}
     else if {_message} contains "cancel":
