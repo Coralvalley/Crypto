@@ -156,15 +156,15 @@ on load:
         create file path "plugins/crypto/transactions.json"
 
     
-function transaction(p: player, coin: text, amount: number):
-    clear {transaction::*}
-    set {player} to {_p}
-    set {coin.%{player}%} to {_coin}
-    set {amount.%{player}%} to {_amount}
+# function transaction(p: player, coin: text, amount: number):
+#     clear {transaction::*}
+#     set {player} to {_p}
+#     set {coin.%{player}%} to {_coin}
+#     set {amount.%{player}%} to {_amount}
 
     # set {_json} to "{""name"": ""%{player}'s name%"", ""information"": { ""coin"":""%{coin.%{player}%}%"", ""amount"":""%{amount.%{player}%}%""}}"
 
-    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions.php" with the body "{""name"":%{player}'s name%,""information""}" and the headers "Authorization: %{api_key.%{player}%}%"
+    # send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions.php" with the body "{""name"":%{player}'s name%,""information""}" and the headers "Authorization: %{api_key.%{player}%}%"
     # send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions.php" with the body "{""name"": ""%{player}'s name%"", ""information"": { ""coin"":""%{coin.%{player}%}%"", ""amount"":""%{amount.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
@@ -241,6 +241,19 @@ function CryptoPlayerData(p: player):
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
         send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%"", ""ethereum-classic"":""%{ethereum-classic.%{player}%}%"", ""vechain"":""%{vechain.%{player}%}%"", ""xrp"":""%{xrp.%{player}%}%"", ""solana"":""%{solana.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
 
+function transaction(p: player, coin: text, amount: number, price: number, type: text, type2: text):
+    set {player} to {_p}
+    set {coin.%{_p}%} to {_coin}
+    set {amount.%{_p}%} to {_amount}
+    set {price.%{_p}%} to {_price}
+    set {type.%{_p}%} to {_type}
+    set {type2.%{_p}%} to {_type2}
+    set {time.%{_p}%} to now
+
+    if {type2.%{_p}%} is "eenheden":
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=TweedeKamer" with the body "%{time.%{player}%}%: %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%"
+    if {type2.%{_p}%} is "bedrag":
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=TweedeKamer" with the body "%{time.%{player}%}%: %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%"
 
 every 5 minutes:
     loop all players:
@@ -1631,6 +1644,15 @@ on inventory click:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
+
+command /sendtransaction:
+    trigger:
+        set {time.%player%} to now
+        set {amount.%player%} to 5
+        set {coin.%player%} to "bitcoin"
+        set {price.%player%} to 26000
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=TweedeKamer" with the body "%{time.%player%}%: %{amount.%player%}%, %{coin.%player%}%, %{price.%player%}%"
+
 function buyEenheden(coin: text, message: text, p: player):
     if {_message} parsed as number is a number:
         set {_buyPrice} to {%{_coin}%::1::price_usd} parsed as number * {_message} parsed as number
@@ -1646,7 +1668,10 @@ function buyEenheden(coin: text, message: text, p: player):
 
             set {crypto.buy.%{_coin}%.eenheden.%{_p}%} to false
             CryptoPlayerData({_p})
-            transaction({_p}, {_coin}, {_message})
+
+
+            transaction({_p}, {_coin}, {_message}, {{_coin}::1::price_usd}, "buy", "eenheden")
+
         else:
             send "&cSorry, je hebt hier niet genoeg geld voor." to {_p}
     else if {_message} contains "cancel":
