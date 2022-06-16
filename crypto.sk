@@ -542,7 +542,7 @@ function walletWithdraw(p: player, message: text):
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
 
-every 10 seconds in world "world":
+every 1 minute in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin::*}
 
