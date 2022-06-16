@@ -546,38 +546,62 @@ every 1 minute in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin::*}
 
+    wait 2 seconds
+
     send a request to "https://api.coinlore.net/api/ticker/?id=80" with the headers "Content-Type: application/json"
     map json last http response's body to {ethereum::*}
+
+    wait 2 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=12377" with the headers "Content-Type: application/json"
     map json last http response's body to {maker::*}
 
+    wait 2 seconds
+
     send a request to "https://api.coinlore.net/api/ticker/?id=2321" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin-cash::*}
+
+    wait 2 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=1" with the headers "Content-Type: application/json"
     map json last http response's body to {litecoin::*}
 
+    wait 2 seconds
+
     send a request to "https://api.coinlore.net/api/ticker/?id=8" with the headers "Content-Type: application/json"
     map json last http response's body to {dash::*}
+
+    wait 2 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
     map json last http response's body to {cardano::*}
 
+    wait 2 seconds
+
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
     map json last http response's body to {tether::*}
+
+    wait 2 seconds
     
     send a request to "https://api.coinlore.net/api/ticker/?id=2" with the headers "Content-Type: application/json"
     map json last http response's body to {dogecoin::*}
 
+    wait 2 seconds
+
     send a request to "https://api.coinlore.net/api/ticker/?id=118" with the headers "Content-Type: application/json"
     map json last http response's body to {ethereum-classic::*}
+
+    wait 2 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=2741" with the headers "Content-Type: application/json"
     map json last http response's body to {vechain::*}
 
+    wait 2 seconds
+
     send a request to "https://api.coinlore.net/api/ticker/?id=58" with the headers "Content-Type: application/json"
     map json last http response's body to {xrp::*}
+
+    wait 2 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=48543" with the headers "Content-Type: application/json"
     map json last http response's body to {solana::*}
