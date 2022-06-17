@@ -251,9 +251,9 @@ function transaction(p: player, coin: text, amount: number, price: number, type:
     set {time.%{_p}%} to now
 
     if {type2.%{_p}%} is "eenheden":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player}%" with the body "%{time.%{player}%}%: %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, $%{price.%{player}%}%, %{type2.%{player}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player}%" with the body "%{time.%{player}%}%: %{player}%, %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, $%{price.%{player}%}%, %{type2.%{player}%}%"
     if {type2.%{_p}%} is "bedrag":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player}%" with the body "%{time.%{player}%}%: %{type.%{player}%}%, $%{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%, %{type2.%{player}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player}%" with the body "%{time.%{player}%}%: %{player}%, %{type.%{player}%}%, $%{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%, %{type2.%{player}%}%"
 
 every 5 minutes:
     loop all players:
@@ -1722,6 +1722,12 @@ function sellEenheden(coin: text, message: text, p: player):
             transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_usd} parsed as number, "sell", "eenheden")
         else:
             send "&cJe hebt niet genoeg %{_coin}%" to {_p}
+    else if {_message} contains "all":
+        set {_coinAmount} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
+        set {_sellPrice} to {%{_coin}%::1::price_usd} parsed as number * {_coinAmount} parsed as number
+        send "&aJe hebt zojuist %{_coinAmount}% %{_coin}% gekocht" to {_p}
+
+        add {_sellPrice} to parsed as number to {_p}'s balance
     else if {_message} contains "cancel":
         set {crypto.sell.%{_coin}%.eenheden.%{_p}%} to false
         send "&cJe hebt de de verkoop gecanceld." to {_p}
