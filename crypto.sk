@@ -405,7 +405,7 @@ function wallet(inv: text, p: player):
         set slot 2 of {_p}'s current inventory to a iron ingot named "&7Maker" with nbt "{mtcustom:maker}" with lore "" and "&8Totaal: %{_maker}%" and "&8Waarde: $%{_maker.price}%"
         set slot 3 of {_p}'s current inventory to a iron ingot named "&7Bitcoin cash" with nbt "{mtcustom:bitcoin-cash}" with lore "" and "&8Totaal: %{_bitcoin-cash}%" and "&8Waarde: $%{_bitcoin-cash.price}%"
         set slot 4 of {_p}'s current inventory to a iron ingot named "&7Litecoin" with nbt "{mtcustom:litecoin}" with lore "" and "&8Totaal: %{_litecoin}%" and "&8Waarde: $%{_litecoin.price}%"
-        set slot 5 of {_p}'s current inventory to a iron ingot named "&7Dash" with nbt "{mtcustom:dashcoin}" with lore "" and "&8Totaal: %{_dashcoin}%" and "&8Waarde: $%{_dashcoin.price}%"
+        set slot 5 of {_p}'s current inventory to a iron ingot named "&7Dash" with nbt "{mtcustom:dashcoin}" with lore "" and "&8Totaal: %{_dash}%" and "&8Waarde: $%{_dash.price}%"
         set slot 6 of {_p}'s current inventory to a iron ingot named "&7Cardano" with nbt "{mtcustom:cardano}" with lore "" and "&8Totaal: %{_cardano}%" and "&8Waarde: $%{_cardano.price}%"
         set slot 7 of {_p}'s current inventory to a iron ingot named "&7Tether" with nbt "{mtcustom:tether}" with lore "" and "&8Totaal: %{_tether}%" and "&8Waarde: $%{_tether.price}%"
         set slot 8 of {_p}'s current inventory to a iron ingot named "&7Dogecoin" with nbt "{mtcustom:dogecoin}" with lore "" and "&8Totaal: %{_dogecoin}%" and "&8Waarde: $%{_dogecoin.price}%"
