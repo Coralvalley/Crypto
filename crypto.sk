@@ -1818,10 +1818,25 @@ function sellBedrag(coin: text, message: text, p: player):
         send "&cDit is geen geldig bedrag." to {_p}
 
 on join:
-    set {_options} to "eenheden"
-    loop skript-yaml value "coins" in "crypto-%uuid of player%":
-        send "%loop-value%" to player
-        # set {crypto.buy.%loop-value%.eenheden.%player%} to false
+    add "bitcoin" to {_coins::*}
+    add "ethereum" to {_coins::*}
+    add "maker" to {_coins::*}
+    add "bitcoin-cash" to {_coins::*}
+    add "litecoin" to {_coins::*}
+    add "dash" to {_coins::*}
+    add "cardano" to {_coins::*}
+    add "tether" to {_coins::*}
+    add "dogecoin" to {_coins::*}
+    add "ethereum-classic" to {_coins::*}
+    add "vechain" to {_coins::*}
+    add "xrp" to {_coins::*}
+    add "solana" to {_coins::*}
+
+    loop {_coins::*}:
+        set {crypto.buy.%loop-value%.eenheden.%player%} to false
+        set {crypto.buy.%loop-value%.bedrag.%player%} to false
+        set {crypto.sell.%loop-value%.eenheden.%player%} to false
+        set {crypto.sell.%loop-value%.bedrag.%player%} to false
 
 on chat:
     if {crypto.buy.bitcoin.eenheden.%player%} is true:
