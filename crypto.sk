@@ -132,14 +132,17 @@ on load:
     if yaml value "staking.solana" in "crypto-config" is not set:
         set yaml value "staking.solana" in "crypto-config" to 0
 
+    if yaml value "fee" in "crypto-config" is not set:
+        set yaml value "fee" in "crypto-config" to 0
+    
+    if yaml value "rekening-id" in "crypto-config" is not set:
+        set yaml value "rekening-id" in "crypto-config" to 0
+
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
     # Spread
     #
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-
-    if yaml value "spread" in "crypto-config" is not set:
-        set yaml value "spread" in "crypto-config" to 0.2
 
     save yaml "crypto-config"
 
@@ -320,6 +323,8 @@ command /crypto [<text>] [<offline player>] [<number>]:
                     send "&aCrypto is succesvol gereload." to player
             if arg-2 is "config":
                 if player has permission "*" or "crypto.reload":
+                    unload yaml "crypto-config"
+                    load yaml "crypto-config"
                     save yaml "crypto-config"
                     send "&aDe config van Crypto is succesvol gereload." to player
         if arg-1 is "open":
@@ -333,13 +338,9 @@ command /crypto [<text>] [<offline player>] [<number>]:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-command /wallet [<offline player>]:
+command /wallet:
     trigger:
-        if arg-1 is not set:
-            wallet("main", player)
-        if arg-1 is set:
-            if player has permission "crypto.admin":
-                wallet("coins", arg-1)
+        wallet("main", player)
 
 function wallet(inv: text, p: player):
     set {_u} to uuid of {_p}
@@ -1681,6 +1682,8 @@ on inventory click:
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
 function buyEenheden(coin: text, message: text, p: player):
+    set {_fee} to yaml value "fee" in "crypto-config"
+    set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
@@ -1689,7 +1692,9 @@ function buyEenheden(coin: text, message: text, p: player):
             send "&aJe hebt zojuist %{_message}% %{_coin}% gekocht" to {_p}
 
             remove {_buyPrice} from {_balance}
+            remove {_fee} from {_balance}
             set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+            execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
             add {_message} parsed as number to {_%{_coin}%.%{_p}%}
             set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
@@ -1709,6 +1714,8 @@ function buyEenheden(coin: text, message: text, p: player):
         send "&cDit is geen geldig getal." to {_p}
 
 function sellEenheden(coin: text, message: text, p: player):
+    set {_fee} to yaml value "fee" in "crypto-config"
+    set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
@@ -1717,7 +1724,9 @@ function sellEenheden(coin: text, message: text, p: player):
 
             set {_sellPrice} to {%{_coin}%::1::price_eur} * {_message} parsed as number
             add {_sellPrice} to {_balance}
+            remove {_fee} from {_balance}
             set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+            execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
             remove {_message} parsed as number from {_%{_coin}%.%{_p}%}
             set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
@@ -1743,6 +1752,8 @@ function sellEenheden(coin: text, message: text, p: player):
         send "&cDit is geen geldig getal." to {_p}
 
 function buyBedrag(coin: text, message: text, p: player):
+    set {_fee} to yaml value "fee" in "crypto-config"
+    set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
@@ -1752,7 +1763,9 @@ function buyBedrag(coin: text, message: text, p: player):
             send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% gekocht." to {_p}
 
             remove {_buyPrice} from {_balance}
+            remove {_fee} from {_balance}
             set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+            execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
             add {_amount} to {_%{_coin}%.%{_p}%}
             set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
@@ -1772,6 +1785,8 @@ function buyBedrag(coin: text, message: text, p: player):
         send "&cDit is geen geldig getal." to {_p}
 
 function sellBedrag(coin: text, message: text, p: player):
+    set {_fee} to yaml value "fee" in "crypto-config"
+    set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
@@ -1781,7 +1796,9 @@ function sellBedrag(coin: text, message: text, p: player):
             send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% verkocht." to {_p}
 
             add {_buyPrice} to {_balance}
+            remove {_fee} from {_balance}
             set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+            execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
             remove {_amount} from {_%{_coin}%.%{_p}%}
             set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
@@ -1801,6 +1818,7 @@ function sellBedrag(coin: text, message: text, p: player):
         send "&cDit is geen geldig bedrag." to {_p}
 
 on join:
+    set {_options} to "eenheden"
     loop skript-yaml value "coins" in "crypto-%uuid of player%":
         send "%loop-value%" to player
         # set {crypto.buy.%loop-value%.eenheden.%player%} to false
