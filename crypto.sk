@@ -387,13 +387,13 @@ function wallet(inv: text, p: player):
         set {_ethereum-classic.price} to {ethereum-classic::1::price_eur} parsed as number * {_ethereum-classic}
 
         set {_vechain} to yaml value "vechain" in "crypto-%uuid of {_p}%"
-        set {_vechain.price} to {vechain::1::price_eur} parsed as number * {_vechain}
+        set {_vechain.price} to {vechain::1::price_eur} * {_vechain}
 
         set {_xrp} to yaml value "xrp" in "crypto-%uuid of {_p}%"
         set {_xrp.price} to {xrp::1::price_eur} parsed as number * {_xrp}
 
         set {_solana} to yaml value "solana" in "crypto-%uuid of {_p}%"
-        set {_solana.price} to {solana::1::price_eur} parsed as number * {_solana}
+        set {_solana.price} to {solana::1::price_eur} * {_solana}
 
         add {_bitcoin.price} and {_ethereum.price} and {_maker.price} and {_bitcoin-cash.price} and {_litecoin.price} and {_dash.price} and {_cardano.price} and {_tether.price} and {_dogecoin.price} and {_ethereum-classic.price} and {_vechain.price} and {_xrp.price} and {_solana.price} to {wallet.total.price.%{_p}%}
         wait 1 tick
@@ -735,11 +735,11 @@ function cryptoMarket(coin: text, p: player):
 
         set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
         if {_solana::1::percent_change_24h} is greater than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&a%%%{solana::1::percent_change_24h}%"
+            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&a%%%{solana::1::percent_change_24h}%"
         else if {_solana::1::percent_change_24h} is less than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&c%%%{solana::1::percent_change_24h}%"
+            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&c%%%{solana::1::percent_change_24h}%"
         else if {_solana::1::percent_change_24h} is equal to 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&7%%%{solana::1::percent_change_24h}%"
+            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&7%%%{solana::1::percent_change_24h}%"
 
         
 
@@ -1680,13 +1680,24 @@ on inventory click:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-function buyEenheden(coin: text, message: text, p: player):
-    if {_message} parsed as number is a number:
-        set {_buyPrice} to {%{_coin}%::1::price_eur} parsed as number * {_message} parsed as number
-        if {_p}'s balance is greater than or equal to {_buyPrice}:
-            send "&aJe hebt zojuist %{_message}% %{_coin}% gekocht" to {_p}
+command /testbuy [<text>]:
+    trigger:
+        set {_buyPrice} to {bitcoin::1::price_eur} * arg-1 parsed as number
+        set {_balance} to yaml value "tegoed" in "crypto-%uuid of player%"
+        if {_balance} is greater than or equal to {_buyPrice}:
+            send "Bitcoin price: %{bitcoin::1::price_eur}%"
+            send "Balance: %{_balance}%"
+            send "Buyprice: %{_buyPrice}%"
+            send "ja"
 
-            remove {_buyPrice} from {_p}'s balance
+function buyEenheden(coin: text, message: text, p: player):
+    set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
+    if {_message} parsed as number is a number:
+        set {_buyPrice} to {%{_coin}%::1::price_eur} * {_message} parsed as number
+        if {_balance} is greater than or equal to {_buyPrice}:
+            send "&aJe hebt zojuist %{_message}% %{_coin}% gekocht" to {_p}
+            remove {_buyPrice} from {_balance}
+            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
 
             set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
             add {_message} parsed as number to {_%{_coin}%.%{_p}%}
@@ -1708,12 +1719,13 @@ function buyEenheden(coin: text, message: text, p: player):
         send "&cDit is geen geldig getal." to {_p}
 
 function sellEenheden(coin: text, message: text, p: player):
+    set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
         if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_message} parsed as number:
-            set {_sellPrice} to {%{_coin}%::1::price_eur} parsed as number * {_message} parsed as number
+            set {_sellPrice} to {%{_coin}%::1::price_eur} * {_message} parsed as number
             send "&aJe hebt zojuist %{_message}% %{_coin}% verkocht" to {_p}
-
-            add {_sellPrice} parsed as number to {_p}'s balance
+            add {_sellPrice} to {_balance}
+            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
             set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
             remove {_message} parsed as number from {_%{_coin}%.%{_p}%}
             set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
