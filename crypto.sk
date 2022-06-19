@@ -1934,7 +1934,7 @@ function sellBedrag(coin: text, message: text, p: player):
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
-        if {_message} parsed is number is not 0:
+        if {_message} parsed as number is not 0:
             set {_amount} to {_message} parsed as number / {%{_coin}%::1::price_eur}
             set {_buyPrice} to {_amount} * {%{_coin}%::1::price_eur}
             if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_amount}:
