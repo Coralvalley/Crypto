@@ -142,6 +142,10 @@ on load:
     if yaml value "rekening-id" in "crypto-config" is not set:
         set yaml value "rekening-id" in "crypto-config" to 0
 
+    if yaml value "required-level" in "crypto-config" is not set:
+        set yaml value "required-level" in "crypto-config" to 5
+    set the comments of yaml node "required-level" from "crypto-config" to "This functions as a way for low level players to not be able to use crypto" and "You can change this to whatever number you want."
+
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
     # Spread
@@ -335,7 +339,11 @@ command /crypto [<text>] [<offline player>] [<number>]:
                     save yaml "crypto-config"
                     send "&aDe config van Crypto is succesvol gereload." to player
         if arg-1 is "open":
-            cryptoMarket("gui", player)
+            set {_required-level} to yaml value "required-level" in "crypto-config"
+            if the minetopiasdb level of player is greater than or equal to {_required-level}:
+                cryptoMarket("gui", player)
+            else:
+                send "&cJe moet hier level %{_required-level}% voor zijn." to player
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
