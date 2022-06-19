@@ -358,6 +358,7 @@ function wallet(inv: text, p: player):
         set slot 15 of {_p}'s current inventory to a ghast tear named "&7Te goed"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_inv} is "tegoed":
+        wait 1 tick
         open chest with 3 rows named "Tegoed" to {_p}
         wait 1 tick
         set slot 11 of {_p}'s current inventory to a dirt named "Storten"
@@ -438,12 +439,14 @@ on inventory click:
             cryptoMarket("gui", player)
         cancel event
     if name of player's current inventory is "Tegoed":
-        if clicked slot is 1: # Storten
+        if clicked slot is 11: # Storten
             close player's inventory
+            wait 1 tick
             send "&6Typ cancel als je wilt stoppen."
             send "&6Hoeveel € wil je storten? Let op het bedrag dat je invoerd zijn euro's"
             set {crypto.deposit.%player%} to true
-        if clicked slot is 2: # Opnemen
+        if clicked slot is 15: # Opnemen
+            wait 1 tick
             close player's inventory
             send "&6Typ cancel als je wilt stoppen."
             send "&6Hoeveel € wil je opnemen? Let op het bedrag dat je invoerd zijn dollars"
@@ -1454,6 +1457,35 @@ on inventory click:
             cryptoMarket("gui", player)
         cancel event
 
+    else if name of player's current inventory is "Bitcoin-cash kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.bitcoin-cash.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel bitcoin-cash wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.bitcoin-cash.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan bitcoin-cash wil je kopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+    else if name of player's current inventory is "Bitcoin-cash verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.bitcoin-cash.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel bitcoin-cash wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.bitcoin-cash.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan bitcoin-cash wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
+        cancel event
+
     else if name of player's current inventory is "Maker kopen":
         if clicked slot is 11:
             close player's inventory
@@ -1790,26 +1822,29 @@ function buyEenheden(coin: text, message: text, p: player):
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
-        set {_buyPrice} to {%{_coin}%::1::price_eur} * {_message} parsed as number
-        if {_balance} is greater than or equal to {_buyPrice}:
-            send "&aJe hebt zojuist %{_message}% %{_coin}% gekocht" to {_p}
+        if {_message} parsed as number is not 0:
+            set {_buyPrice} to {%{_coin}%::1::price_eur} * {_message} parsed as number
+            if {_balance} is greater than or equal to {_buyPrice}:
+                send "&aJe hebt zojuist %{_message}% %{_coin}% gekocht" to {_p}
 
-            remove {_buyPrice} from {_balance}
-            remove {_fee} from {_balance}
-            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
-            execute console command "rekening give %{_rekening-id}% %{_fee}%"
+                remove {_buyPrice} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
-            add {_message} parsed as number to {_%{_coin}%.%{_p}%}
-            set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
+                add {_message} parsed as number to {_%{_coin}%.%{_p}%}
+                set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
 
-            save yaml "crypto-%uuid of {_p}%"
+                save yaml "crypto-%uuid of {_p}%"
 
-            set {crypto.buy.%{_coin}%.eenheden.%{_p}%} to false
+                set {crypto.buy.%{_coin}%.eenheden.%{_p}%} to false
 
-            CryptoPlayerData({_p})
-            transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "buy", "eenheden")
+                CryptoPlayerData({_p})
+                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "buy", "eenheden")
+            else:
+                send "&cSorry, je hebt hier niet genoeg geld voor." to {_p}
         else:
-            send "&cSorry, je hebt hier niet genoeg geld voor." to {_p}
+            send "&cVoer een geldig getal in." to {_p}
     else if {_message} contains "cancel":
         set {crypto.buy.%{_coin}%.eenheden.%{_p}%} to false
         send "&cJe hebt de aankoop gecanceld" to {_p}
@@ -1822,26 +1857,29 @@ function sellEenheden(coin: text, message: text, p: player):
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
-        if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_message} parsed as number:
-            send "&aJe hebt zojuist %{_message}% %{_coin}% verkocht" to {_p}
+        if {_message} parsed as number is not 0:
+            if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_message} parsed as number:
+                send "&aJe hebt zojuist %{_message}% %{_coin}% verkocht" to {_p}
 
-            set {_sellPrice} to {%{_coin}%::1::price_eur} * {_message} parsed as number
-            add {_sellPrice} to {_balance}
-            remove {_fee} from {_balance}
-            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
-            execute console command "rekening give %{_rekening-id}% %{_fee}%"
+                set {_sellPrice} to {%{_coin}%::1::price_eur} * {_message} parsed as number
+                add {_sellPrice} to {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
-            remove {_message} parsed as number from {_%{_coin}%.%{_p}%}
-            set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
+                remove {_message} parsed as number from {_%{_coin}%.%{_p}%}
+                set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
 
-            save yaml "crypto-%uuid of {_p}%"
+                save yaml "crypto-%uuid of {_p}%"
 
-            set {crypto.sell.%{_coin}%.eenheden.%{_p}%} to false
+                set {crypto.sell.%{_coin}%.eenheden.%{_p}%} to false
 
-            CryptoPlayerData({_p})
-            transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "sell", "eenheden")
+                CryptoPlayerData({_p})
+                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "sell", "eenheden")
+            else:
+                send "&cJe hebt niet genoeg %{_coin}%" to {_p}
         else:
-            send "&cJe hebt niet genoeg %{_coin}%" to {_p}
+            send "&cVoer een geldig getal in." to {_p}
     else if {_message} contains "all":
         set {_coinAmount} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
         set {_sellPrice} to {%{_coin}%::1::price_eur} parsed as number * {_coinAmount} parsed as number
@@ -1860,27 +1898,30 @@ function buyBedrag(coin: text, message: text, p: player):
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
-        set {_amount} to {_message} parsed as number / {%{_coin}%::1::price_eur} # Set {_amount} to the amount of a crypto coin a player is going to buy
-        set {_buyPrice} to {_amount} * {%{_coin}%::1::price_eur}
-        if {_balance} is greater than or equal to {_buyPrice}:
-            send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% gekocht." to {_p}
+        if {_message} parsed as number is not 0:
+            set {_amount} to {_message} parsed as number / {%{_coin}%::1::price_eur} # Set {_amount} to the amount of a crypto coin a player is going to buy
+            set {_buyPrice} to {_amount} * {%{_coin}%::1::price_eur}
+            if {_balance} is greater than or equal to {_buyPrice}:
+                send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% gekocht." to {_p}
 
-            remove {_buyPrice} from {_balance}
-            remove {_fee} from {_balance}
-            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
-            execute console command "rekening give %{_rekening-id}% %{_fee}%"
+                remove {_buyPrice} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
-            add {_amount} to {_%{_coin}%.%{_p}%}
-            set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
+                add {_amount} to {_%{_coin}%.%{_p}%}
+                set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
 
-            save yaml "crypto-%uuid of {_p}%"
+                save yaml "crypto-%uuid of {_p}%"
 
-            set {crypto.buy.%{_coin}%.bedrag.%{_p}%} to false
+                set {crypto.buy.%{_coin}%.bedrag.%{_p}%} to false
 
-            CryptoPlayerData({_p})
-            transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "buy", "bedrag")
+                CryptoPlayerData({_p})
+                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "buy", "bedrag")
+            else:
+                send "&cSorry je hebt hier niet genoeg geld voor." to {_p}
         else:
-            send "&cSorry je hebt hier niet genoeg geld voor." to {_p}
+            send "&cVoer een geldig getal in." to {_p}
     else if {_message} contains "cancel":
         set {crypto.buy.%{_coin}%.bedrag.%{_p}%} to false
         send "&cJe hebt de aankoop gecanceld." to {_p}
@@ -1893,27 +1934,30 @@ function sellBedrag(coin: text, message: text, p: player):
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     set {_%{_coin}%.%{_p}%} to yaml value "%{_coin}%" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
-        set {_amount} to {_message} parsed as number / {%{_coin}%::1::price_eur}
-        set {_buyPrice} to {_amount} * {%{_coin}%::1::price_eur}
-        if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_amount}:
-            send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% verkocht." to {_p}
+        if {_message} parsed is number is not 0:
+            set {_amount} to {_message} parsed as number / {%{_coin}%::1::price_eur}
+            set {_buyPrice} to {_amount} * {%{_coin}%::1::price_eur}
+            if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_amount}:
+                send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% verkocht." to {_p}
 
-            add {_buyPrice} to {_balance}
-            remove {_fee} from {_balance}
-            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
-            execute console command "rekening give %{_rekening-id}% %{_fee}%"
+                add {_buyPrice} to {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
-            remove {_amount} from {_%{_coin}%.%{_p}%}
-            set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
+                remove {_amount} from {_%{_coin}%.%{_p}%}
+                set yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" to {_%{_coin}%.%{_p}%}
 
-            save yaml "crypto-%uuid of {_p}%"
-            
-            set {crypto.sell.%{_coin}%.bedrag.%{_p}%} to false
+                save yaml "crypto-%uuid of {_p}%"
+                
+                set {crypto.sell.%{_coin}%.bedrag.%{_p}%} to false
 
-            CryptoPlayerData({_p})
-            transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "sell", "bedrag")
+                CryptoPlayerData({_p})
+                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "sell", "bedrag")
+            else:
+                send "&cSorry je hebt niet genoeg %{_coin}%" to {_p}
         else:
-            send "&cSorry je hebt niet genoeg %{_coin}%" to {_p}
+            send "&cVoer een geldig getal in." to {_p}
     else if {_message} contains "cancel":
         set {crypto.sell.%{_coin}%.bedrag.%{_p}%} to false
         send "&cJe hebt de verkoop gecanceld" to {_p}
