@@ -256,7 +256,7 @@ function CryptoPlayerData(p: player):
         send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%"", ""ethereum-classic"":""%{ethereum-classic.%{player}%}%"", ""vechain"":""%{vechain.%{player}%}%"", ""xrp"":""%{xrp.%{player}%}%"", ""solana"":""%{solana.%{player}%}%"", ""shiba-inu"":""%{shiba-inu.%{player}%}%""}}" and the headers "Authorization: %{api_key}%"
 
 function transaction(p: player, coin: text, amount: number, price: number, type: text, type2: text):
-    set {player} to {_p}
+    set {player.%{_p}%} to {_p}
     set {coin.%{_p}%} to {_coin}
     set {amount.%{_p}%} to {_amount}
     set {price.%{_p}%} to {_price}
@@ -265,9 +265,9 @@ function transaction(p: player, coin: text, amount: number, price: number, type:
     set {time.%{_p}%} to now
 
     if {type2.%{_p}%} is "eenheden":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player}%" with the body "%{time.%{player}%}%: %{player}%, %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, €%{price.%{player}%}%, %{type2.%{player}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{_p}%}%" with the body "%{time.%{_p}%}%: %{player.%{_p}%}%, %{type.%{_p}%}%, %{amount.%{_p}%}%, %{coin.%{_p}%}%, €%{price.%{_p}%}%, %{type2.%{_p}%}%"
     if {type2.%{_p}%} is "bedrag":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player}%" with the body "%{time.%{player}%}%: %{player}%, %{type.%{player}%}%, €%{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%, %{type2.%{player}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{_p}%}%" with the body "%{time.%{_p}%}%: %{player.%{_p}%}%, %{type.%{_p}%}%, €%{amount.%{_p}%}%, %{coin.%{_p}%}%, %{price.%{_p}%}%, %{type2.%{_p}%}%"
 
 every 5 minutes:
     loop all players:
@@ -521,18 +521,21 @@ on chat:
 
 function walletDeposit(p: player, message: text):
     if {_message} parsed as number is a number:
-        if {_p}'s balance is greater than or equal to {_message} parsed as number:
-            set {_message} to {_message} parsed as number
-            send "&aJe hebt succesvol €%{_message}% gestort op je wallet." to {_p}
+        if {_message} parsed as number is not 0:
+            if {_p}'s balance is greater than or equal to {_message} parsed as number:
+                set {_message} to {_message} parsed as number
+                send "&aJe hebt succesvol €%{_message}% gestort op je wallet." to {_p}
 
-            set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
-            add {_message} to {_balance}
-            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
-            save yaml "crypto-%uuid of {_p}%"
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
+                add {_message} to {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+                save yaml "crypto-%uuid of {_p}%"
 
-            set {crypto.deposit.%{_p}%} to false
+                set {crypto.deposit.%{_p}%} to false
+            else:
+                send "&cJe hebt niet genoeg geld op je bank rekening!" to {_p}
         else:
-            send "&cJe hebt niet genoeg geld op je bank rekening!" to {_p}
+            send "&cJe kan geen 0 invoeren." to {_p}
     else if {_message} contains "cancel":
         set {crypto.deposit.%{_p}%} to false
         send "&cJe hebt het storten gecanceld." to {_p}
@@ -542,16 +545,21 @@ function walletDeposit(p: player, message: text):
 function walletWithdraw(p: player, message: text):
     set {_balance} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
     if {_message} parsed as number is a number:
-        if {_balance} is greater than or equal to {_message} parsed as number:
-            send "&aJe hebt succesvol €%{_message}% opgenomen van je wallet." to {_p}
+        if {_message} parsed as number is not 0:
+            if {_balance} is greater than or equal to {_message} parsed as number:
+                send "&aJe hebt succesvol €%{_message}% opgenomen van je wallet." to {_p}
 
-            remove {_message} parsed as number from {_balance}
-            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
-            save yaml "crypto-%uuid of {_p}%"
+                remove {_message} parsed as number from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+                save yaml "crypto-%uuid of {_p}%"
 
-            add {_message} to {_p}'s balance
+                add {_message} to {_p}'s balance
 
-            set {crypto.withdraw.%{_p}%} to false
+                set {crypto.withdraw.%{_p}%} to false
+            else:
+                send "&cJe hebt niet genoeg tegoed!" to {_p}
+        else:
+            send "&cJe kan geen 0 invoeren." to {_p}
     else if {_message} contains "cancel":
         set {crypto.withdraw.%{_p}%} to false
         send "&cJe hebt de opname gecanceld." to {_p}
