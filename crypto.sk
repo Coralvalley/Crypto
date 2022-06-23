@@ -101,6 +101,27 @@ on load:
         if skript-yaml value "coins" in "crypto-config" doesn't contain "shiba-inu":
             add "shiba-inu" to skript-yaml list "coins" in "crypto-config"
 
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "bitcoin" in "crypto-config" is not set:
+        set yaml value "bitcoin" in "crypto-config" to true
+
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
     # Staking
@@ -265,9 +286,9 @@ function transaction(p: player, coin: text, amount: number, price: number, type:
     set {time.%{_p}%} to now
 
     if {type2.%{_p}%} is "eenheden":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{_p}%}%" with the body "%{time.%{_p}%}%: %{player.%{_p}%}%, %{type.%{_p}%}%, %{amount.%{_p}%}%, %{coin.%{_p}%}%, €%{price.%{_p}%}%, %{type2.%{_p}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}%: %{player.%{player}%}%, %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, €%{price.%{player}%}%, %{type2.%{player}%}%"
     if {type2.%{_p}%} is "bedrag":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{_p}%}%" with the body "%{time.%{_p}%}%: %{player.%{_p}%}%, %{type.%{_p}%}%, €%{amount.%{_p}%}%, %{coin.%{_p}%}%, %{price.%{_p}%}%, %{type2.%{_p}%}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}%: %{player.%{player}%}%, %{type.%{player}%}%, €%{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%, %{type2.%{player}%}%"
 
 every 5 minutes:
     loop all players:
@@ -909,6 +930,7 @@ function cryptoMarket(coin: text, p: player):
 
     if {_coin} is "bitcoin-cashBuy":
         open chest with 3 rows named "bitcoin-cash kopen" to {_p}
+        wait 1 tick
         set {_bitcoin-cash::1::percent_change_24h} to {bitcoin-cash::1::percent_change_24h} parsed as number
         if {_bitcoin-cash::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&5Eenheden" with lore "&fWaarde: € %{bitcoin-cash::1::price_eur}%" and "&a%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin-cash}"
@@ -927,6 +949,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "bitcoin-cashSell":
         open chest with 3 rows named "Bitcoin-cash verkopen" to {_p}
+        wait 1 tick
         set {_bitcoin-cash::1::percent_change_24h} to {bitcoin-cash::1::percent_change_24h} parsed as number
         if {_bitcoin-cash::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&5Eenheden" with lore "&fWaarde: € %{bitcoin-cash::1::price_eur}%" and "&a%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin-cash}"
@@ -947,6 +970,7 @@ function cryptoMarket(coin: text, p: player):
 
     if {_coin} is "litecoinBuy":
         open chest with 3 rows named "Litecoin kopen" to {_p}
+        wait 1 tick
         set {_litecoin::1::percent_change_24h} to {litecoin::1::percent_change_24h} parsed as number
         if {_litecoin::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&1Eenheden" with lore "&fWaarde: € %{litecoin::1::price_eur}%" and "&a%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
@@ -965,6 +989,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "litecoinSell":
         open chest with 3 rows named "Litecoin verkopen" to {_p}
+        wait 1 tick
         set {_litecoin::1::percent_change_24h} to {litecoin::1::percent_change_24h} parsed as number
         if {_litecoin::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&1Eenheden" with lore "&fWaarde: € %{litecoin::1::price_eur}%" and "&a%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
@@ -985,6 +1010,7 @@ function cryptoMarket(coin: text, p: player):
 
     if {_coin} is "dashBuy":
         open chest with 3 rows named "Dash kopen" to {_p}
+        wait 1 tick
         set {_dash::1::percent_change_24h} to {dash::1::percent_change_24h} parsed as number
         if {_dash::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&cEenheden" with lore "&fWaarde: € %{dash::1::price_eur}%" and "&a%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
@@ -1003,6 +1029,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "dashSell":
         open chest with 3 rows named "Dash verkopen" to {_p}
+        wait 1 tick
         set {_dash::1::percent_change_24h} to {dash::1::percent_change_24h} parsed as number
         if {_dash::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&cEenheden" with lore "&fWaarde: € %{dash::1::price_eur}%" and "&a%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
@@ -1023,6 +1050,7 @@ function cryptoMarket(coin: text, p: player):
 
     if {_coin} is "cardanoBuy":
         open chest with 3 rows named "Cardano kopen" to {_p}
+        wait 1 tick
         set {_cardano::1::percent_change_24h} to {cardano::1::percent_change_24h} parsed as number
         if {_cardano::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{cardano::1::price_eur}%" and "&a%%%{cardano::1::percent_change_24h}%" with nbt "{mtcustom:cardano}"
@@ -1041,6 +1069,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "cardanoSell":
         open chest with 3 rows named "Cardano verkopen" to {_p}
+        wait 1 tick
         set {_cardano::1::percent_change_24h} to {cardano::1::percent_change_24h} parsed as number
         if {_cardano::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{cardano::1::price_eur}%" and "&a%%%{cardano::1::percent_change_24h}%" with nbt "{mtcustom:cardano}"
@@ -1061,6 +1090,7 @@ function cryptoMarket(coin: text, p: player):
 
     if {_coin} is "tetherBuy":
         open chest with 3 rows named "tether kopen" to {_p}
+        wait 1 tick
         set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
         if {_tether::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{tether::1::price_eur}%" and "&a%%%{tether::1::percent_change_24h}%" with nbt "{mtcustom:tether}"
@@ -1079,6 +1109,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "tetherSell":
         open chest with 3 rows named "tether verkopen" to {_p}
+        wait 1 tick
         set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
         if {_tether::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{tether::1::price_eur}%" and "&a%%%{tether::1::percent_change_24h}%" with nbt "{mtcustom:tether}"
@@ -1099,6 +1130,7 @@ function cryptoMarket(coin: text, p: player):
 
     if {_coin} is "dogecoinBuy":
         open chest with 3 rows named "Dogecoin kopen" to {_p}
+        wait 1 tick
         set {_dogecoin::1::percent_change_24h} to {dogecoin::1::percent_change_24h} parsed as number
         if {_dogecoin::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{dogecoin::1::price_eur}%" and "&a%%%{dogecoin::1::percent_change_24h}%" with nbt "{mtcustom:dogecoin}"
@@ -1117,6 +1149,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "dogecoinSell":
         open chest with 3 rows named "Dogecoin verkopen" to {_p}
+        wait 1 tick
         set {_dogecoin::1::percent_change_24h} to {dogecoin::1::percent_change_24h} parsed as number
         if {_dogecoin::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{dogecoin::1::price_eur}%" and "&a%%%{dogecoin::1::percent_change_24h}%" with nbt "{mtcustom:dogecoin}"
@@ -1137,6 +1170,7 @@ function cryptoMarket(coin: text, p: player):
     
     if {_coin} is "ethereum-classicBuy":
         open chest with 3 rows named "Ethereum classic kopen" to {_p}
+        wait 1 tick
         set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
         if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{ethereum-classic::1::price_eur}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%" with nbt "{mtcustom:ethereum-classic}"
@@ -1155,6 +1189,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "ethereum-classicSell":
         open chest with 3 rows named "Ethereum classic verkopen" to {_p}
+        wait 1 tick
         set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
         if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{ethereum-classic::1::price_eur}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%" with nbt "{mtcustom:ethereum-classic}"
@@ -1175,6 +1210,7 @@ function cryptoMarket(coin: text, p: player):
     
     if {_coin} is "vechainBuy":
         open chest with 3 rows named "VeChain kopen" to {_p}
+        wait 1 tick
         set {_vechain::1::percent_change_24h} to {vechain::1::percent_change_24h} parsed as number
         if {_vechain::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{vechain::1::price_eur}%" and "&a%%%{vechain::1::percent_change_24h}%" with nbt "{mtcustom:vechain}"
@@ -1193,6 +1229,7 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "vechainSell":
         open chest with 3 rows named "VeChain verkopen" to {_p}
+        wait 1 tick
         set {_vechain::1::percent_change_24h} to {vechain::1::percent_change_24h} parsed as number
         if {_vechain::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{vechain::1::price_eur}%" and "&a%%%{vechain::1::percent_change_24h}%" with nbt "{mtcustom:vechain}"
@@ -1212,8 +1249,8 @@ function cryptoMarket(coin: text, p: player):
 
 
     if {_coin} is "xrpBuy":
-        wait 1 tick
         open chest with 3 rows named "XRP kopen" to {_p}
+        wait 1 tick
         set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
         if {_xrp::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{xrp::1::price_eur}%" and "&a%%%{xrp::1::percent_change_24h}%" with nbt "{mtcustom:xrp}"
@@ -1231,8 +1268,8 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{xrp::1::price_eur}%" and "&7%%%{xrp::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "xrpSell":
-        wait 1 tick
         open chest with 3 rows named "XRP verkopen" to {_p}
+        wait 1 tick
         set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
         if {_xrp::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{xrp::1::price_eur}%" and "&a%%%{xrp::1::percent_change_24h}%" with nbt "{mtcustom:xrp}"
@@ -1252,8 +1289,8 @@ function cryptoMarket(coin: text, p: player):
 
     
     if {_coin} is "solanaBuy":
-        wait 1 tick
         open chest with 3 rows named "Solana kopen" to {_p}
+        wait 1 tick
         set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
         if {_solana::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&a%%%{solana::1::percent_change_24h}%" with nbt "{mtcustom:solana}"
@@ -1271,8 +1308,8 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&7%%%{solana::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "solanaSell":
-        wait 1 tick
         open chest with 3 rows named "Solana verkopen" to {_p}
+        wait 1 tick
         set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
         if {_solana::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&a%%%{solana::1::percent_change_24h}%" with nbt "{mtcustom:solana}"
@@ -1292,8 +1329,8 @@ function cryptoMarket(coin: text, p: player):
 
 
     if {_coin} is "shiba-inuBuy":
-        wait 1 tick
         open chest with 3 rows named "Shiba Inu kopen" to {_p}
+        wait 1 tick
         set {_shiba-inu::1::percent_change_24h} to {shiba-inu::1::percent_change_24h} parsed as number
         if {_shiba-inu::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&a%%%{shiba-inu::1::percent_change_24h}%" with nbt "{mtcustom:shiba-inu}"
@@ -1311,8 +1348,8 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&7%%%{shiba-inu::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "shiba-inuSell":
-        wait 1 tick
         open chest with 3 rows named "Shiba Inu verkopen" to {_p}
+        wait 1 tick
         set {_shiba-inu::1::percent_change_24h} to {shiba-inu::1::percent_change_24h} parsed as number
         if {_shiba-inu::1::percent_change_24h} is greater than 0.0:
             set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&a%%%{shiba-inu::1::percent_change_24h}%" with nbt "{mtcustom:shiba-inu}"
@@ -1736,7 +1773,6 @@ on inventory click:
 
     else if name of player's current inventory is "XRP kopen":
         if clicked slot is 11:
-            wait 1 tick
             close player's inventory
             set {crypto.buy.xrp.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
@@ -1766,7 +1802,6 @@ on inventory click:
 
     else if name of player's current inventory is "Solana kopen":
         if clicked slot is 11:
-            wait 1 tick
             close player's inventory
             set {crypto.buy.solana.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
@@ -1796,7 +1831,6 @@ on inventory click:
 
     else if name of player's current inventory is "Shiba Inu kopen":
         if clicked slot is 11:
-            wait 1 tick
             close player's inventory
             set {crypto.buy.shiba-inu.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
