@@ -388,7 +388,8 @@ function wallet(inv: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_inv} is "tegoed":
         wait 1 tick
-        open chest with 3 rows named "Tegoed" to {_p}
+        set {crypto-tegoed.%{_p}%} to yaml value "tegoed" in "crypto-%uuid of {_p}%"
+        open chest with 3 rows named "Tegoed: %{crypto-tegoed.%{_p}%}%" to {_p}
         wait 1 tick
         set slot 11 of {_p}'s current inventory to a dirt named "Storten"
         set slot 15 of {_p}'s current inventory to a dirt named "Opnemen"
@@ -467,7 +468,7 @@ on inventory click:
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
-    if name of player's current inventory is "Tegoed":
+    if name of player's current inventory is "Tegoed: %{crypto-tegoed.%player%}%":
         if clicked slot is 11: # Storten
             close player's inventory
             wait 1 tick
