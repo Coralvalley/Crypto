@@ -183,21 +183,19 @@ on load:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-on load:
-    if file path "plugins/crypto/transactions.json" doesn't exist:
-        create file path "plugins/crypto/transactions.json"
+function transaction(p: player, coin: text, amount: number, price: number, type: text, type2: text):
+    set {player.%{_p}%} to {_p}
+    set {coin.%{_p}%} to {_coin}
+    set {amount.%{_p}%} to {_amount}
+    set {price.%{_p}%} to {_price}
+    set {type.%{_p}%} to {_type}
+    set {type2.%{_p}%} to {_type2}
+    set {time.%{_p}%} to now
 
-    
-# function transaction(p: player, coin: text, amount: number):
-#     clear {transaction::*}
-#     set {player} to {_p}
-#     set {coin.%{player}%} to {_coin}
-#     set {amount.%{player}%} to {_amount}
-
-    # set {_json} to "{""name"": ""%{player}'s name%"", ""information"": { ""coin"":""%{coin.%{player}%}%"", ""amount"":""%{amount.%{player}%}%""}}"
-
-    # send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions.php" with the body "{""name"":%{player}'s name%,""information""}" and the headers "Authorization: %{api_key.%{player}%}%"
-    # send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transactions.php" with the body "{""name"": ""%{player}'s name%"", ""information"": { ""coin"":""%{coin.%{player}%}%"", ""amount"":""%{amount.%{player}%}%""}}" and the headers "Authorization: %{api_key.%{player}%}%"
+    if {type2.%{_p}%} is "eenheden":
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}%: %{player.%{player}%}%, %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, €%{price.%{player}%}%, %{type2.%{player}%}%"
+    if {type2.%{_p}%} is "bedrag":
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}%: %{player.%{player}%}%, %{type.%{player}%}%, €%{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%, %{type2.%{player}%}%"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -275,20 +273,6 @@ function CryptoPlayerData(p: player):
     set {api_key} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
         send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%"", ""ethereum-classic"":""%{ethereum-classic.%{player}%}%"", ""vechain"":""%{vechain.%{player}%}%"", ""xrp"":""%{xrp.%{player}%}%"", ""solana"":""%{solana.%{player}%}%"", ""shiba-inu"":""%{shiba-inu.%{player}%}%""}}" and the headers "Authorization: %{api_key}%"
-
-function transaction(p: player, coin: text, amount: number, price: number, type: text, type2: text):
-    set {player.%{_p}%} to {_p}
-    set {coin.%{_p}%} to {_coin}
-    set {amount.%{_p}%} to {_amount}
-    set {price.%{_p}%} to {_price}
-    set {type.%{_p}%} to {_type}
-    set {type2.%{_p}%} to {_type2}
-    set {time.%{_p}%} to now
-
-    if {type2.%{_p}%} is "eenheden":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}%: %{player.%{player}%}%, %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, €%{price.%{player}%}%, %{type2.%{player}%}%"
-    if {type2.%{_p}%} is "bedrag":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}%: %{player.%{player}%}%, %{type.%{player}%}%, €%{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%, %{type2.%{player}%}%"
 
 every 5 minutes:
     loop all players:
@@ -373,10 +357,6 @@ command /crypto [<text>] [<offline player>] [<number>]:
 #
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
-
-command /wallet:
-    trigger:
-        wallet("main", player)
 
 function wallet(inv: text, p: player):
     set {_u} to uuid of {_p}
