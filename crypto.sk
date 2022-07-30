@@ -252,7 +252,7 @@ on join:
     
     save yaml "crypto-%uuid of player%"
     
-    CryptoPlayerData(player)
+    # CryptoPlayerData(player)
 
 function CryptoPlayerData(p: player):
     set {player} to {_p}
@@ -376,40 +376,40 @@ function wallet(inv: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_inv} is "coins":
         set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of {_p}%"
-        set {_bitcoin.price} to {bitcoin::1::price_eur} parsed as number * {_bitcoin}
+        set {_bitcoin.price} to {bitcoin::1::price_eur} * {_bitcoin}
 
         set {_ethereum} to yaml value "ethereum" in "crypto-%uuid of {_p}%"
-        set {_ethereum.price} to {ethereum::1::price_eur} parsed as number * {_ethereum}
+        set {_ethereum.price} to {ethereum::1::price_eur} * {_ethereum}
 
         set {_maker} to yaml value "maker" in "crypto-%uuid of {_p}%"
-        set {_maker.price} to {maker::1::price_eur} parsed as number * {_maker}
+        set {_maker.price} to {maker::1::price_eur} * {_maker}
 
         set {_bitcoin-cash} to yaml value "bitcoin-cash" in "crypto-%uuid of {_p}%"
-        set {_bitcoin-cash.price} to {bitcoin-cash::1::price_eur} parsed as number * {_bitcoin-cash}
+        set {_bitcoin-cash.price} to {bitcoin-cash::1::price_eur} * {_bitcoin-cash}
 
         set {_litecoin} to yaml value "litecoin" in "crypto-%uuid of {_p}%"
-        set {_litecoin.price} to {ethereum::1::price_eur} parsed as number * {_litecoin}
+        set {_litecoin.price} to {ethereum::1::price_eur}  * {_litecoin}
 
         set {_dash} to yaml value "dash" in "crypto-%uuid of {_p}%"
-        set {_dash.price} to {dash::1::price_eur} parsed as number * {_dash}
+        set {_dash.price} to {dash::1::price_eur}  * {_dash}
 
         set {_cardano} to yaml value "cardano" in "crypto-%uuid of {_p}%"
-        set {_cardano.price} to {cardano::1::price_eur} parsed as number * {_cardano}
+        set {_cardano.price} to {cardano::1::price_eur}  * {_cardano}
 
         set {_tether} to yaml value "tether" in "crypto-%uuid of {_p}%"
-        set {_tether.price} to {tether::1::price_eur} parsed as number * {_tether}
+        set {_tether.price} to {tether::1::price_eur}  * {_tether}
 
         set {_dogecoin} to yaml value "dogecoin" in "crypto-%uuid of {_p}%"
-        set {_dogecoin.price} to {dogecoin::1::price_eur} parsed as number * {_dogecoin}
+        set {_dogecoin.price} to {dogecoin::1::price_eur}  * {_dogecoin}
 
         set {_ethereum-classic} to yaml value "ethereum-classic" in "crypto-%uuid of {_p}%"
-        set {_ethereum-classic.price} to {ethereum-classic::1::price_eur} parsed as number * {_ethereum-classic}
+        set {_ethereum-classic.price} to {ethereum-classic::1::price_eur}  * {_ethereum-classic}
 
         set {_vechain} to yaml value "vechain" in "crypto-%uuid of {_p}%"
         set {_vechain.price} to {vechain::1::price_eur} * {_vechain}
 
         set {_xrp} to yaml value "xrp" in "crypto-%uuid of {_p}%"
-        set {_xrp.price} to {xrp::1::price_eur} parsed as number * {_xrp}
+        set {_xrp.price} to {xrp::1::price_eur}  * {_xrp}
 
         set {_solana} to yaml value "solana" in "crypto-%uuid of {_p}%"
         set {_solana.price} to {solana::1::price_eur} * {_solana}
@@ -425,7 +425,7 @@ function wallet(inv: text, p: player):
         set slot 0 of {_p}'s current inventory to a iron ingot named "&7Bitcoin" with nbt "{mtcustom:bitcoin}" with lore "" and "&8Totaal: %{_bitcoin}%" and "&8Waarde: €%{_bitcoin.price}%"
         set slot 1 of {_p}'s current inventory to a iron ingot named "&7Ethereum" with nbt "{mtcustom:ethereum}" with lore "" and "&8Totaal: %{_ethereum}%" and "&8Waarde: €%{_ethereum.price}%"
         set slot 2 of {_p}'s current inventory to a iron ingot named "&7Maker" with nbt "{mtcustom:maker}" with lore "" and "&8Totaal: %{_maker}%" and "&8Waarde: €%{_maker.price}%"
-        set slot 3 of {_p}'s current inventory to a iron ingot named "&7Bitcoin cash" with nbt "{mtcustom:bitcoin-cash}" with lore "" and "&8Totaal: %{_bitcoin-cash}%" and "&8Waarde: €%{_bitcoin-cash.price}%"
+        set slot 3 of {_p}'s current inventory to a iron ingot named "&7Bitcoin cash" with nbt "{mtcustom:bitcoincash}" with lore "" and "&8Totaal: %{_bitcoin-cash}%" and "&8Waarde: €%{_bitcoin-cash.price}%"
         set slot 4 of {_p}'s current inventory to a iron ingot named "&7Litecoin" with nbt "{mtcustom:litecoin}" with lore "" and "&8Totaal: %{_litecoin}%" and "&8Waarde: €%{_litecoin.price}%"
         set slot 5 of {_p}'s current inventory to a iron ingot named "&7Dash" with nbt "{mtcustom:dashcoin}" with lore "" and "&8Totaal: %{_dash}%" and "&8Waarde: €%{_dash.price}%"
         set slot 6 of {_p}'s current inventory to a iron ingot named "&7Cardano" with nbt "{mtcustom:cardano}" with lore "" and "&8Totaal: %{_cardano}%" and "&8Waarde: €%{_cardano.price}%"
@@ -2374,6 +2374,280 @@ every 5 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% maker gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+        
+        set {_bitcoin-cash.%loop-player%} to yaml value "bitcoin-cash" in "crypto-%uuid of loop-player%"
+
+        if {_bitcoin-cash.%loop-player%} is less than {_crypto.%loop-player%::coins::bitcoin-cash}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::bitcoin-cash} - {_bitcoin-cash.%loop-player%}
+            set {_price} to {_difference} * {bitcoin-cash::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "bitcoin-cash" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::bitcoin-cash}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% bitcoin-cash gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_litecoin.%loop-player%} to yaml value "litecoin" in "crypto-%uuid of loop-player%"
+
+        if {_litecoin.%loop-player%} is less than {_crypto.%loop-player%::coins::litecoin}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::litecoin} - {_litecoin.%loop-player%}
+            set {_price} to {_difference} * {litecoin::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "litecoin" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::litecoin}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% litecoin gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+        set {_dash.%loop-player%} to yaml value "dash" in "crypto-%uuid of loop-player%"
+
+        if {_dash.%loop-player%} is less than {_crypto.%loop-player%::coins::dash}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::dash} - {_dash.%loop-player%}
+            set {_price} to {_difference} * {dash::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "dash" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::dash}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% dash gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_cardano.%loop-player%} to yaml value "cardano" in "crypto-%uuid of loop-player%"
+
+        if {_cardano.%loop-player%} is less than {_crypto.%loop-player%::coins::cardano}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::cardano} - {_cardano.%loop-player%}
+            set {_price} to {_difference} * {cardano::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "cardano" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::cardano}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% cardano gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_tether.%loop-player%} to yaml value "tether" in "crypto-%uuid of loop-player%"
+
+        if {_tether.%loop-player%} is less than {_crypto.%loop-player%::coins::tether}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::tether} - {_tether.%loop-player%}
+            set {_price} to {_difference} * {tether::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "tether" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::tether}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% tether gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_dogecoin.%loop-player%} to yaml value "dogecoin" in "crypto-%uuid of loop-player%"
+
+        if {_dogecoin.%loop-player%} is less than {_crypto.%loop-player%::coins::dogecoin}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::dogecoin} - {_dogecoin.%loop-player%}
+            set {_price} to {_difference} * {dogecoin::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "dogecoin" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::dogecoin}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% dogecoin gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_ethereum-classic.%loop-player%} to yaml value "ethereum-classic" in "crypto-%uuid of loop-player%"
+
+        if {_ethereum-classic.%loop-player%} is less than {_crypto.%loop-player%::coins::ethereum-classic}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::ethereum-classic} - {_ethereum-classic.%loop-player%}
+            set {_price} to {_difference} * {ethereum-classic::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "ethereum-classic" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::ethereum-classic}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% ethereum-classic gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_vechain.%loop-player%} to yaml value "vechain" in "crypto-%uuid of loop-player%"
+
+        if {_vechain.%loop-player%} is less than {_crypto.%loop-player%::coins::vechain}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::vechain} - {_vechain.%loop-player%}
+            set {_price} to {_difference} * {vechain::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "vechain" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::vechain}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% vechain gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_xrp.%loop-player%} to yaml value "xrp" in "crypto-%uuid of loop-player%"
+
+        if {_xrp.%loop-player%} is less than {_crypto.%loop-player%::coins::xrp}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::xrp} - {_xrp.%loop-player%}
+            set {_price} to {_difference} * {xrp::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "xrp" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::xrp}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% xrp gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_solana.%loop-player%} to yaml value "solana" in "crypto-%uuid of loop-player%"
+
+        if {_solana.%loop-player%} is less than {_crypto.%loop-player%::coins::solana}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::solana} - {_solana.%loop-player%}
+            set {_price} to {_difference} * {solana::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "solana" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::solana}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% solana gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_shiba-inu.%loop-player%} to yaml value "shiba-inu" in "crypto-%uuid of loop-player%"
+
+        if {_shiba-inu.%loop-player%} is less than {_crypto.%loop-player%::coins::shiba-inu}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::shiba-inu} - {_shiba-inu.%loop-player%}
+            set {_price} to {_difference} * {shiba-inu::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "shiba-inu" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::shiba-inu}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% shiba-inu gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
