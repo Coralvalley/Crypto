@@ -272,7 +272,7 @@ function CryptoPlayerData(p: player):
     set {shiba-inu.%{player}%} to yaml value "shiba-inu" in "crypto-%uuid of {player}%"
     set {api_key} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":""%{bitcoin.%{player}%}%"", ""ethereum"":""%{ethereum.%{player}%}%"", ""maker"":""%{maker.%{player}%}%"", ""bitcoin-cash"":""%{bitcoin-cash.%{player}%}%"", ""litecoin"":""%{litecoin.%{player}%}%"", ""dash"":""%{dash.%{player}%}%"", ""cardano"":""%{cardano.%{player}%}%"", ""tether"":""%{tether.%{player}%}%"", ""dogecoin"":""%{dogecoin.%{player}%}%"", ""ethereum-classic"":""%{ethereum-classic.%{player}%}%"", ""vechain"":""%{vechain.%{player}%}%"", ""xrp"":""%{xrp.%{player}%}%"", ""solana"":""%{solana.%{player}%}%"", ""shiba-inu"":""%{shiba-inu.%{player}%}%""}}" and the headers "Authorization: %{api_key}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""shiba-inu"":%{shiba-inu.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
 
 every 5 minutes:
     loop all players:
@@ -456,8 +456,9 @@ on inventory click:
             send "&6Hoeveel € wil je storten? Let op het bedrag dat je invoerd zijn euro's"
             set {crypto.deposit.%player%} to true
         if clicked slot is 15: # Opnemen
-            wait 1 tick
+            cancel event
             close player's inventory
+            wait 1 tick
             send "&6Typ cancel als je wilt stoppen."
             send "&6Hoeveel € wil je opnemen? Let op het bedrag dat je invoerd zijn dollars"
             set {crypto.withdraw.%player%} to true
@@ -562,6 +563,18 @@ function walletWithdraw(p: player, message: text):
                 send "&cJe hebt niet genoeg tegoed!" to {_p}
         else:
             send "&cJe kan geen 0 invoeren." to {_p}
+    else if {_message} contains "all":
+        if {_balance} is greater than than 0:
+            send "&aJe hebt succesvol €%{_balance}% opgenomen van je wallet." to {_p}
+            add {_balance} to {_p}'s balance
+
+            set {_balance} to 0
+            set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
+            save yaml "crypto-%uuid of {_p}%"
+
+            set {crypto.withdraw.%{_p}%} to false
+        else:
+            send "&cJe hebt niet genoeg tegoed!" to {_p}
     else if {_message} contains "cancel":
         set {crypto.withdraw.%{_p}%} to false
         send "&cJe hebt de opname gecanceld." to {_p}
@@ -707,7 +720,7 @@ function cryptoMarket(coin: text, p: player):
 
         set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
         if {_ethereum::1::percent_change_24h} is greater than 0.0:
-            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_eur}%" and "&a%%%{ethereum::1::percent_change_24h}%" and "&fVolume €%{ethereum::1::volume_eur}%"with nbt "{mtcustom:ethereum}"
+            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_eur}%" and "&a%%%{ethereum::1::percent_change_24h}%" and "&fVolume €%{ethereum::1::volume_eur}%" with nbt "{mtcustom:ethereum}"
         else if {_ethereum::1::percent_change_24h} is less than 0.0:
             set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_eur}%" and "&c%%%{ethereum::1::percent_change_24h}%" and "&fVolume €%{ethereum::1::volume_eur}%" with nbt "{mtcustom:ethereum}"
         else if {_ethereum::1::percent_change_24h} is equal to 0.0:
@@ -2273,3 +2286,94 @@ on chat:
         cancel event
         set {_message} to message
         sellBedrag("shiba-inu", {_message}, player)
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Crypto kopen via website testing
+
+every 5 seconds:
+    loop all players:
+        send a "get" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/players/%loop-player%.json" with the headers "Content-Type: application/json"
+
+        map json last http response's body to {_crypto.%loop-player%::*}
+        set {_bitcoin.%loop-player%} to yaml value "bitcoin" in "crypto-%uuid of loop-player%"
+
+        if {_bitcoin.%loop-player%} is less than {_crypto.%loop-player%::coins::bitcoin}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::bitcoin} - {_bitcoin.%loop-player%}
+            set {_price} to {_difference} * {bitcoin::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "bitcoin" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::bitcoin}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% bitcoin gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+        
+        set {_ethereum.%loop-player%} to yaml value "ethereum" in "crypto-%uuid of loop-player%"
+
+        if {_ethereum.%loop-player%} is less than {_crypto.%loop-player%::coins::ethereum}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::ethereum} - {_ethereum.%loop-player%}
+            set {_price} to {_difference} * {ethereum::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "ethereum" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::ethereum}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% ethereum gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+        set {_maker.%loop-player%} to yaml value "maker" in "crypto-%uuid of loop-player%"
+
+        if {_maker.%loop-player%} is less than {_crypto.%loop-player%::coins::maker}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::maker} - {_maker.%loop-player%}
+            set {_price} to {_difference} * {maker::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "maker" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::maker}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% maker gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
