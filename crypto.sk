@@ -564,7 +564,7 @@ function walletWithdraw(p: player, message: text):
         else:
             send "&cJe kan geen 0 invoeren." to {_p}
     else if {_message} contains "all":
-        if {_balance} is greater than than 0:
+        if {_balance} is greater than 0:
             send "&aJe hebt succesvol €%{_balance}% opgenomen van je wallet." to {_p}
             add {_balance} to {_p}'s balance
 
@@ -2287,21 +2287,9 @@ on chat:
         set {_message} to message
         sellBedrag("shiba-inu", {_message}, player)
 
-
-
-
-
-
-
-
-
-
-
-
-
 # Crypto kopen via website testing
 
-every 5 seconds:
+every 100 seconds:
     loop all players:
         send a "get" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/players/%loop-player%.json" with the headers "Content-Type: application/json"
 
