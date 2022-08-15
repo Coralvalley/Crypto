@@ -1281,106 +1281,106 @@ on load:
 every 30 seconds in world "world":
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin::*}
-    set {bitcoin::1::price_eur} to {bitcoin::1::price_usd} parsed as number / 1.04
-    set {bitcoin::1::volume_eur} to {bitcoin::1::volume24} parsed as number / 1.04
+    set {bitcoin::1::price_eur} to {bitcoin::1::price_usd} parsed as number / 1.02
+    set {bitcoin::1::volume_eur} to {bitcoin::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=80" with the headers "Content-Type: application/json"
     map json last http response's body to {ethereum::*}
-    set {ethereum::1::price_eur} to {ethereum::1::price_usd} parsed as number / 1.04
-    set {ethereum::1::volume_eur} to {ethereum::1::volume24} parsed as number / 1.04
+    set {ethereum::1::price_eur} to {ethereum::1::price_usd} parsed as number / 1.02
+    set {ethereum::1::volume_eur} to {ethereum::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=12377" with the headers "Content-Type: application/json"
     map json last http response's body to {maker::*}
-    set {maker::1::price_eur} to {maker::1::price_usd} parsed as number / 1.04
-    set {maker::1::volume_eur} to {maker::1::volume24} parsed as number / 1.04
+    set {maker::1::price_eur} to {maker::1::price_usd} parsed as number / 1.02
+    set {maker::1::volume_eur} to {maker::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=2321" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin-cash::*}
-    set {bitcoin-cash::1::price_eur} to {bitcoin-cash::1::price_usd} parsed as number / 1.04
-    set {bitcoin-cash::1::volume_eur} to {bitcoin-cash::1::volume24} parsed as number / 1.04
+    set {bitcoin-cash::1::price_eur} to {bitcoin-cash::1::price_usd} parsed as number / 1.02
+    set {bitcoin-cash::1::volume_eur} to {bitcoin-cash::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=1" with the headers "Content-Type: application/json"
     map json last http response's body to {litecoin::*}
-    set {litecoin::1::price_eur} to {litecoin::1::price_usd} parsed as number / 1.04
-    set {litecoin::1::volume_eur} to {litecoin::1::volume24} parsed as number / 1.04
+    set {litecoin::1::price_eur} to {litecoin::1::price_usd} parsed as number / 1.02
+    set {litecoin::1::volume_eur} to {litecoin::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=8" with the headers "Content-Type: application/json"
     map json last http response's body to {dash::*}
-    set {dash::1::price_eur} to {dash::1::price_usd} parsed as number / 1.04
-    set {dash::1::volume_eur} to {dash::1::volume24} parsed as number / 1.04
+    set {dash::1::price_eur} to {dash::1::price_usd} parsed as number / 1.02
+    set {dash::1::volume_eur} to {dash::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=257" with the headers "Content-Type: application/json"
     map json last http response's body to {cardano::*}
-    set {cardano::1::price_eur} to {cardano::1::price_usd} parsed as number / 1.04
-    set {cardano::1::volume_eur} to {cardano::1::volume24} parsed as number / 1.04
+    set {cardano::1::price_eur} to {cardano::1::price_usd} parsed as number / 1.02
+    set {cardano::1::volume_eur} to {cardano::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=518" with the headers "Content-Type: application/json"
     map json last http response's body to {tether::*}
-    set {tether::1::price_eur} to {tether::1::price_usd} parsed as number / 1.04
-    set {tether::1::volume_eur} to {tether::1::volume24} parsed as number / 1.04
+    set {tether::1::price_eur} to {tether::1::price_usd} parsed as number / 1.02
+    set {tether::1::volume_eur} to {tether::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
     
     send a request to "https://api.coinlore.net/api/ticker/?id=2" with the headers "Content-Type: application/json"
     map json last http response's body to {dogecoin::*}
-    set {dogecoin::1::price_eur} to {dogecoin::1::price_usd} parsed as number / 1.04
-    set {dogecoin::1::volume_eur} to {dogecoin::1::volume24} parsed as number / 1.04
+    set {dogecoin::1::price_eur} to {dogecoin::1::price_usd} parsed as number / 1.02
+    set {dogecoin::1::volume_eur} to {dogecoin::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=118" with the headers "Content-Type: application/json"
     map json last http response's body to {ethereum-classic::*}
-    set {ethereum-classic::1::price_eur} to {ethereum-classic::1::price_usd} parsed as number / 1.04
-    set {ethereum-classic::1::volume_eur} to {ethereum-classic::1::volume24} parsed as number / 1.04
+    set {ethereum-classic::1::price_eur} to {ethereum-classic::1::price_usd} parsed as number / 1.02
+    set {ethereum-classic::1::volume_eur} to {ethereum-classic::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=2741" with the headers "Content-Type: application/json"
     map json last http response's body to {vechain::*}
-    set {vechain::1::price_eur} to {vechain::1::price_usd} parsed as number / 1.04
-    set {vechain::1::volume_eur} to {vechain::1::volume24} parsed as number / 1.04
+    set {vechain::1::price_eur} to {vechain::1::price_usd} parsed as number / 1.02
+    set {vechain::1::volume_eur} to {vechain::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=58" with the headers "Content-Type: application/json"
     map json last http response's body to {xrp::*}
-    set {xrp::1::price_eur} to {xrp::1::price_usd} parsed as number / 1.04
-    set {xrp::1::volume_eur} to {xrp::1::volume24} parsed as number / 1.04
+    set {xrp::1::price_eur} to {xrp::1::price_usd} parsed as number / 1.02
+    set {xrp::1::volume_eur} to {xrp::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=48543" with the headers "Content-Type: application/json"
     map json last http response's body to {solana::*}
-    set {solana::1::price_eur} to {solana::1::price_usd} parsed as number / 1.04
-    set {solana::1::volume_eur} to {solana::1::volume24} parsed as number / 1.04
+    set {solana::1::price_eur} to {solana::1::price_usd} parsed as number / 1.02
+    set {solana::1::volume_eur} to {solana::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=45088" with the headers "Content-Type: application/json"
     map json last http response's body to {shiba-inu::*}
-    set {shiba-inu::1::price_eur} to {shiba-inu::1::price_usd} parsed as number / 1.04
-    set {shiba-inu::1::volume_eur} to {shiba-inu::1::volume24} parsed as number / 1.04
+    set {shiba-inu::1::price_eur} to {shiba-inu::1::price_usd} parsed as number / 1.02
+    set {shiba-inu::1::volume_eur} to {shiba-inu::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
     send a request to "https://api.coinlore.net/api/ticker/?id=2710" with the headers "Content-Type: application/json"
     map json last http response's body to {binance-coin::*}
-    set {binance-coin::1::price_eur} to {binance-coin::1::price_usd} parsed as number / 1.04
-    set {binance-coin::1::volume_eur} to {binance-coin::1::volume24} parsed as number / 1.04
+    set {binance-coin::1::price_eur} to {binance-coin::1::price_usd} parsed as number / 1.02
+    set {binance-coin::1::volume_eur} to {binance-coin::1::volume24} parsed as number / 1.02
 
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
