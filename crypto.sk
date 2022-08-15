@@ -299,66 +299,6 @@ on quit:
     save yaml "crypto-%uuid of player%"
     unload yaml "crypto-%uuid of player%"
 
-    set {crypto.buy.bitcoin.eenheden.%player%} to false
-    set {crypto.buy.ethereum.eenheden.%player%} to false
-    set {crypto.buy.maker.eenheden.%player%} to false
-    set {crypto.buy.bitcoin-cash.eenheden.%player%} to false
-    set {crypto.buy.litecoin.eenheden.%player%} to false
-    set {crypto.buy.dash.eenheden.%player%} to false
-    set {crypto.buy.cardano.eenheden.%player%} to false
-    set {crypto.buy.tether.eenheden.%player%} to false
-    set {crypto.buy.dogecoin.eenheden.%player%} to false
-    set {crypto.buy.ethereum-classic.eenheden.%player%} to false
-    set {crypto.buy.vechain.eenheden.%player%} to false
-    set {crypto.buy.xrp.eenheden.%player%} to false
-    set {crypto.buy.solana.eenheden.%player%} to false
-    set {crypto.buy.shiba-inu.eenheden.%player%} to false
-    set {crypto.buy.binance-coin.eenheden.%player%} to false
-    set {crypto.sell.bitcoin.eenheden.%player%} to false
-    set {crypto.sell.ethereum.eenheden.%player%} to false
-    set {crypto.sell.maker.eenheden.%player%} to false
-    set {crypto.sell.bitcoin-cash.eenheden.%player%} to false
-    set {crypto.sell.litecoin.eenheden.%player%} to false
-    set {crypto.sell.dash.eenheden.%player%} to false
-    set {crypto.sell.cardano.eenheden.%player%} to false
-    set {crypto.sell.tether.eenheden.%player%} to false
-    set {crypto.sell.dogecoin.eenheden.%player%} to false
-    set {crypto.sell.ethereum-classic.eenheden.%player%} to false
-    set {crypto.sell.vechain.eenheden.%player%} to false
-    set {crypto.sell.xrp.eenheden.%player%} to false
-    set {crypto.sell.solana.eenheden.%player%} to false
-    set {crypto.sell.shiba-inu.eenheden.%player%} to false
-    set {crypto.sell.binance-coin.eenheden.%player%} to false
-    set {crypto.buy.bitcoin.bedrag.%player%} to false
-    set {crypto.buy.ethereum.bedrag.%player%} to false
-    set {crypto.buy.maker.bedrag.%player%} to false
-    set {crypto.buy.bitcoin-cash.bedrag.%player%} to false
-    set {crypto.buy.litecoin.bedrag.%player%} to false
-    set {crypto.buy.dash.bedrag.%player%} to false
-    set {crypto.buy.cardano.bedrag.%player%} to false
-    set {crypto.buy.tether.bedrag.%player%} to false
-    set {crypto.buy.dogecoin.bedrag.%player%} to false
-    set {crypto.buy.ethereum-classic.bedrag.%player%} to false
-    set {crypto.buy.vechain.bedrag.%player%} to false
-    set {crypto.buy.xrp.bedrag.%player%} to false
-    set {crypto.buy.solana.bedrag.%player%} to false
-    set {crypto.buy.shiba-inu.bedrag.%player%} to false
-    set {crypto.buy.binance-coin.bedrag.%player%} to false
-    set {crypto.sell.bitcoin.bedrag.%player%} to false
-    set {crypto.sell.ethereum.bedrag.%player%} to false
-    set {crypto.sell.maker.bedrag.%player%} to false
-    set {crypto.sell.bitcoin-cash.bedrag.%player%} to false
-    set {crypto.sell.litecoin.bedrag.%player%} to false
-    set {crypto.sell.dash.bedrag.%player%} to false
-    set {crypto.sell.cardano.bedrag.%player%} to false
-    set {crypto.sell.tether.bedrag.%player%} to false
-    set {crypto.sell.dogecoin.bedrag.%player%} to false
-    set {crypto.sell.ethereum-classic.bedrag.%player%} to false
-    set {crypto.sell.vechain.bedrag.%player%} to false
-    set {crypto.sell.xrp.bedrag.%player%} to false
-    set {crypto.sell.solana.bedrag.%player%} to false
-    set {crypto.sell.shiba-inu.bedrag.%player%} to false
-    set {crypto.sell.binance-coin.bedrag.%player%} to false
     set {crypto.deposit.%player%} to false
     set {crypto.withdraw.%player%} to false
 
@@ -2880,6 +2820,9 @@ on join:
         set {crypto.buy.%loop-value%.bedrag.%player%} to false
         set {crypto.sell.%loop-value%.eenheden.%player%} to false
         set {crypto.sell.%loop-value%.bedrag.%player%} to false
+    
+    set {crypto.deposit.%player%} to false
+    set {crypto.withdraw.%player%} to false
 
 on chat:
     if {crypto.buy.bitcoin.eenheden.%player%} is true:
@@ -3139,7 +3082,7 @@ on chat:
 
 # Crypto kopen via website testing
 
-every 100 seconds:
+every 200 seconds:
     loop all players:
         send a "get" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/players/%loop-player%.json" with the headers "Content-Type: application/json"
 
