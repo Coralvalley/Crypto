@@ -100,27 +100,39 @@ on load:
             add "solana" to skript-yaml list "coins" in "crypto-config"
         if skript-yaml value "coins" in "crypto-config" doesn't contain "shiba-inu":
             add "shiba-inu" to skript-yaml list "coins" in "crypto-config"
+        if skript-yaml value "coins" in "crypto-config" doesn't contain "binance-coin":
+            add "binance-coin" to skript-yaml list "coins" in "crypto-config"
 
     if yaml value "bitcoin" in "crypto-config" is not set:
         set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
-    if yaml value "bitcoin" in "crypto-config" is not set:
-        set yaml value "bitcoin" in "crypto-config" to true
+    if yaml value "ethereum" in "crypto-config" is not set:
+        set yaml value "ethereum" in "crypto-config" to true
+    if yaml value "maker" in "crypto-config" is not set:
+        set yaml value "maker" in "crypto-config" to true
+    if yaml value "bitcoin-cash" in "crypto-config" is not set:
+        set yaml value "bitcoin-cash" in "crypto-config" to true
+    if yaml value "litecoin" in "crypto-config" is not set:
+        set yaml value "litecoin" in "crypto-config" to true
+    if yaml value "dash" in "crypto-config" is not set:
+        set yaml value "dash" in "crypto-config" to true
+    if yaml value "cardano" in "crypto-config" is not set:
+        set yaml value "cardano" in "crypto-config" to true
+    if yaml value "tether" in "crypto-config" is not set:
+        set yaml value "tether" in "crypto-config" to true
+    if yaml value "dogecoin" in "crypto-config" is not set:
+        set yaml value "dogecoin" in "crypto-config" to true
+    if yaml value "ethereum-classic" in "crypto-config" is not set:
+        set yaml value "ethereum-classic" in "crypto-config" to true
+    if yaml value "vechain" in "crypto-config" is not set:
+        set yaml value "vechain" in "crypto-config" to true
+    if yaml value "xrp" in "crypto-config" is not set:
+        set yaml value "xrp" in "crypto-config" to true
+    if yaml value "solana" in "crypto-config" is not set:
+        set yaml value "solana" in "crypto-config" to true
+    if yaml value "shiba-inu" in "crypto-config" is not set:
+        set yaml value "shiba-inu" in "crypto-config" to true
+    if yaml value "binance-coin" in "crypto-config" is not set:
+        set yaml value "binance-coin" in "crypto-config" to true
 
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
@@ -156,6 +168,8 @@ on load:
         set yaml value "staking.solana" in "crypto-config" to 0
     if yaml value "staking.shiba-inu" in "crypto-config" is not set:
         set yaml value "staking.shiba-inu" in "crypto-config" to 0
+    if yaml value "staking.binance-coin" in "crypto-config" is not set:
+        set yaml value "staking.binance-coin" in "crypto-config" to 0
 
     if yaml value "fee" in "crypto-config" is not set:
         set yaml value "fee" in "crypto-config" to 0
@@ -243,6 +257,8 @@ on join:
         set yaml value "solana" in "crypto-%uuid of player%" to 0
     if yaml value "shiba-inu" in "crypto-%uuid of player%" is not set:
         set yaml value "shiba-inu" in "crypto-%uuid of player%" to 0
+    if yaml value "binance-coin" in "crypto-%uuid of player%" is not set:
+        set yaml value "binance-coin" in "crypto-%uuid of player%" to 0
 
     if yaml value "tegoed" in "crypto-%uuid of player%" is not set:
         set yaml value "tegoed" in "crypto-%uuid of player%" to 0
@@ -270,9 +286,10 @@ function CryptoPlayerData(p: player):
     set {xrp.%{player}%} to yaml value "xrp" in "crypto-%uuid of {player}%"
     set {solana.%{player}%} to yaml value "solana" in "crypto-%uuid of {player}%"
     set {shiba-inu.%{player}%} to yaml value "shiba-inu" in "crypto-%uuid of {player}%"
+    set {binance-coin.%{player}%} to yaml value "binance-coin" in "crypto-%uuid of {player}%"
     set {api_key} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""shiba-inu"":%{shiba-inu.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""shiba-inu"":%{shiba-inu.%{player}%}%, ""binance-coin"":%{binance-coin.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
 
 every 5 minutes:
     loop all players:
@@ -290,7 +307,7 @@ on quit:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-command /crypto [<text>] [<offline player>] [<number>]:
+command /crypto [<text>] [<offline player>] [<text>] [<number>]:
     trigger:
         if arg-1 is not set:
             send "&6Gebruik /crypto help"
@@ -350,6 +367,220 @@ command /crypto [<text>] [<offline player>] [<number>]:
             else:
                 send "&cJe moet hier level %{_required-level}% voor zijn." to player
 
+        if arg-1 is "set":
+            if arg-2 is set:
+                if arg-3 is "tegoed":
+                    if arg-4 is set:
+                        set yaml value "tegoed" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet tegoed van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "bitcoin":
+                    if arg-4 is set:
+                        set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet bitcoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "ethereum":
+                    if arg-4 is set:
+                        set yaml value "ethereum" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet ethereum van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "maker":
+                    if arg-4 is set:
+                        set yaml value "maker" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet maker van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "bitcoin-cash":
+                    if arg-4 is set:
+                        set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet bitcoin-cash van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "litecoin":
+                    if arg-4 is set:
+                        set yaml value "litecoin" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet litecoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "dash":
+                    if arg-4 is set:
+                        set yaml value "dash" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet dash van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "cardano":
+                    if arg-4 is set:
+                        set yaml value "cardano" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet cardano van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "tether":
+                    if arg-4 is set:
+                        set yaml value "tether" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet tether van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "dogecoin":
+                    if arg-4 is set:
+                        set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet dogecoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "ethereum-classic":
+                    if arg-4 is set:
+                        set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet ethereum-classic van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "vechain":
+                    if arg-4 is set:
+                        set yaml value "vechain" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet vechain van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "xrp":
+                    if arg-4 is set:
+                        set yaml value "xrp" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet xrp van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "solana":
+                    if arg-4 is set:
+                        set yaml value "solana" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet solana van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "shiba-inu":
+                    if arg-4 is set:
+                        set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet shiba-inu van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                if arg-3 is "binance-coin":
+                    if arg-4 is set:
+                        set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to arg-4
+                        save yaml "crypto-%uuid of arg-2%"
+                        send "&aHet binance-coin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+        if arg-1 is "reset":
+            if arg-2 is set:
+                if arg-3 is "tegoed":
+                    set yaml value "tegoed" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                if arg-3 is "all":
+                    set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "ethereum" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "maker" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "litecoin" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "dash" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "cardano" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "tether" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "vechain" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "xrp" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "solana" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to 0
+                    set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+
+                    set {bitcoin.%arg-2%} to yaml value "bitcoin" in "crypto-%uuid of arg-2%"
+                    set {ethereum.%arg-2%} to yaml value "ethereum" in "crypto-%uuid of arg-2%"
+                    set {maker.%arg-2%} to yaml value "maker" in "crypto-%uuid of arg-2%"
+                    set {bitcoin-cash.%arg-2%} to yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%"
+                    set {litecoin.%arg-2%} to yaml value "litecoin" in "crypto-%uuid of arg-2%"
+                    set {dash.%arg-2%} to yaml value "dash" in "crypto-%uuid of arg-2%"
+                    set {cardano.%arg-2%} to yaml value "cardano" in "crypto-%uuid of arg-2%"
+                    set {tether.%arg-2%} to yaml value "tether" in "crypto-%uuid of arg-2%"
+                    set {dogecoin.%arg-2%} to yaml value "dogecoin" in "crypto-%uuid of arg-2%"
+                    set {ethereum-classic.%arg-2%} to yaml value "ethereum-classic" in "crypto-%uuid of arg-2%"
+                    set {vechain.%arg-2%} to yaml value "vechain" in "crypto-%uuid of arg-2%"
+                    set {xrp.%arg-2%} to yaml value "xrp" in "crypto-%uuid of arg-2%"
+                    set {solana.%arg-2%} to yaml value "solana" in "crypto-%uuid of arg-2%"
+                    set {shiba-inu.%arg-2%} to yaml value "shiba-inu" in "crypto-%uuid of arg-2%"
+                    set {binance-coin.%arg-2%} to yaml value "binance-coin" in "crypto-%uuid of arg-2%"
+                    set {api_key} to yaml value "api" in "crypto-config"
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "bitcoin":
+                    set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de bitcoin van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "ethereum":
+                    set yaml value "ethereum" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de ethereum van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "maker":
+                    set yaml value "maker" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de maker van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "bitcoin-cash":
+                    set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de bitcoin-cash van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "litecoin":
+                    set yaml value "litecoin" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de litecoin van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "dash":
+                    set yaml value "dash" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de dash van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "cardano":
+                    set yaml value "cardano" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de cardano van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "tether":
+                    set yaml value "tether" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de tether van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "dogecoin":
+                    set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de dogecoin van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "ethereum-classic":
+                    set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de ethereum-classic van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "vechain":
+                    set yaml value "vechain" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de vechain van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "xrp":
+                    set yaml value "xrp" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de xrp van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "solana":
+                    set yaml value "solana" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de solana van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "shiba-inu":
+                    set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de shiba-inu van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                if arg-3 is "binance-coin":
+                    set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to 0
+                    save yaml "crypto-%uuid of arg-2%"
+                    send "&aJe hebt de binance-coin van %arg-2% succesvol gereset." to player
+                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
 #
@@ -375,6 +606,7 @@ function wallet(inv: text, p: player):
         set slot 15 of {_p}'s current inventory to a dirt named "Opnemen"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_inv} is "coins":
+        clear {wallet.total.price.%{_p}%}
         set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of {_p}%"
         set {_bitcoin.price} to {bitcoin::1::price_eur} * {_bitcoin}
 
@@ -417,7 +649,10 @@ function wallet(inv: text, p: player):
         set {_shiba-inu} to yaml value "solana" in "crypto-%uuid of {_p}%"
         set {_shiba-inu.price} to {shiba-inu::1::price_eur} * {_shiba-inu}
 
-        add {_bitcoin.price} and {_ethereum.price} and {_maker.price} and {_bitcoin-cash.price} and {_litecoin.price} and {_dash.price} and {_cardano.price} and {_tether.price} and {_dogecoin.price} and {_ethereum-classic.price} and {_vechain.price} and {_xrp.price} and {_solana.price} and {_shiba-inu.price} to {wallet.total.price.%{_p}%}
+        set {_binance-coin} to yaml value "binance-coin" in "crypto-%uuid of {_p}%"
+        set {_binance-coin.price} to {binance-coin::1::price_eur} * {_binance-coin}
+
+        add {_bitcoin.price} and {_ethereum.price} and {_maker.price} and {_bitcoin-cash.price} and {_litecoin.price} and {_dash.price} and {_cardano.price} and {_tether.price} and {_dogecoin.price} and {_ethereum-classic.price} and {_vechain.price} and {_xrp.price} and {_solana.price} and {_shiba-inu.price} and {_binance-coin.price} to {wallet.total.price.%{_p}%}
         wait 1 tick
         open chest with 3 rows named "Totaal: €%{wallet.total.price.%{_p}%}%" to {_p}
         wait 1 tick
@@ -436,6 +671,7 @@ function wallet(inv: text, p: player):
         set slot 11 of {_p}'s current inventory to a iron ingot named "&7XRP" with nbt "{mtcustom:xrp}" with lore "" and "&8Totaal: %{_xrp}%" and "&8Waarde: €%{_xrp.price}%"
         set slot 12 of {_p}'s current inventory to a iron ingot named "&7Solana" with nbt "{mtcustom:solana}" with lore "" and "&8Totaal: %{_solana}%" and "&8Waarde: €%{_solana.price}%"
         set slot 13 of {_p}'s current inventory to a iron ingot named "&7Shiba Inu" with nbt "{mtcustom:shiba-inu}" with lore "" and "&8Totaal: %{_shiba-inu}%" and "&8Waarde: €%{_shiba-inu.price}%"
+        set slot 14 of {_p}'s current inventory to a iron ingot named "&7Binance Coin" with nbt "{mtcustom:binance-coin}" with lore "" and "&8Totaal: %{_binance-coin}%" and "&8Waarde: €%{_binance-coin.price}%"
 
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
@@ -508,6 +744,9 @@ on inventory click:
         if clicked slot is 13:
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("shiba-inutSell", player)
+        if clicked slot is 14:
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("binance-coinSell", player)
         if clicked slot is 22:
             wallet("main", player)
         cancel event            
@@ -691,6 +930,13 @@ every 30 seconds in world "world":
     set {shiba-inu::1::price_eur} to {shiba-inu::1::price_usd} parsed as number / 1.04
     set {shiba-inu::1::volume_eur} to {shiba-inu::1::volume24} parsed as number / 1.04
 
+    wait 0.5 seconds
+
+    send a request to "https://api.coinlore.net/api/ticker/?id=2710" with the headers "Content-Type: application/json"
+    map json last http response's body to {binance-coin::*}
+    set {binance-coin::1::price_eur} to {binance-coin::1::price_usd} parsed as number / 1.04
+    set {binance-coin::1::volume_eur} to {binance-coin::1::volume24} parsed as number / 1.04
+
     loop all players:
         if name of loop-player's current inventory is "Crypto Markt":
             cryptoMarket("gui", loop-player)
@@ -822,6 +1068,13 @@ function cryptoMarket(coin: text, p: player):
         else if {_shiba-inu::1::percent_change_24h} is equal to 0.0:
             set slot 13 of {_p}'s current inventory to a iron ingot named "&bShiba Inu" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&7%%%{shiba-inu::1::percent_change_24h}%" and "&fVolume €%{shiba-inu::1::volume_eur}%" 
 
+        set {_binance-coin::1::percent_change_24h} to {binance-coin::1::percent_change_24h} parsed as number
+        if {_binance-coin::1::percent_change_24h} is greater than 0.0:
+            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&a%%%{binance-coin::1::percent_change_24h}%" and "&fVolume €%{binance-coin::1::volume_eur}%" 
+        else if {_binance-coin::1::percent_change_24h} is less than 0.0:
+            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&c%%%{binance-coin::1::percent_change_24h}%" and "&fVolume €%{binance-coin::1::volume_eur}%" 
+        else if {_binance-coin::1::percent_change_24h} is equal to 0.0:
+            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&7%%%{binance-coin::1::percent_change_24h}%" and "&fVolume €%{binance-coin::1::volume_eur}%" 
         
 
 
@@ -1378,6 +1631,45 @@ function cryptoMarket(coin: text, p: player):
         else if {_shiba-inu::1::percent_change_24h} is equal to 0.0:
             set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&7%%%{shiba-inu::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+
+    if {_coin} is "binance-coinBuy":
+        open chest with 3 rows named "Binance Coin kopen" to {_p}
+        wait 1 tick
+        set {_binance-coin::1::percent_change_24h} to {binance-coin::1::percent_change_24h} parsed as number
+        if {_binance-coin::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&a%%%{binance-coin::1::percent_change_24h}%" with nbt "{mtcustom:binance-coin}"
+        else if {_binance-coin::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&c%%%{binance-coin::1::percent_change_24h}%" with nbt "{mtcustom:binance-coin}"
+        else if {_binance-coin::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&7%%%{binance-coin::1::percent_change_24h}%" with nbt "{mtcustom:binance-coin}"
+        
+        set {_binance-coin::1::percent_change_24h} to {binance-coin::1::percent_change_24h} parsed as number
+        if {_binance-coin::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&a%%%{binance-coin::1::percent_change_24h}%"
+        else if {_binance-coin::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&c%%%{binance-coin::1::percent_change_24h}%"
+        else if {_binance-coin::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&7%%%{binance-coin::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
+    if {_coin} is "binance-coinSell":
+        open chest with 3 rows named "Binance Coin verkopen" to {_p}
+        wait 1 tick
+        set {_binance-coin::1::percent_change_24h} to {binance-coin::1::percent_change_24h} parsed as number
+        if {_binance-coin::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&a%%%{binance-coin::1::percent_change_24h}%" with nbt "{mtcustom:binance-coin}"
+        else if {_binance-coin::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&c%%%{binance-coin::1::percent_change_24h}%" with nbt "{mtcustom:binance-coin}"
+        else if {_binance-coin::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&7%%%{binance-coin::1::percent_change_24h}%" with nbt "{mtcustom:binance-coin}"
+        
+        set {_binance-coin::1::percent_change_24h} to {binance-coin::1::percent_change_24h} parsed as number
+        if {_binance-coin::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&a%%%{binance-coin::1::percent_change_24h}%"
+        else if {_binance-coin::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&c%%%{binance-coin::1::percent_change_24h}%"
+        else if {_binance-coin::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&7%%%{binance-coin::1::percent_change_24h}%"
+        set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
@@ -1464,6 +1756,11 @@ on inventory click:
                 cryptoMarket("shiba-inuBuy", player)
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("shiba-inuSell", player)
+        if clicked slot is 14:
+            if "%event-clicktype%" is "right mouse button":
+                cryptoMarket("binance-coinBuy", player)
+            if "%event-clicktype%" is "left mouse button":
+                cryptoMarket("binance-coinSell", player)
         cancel event
     if name of player's current inventory is "Bitcoin kopen":
         if clicked slot is 11:
@@ -1868,6 +2165,31 @@ on inventory click:
             send "&6Hoeveel euro aan shiba-inu wil je verkopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
+
+    else if name of player's current inventory is "Binance Coin kopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.buy.binance-coin.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel binance-coin wil je kopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.buy.binance-coin.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan binance-coin wil je kopen?"
+    else if name of player's current inventory is "Binance Coin verkopen":
+        if clicked slot is 11:
+            close player's inventory
+            set {crypto.sell.binance-coin.eenheden.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel binance-coin wil je verkopen?"
+        if clicked slot is 15:
+            close player's inventory
+            set {crypto.sell.binance-coin.bedrag.%player%} to true
+            send "&6Typ cancel als je wilt stoppen."
+            send "&6Hoeveel euro aan binance-coin wil je verkopen?"
+        if clicked slot is 22:
+            cryptoMarket("gui", player)
         cancel event
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
@@ -2041,6 +2363,7 @@ on join:
     add "xrp" to {_coins::*}
     add "solana" to {_coins::*}
     add "shiba-inu" to {_coins::*}
+    add "binance-coin" to {_coins::*}
 
     loop {_coins::*}:
         set {crypto.buy.%loop-value%.eenheden.%player%} to false
@@ -2287,6 +2610,23 @@ on chat:
         set {_message} to message
         sellBedrag("shiba-inu", {_message}, player)
 
+    if {crypto.buy.binance-coin.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyEenheden("binance-coin", {_message}, player)
+    if {crypto.buy.binance-coin.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        buyBedrag("binance-coin", {_message}, player)
+    if {crypto.sell.binance-coin.eenheden.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellEenheden("binance-coin", {_message}, player)
+    if {crypto.sell.binance-coin.bedrag.%player%} is true:
+        cancel event
+        set {_message} to message
+        sellBedrag("binance-coin", {_message}, player)
+
 # Crypto kopen via website testing
 
 every 100 seconds:
@@ -2313,7 +2653,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% bitcoin gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Bitcoin gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2337,7 +2677,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% ethereum gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Ethereum gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2361,7 +2701,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% maker gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Maker gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2386,7 +2726,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% bitcoin-cash gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Bitcoin-Cash gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2411,7 +2751,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% litecoin gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Litecoin gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2435,7 +2775,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% dash gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Dash gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2460,7 +2800,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% cardano gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Cardano gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2485,7 +2825,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% tether gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Tether gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2510,7 +2850,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% dogecoin gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Dogecoin gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2535,7 +2875,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% ethereum-classic gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Ethereum-Classic gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2560,7 +2900,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% vechain gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% VeChain gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2585,7 +2925,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% xrp gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% XRP gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2610,7 +2950,7 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% solana gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Solana gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -2635,7 +2975,32 @@ every 100 seconds:
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% shiba-inu gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Shiba Inu gekocht!" to loop-player
+            else:
+                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
+                CryptoPlayerData(loop-player)
+
+
+        set {_binance-coin.%loop-player%} to yaml value "binance-coin" in "crypto-%uuid of loop-player%"
+
+        if {_binance-coin.%loop-player%} is less than {_crypto.%loop-player%::coins::binance-coin}:
+            set {_fee} to yaml value "fee" in "crypto-config"
+            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+            set {_difference} to {_crypto.%loop-player%::coins::binance-coin} - {_binance-coin.%loop-player%}
+            set {_price} to {_difference} * {binance-coin::1::price_eur}
+            if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
+
+                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
+                remove {_price} from {_balance}
+                remove {_fee} from {_balance}
+                set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
+                execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                set yaml value "binance-coin" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::binance-coin}
+
+                save yaml "crypto-%uuid of loop-player%"
+
+                send "&aJe hebt succesvol %{_difference}% Binance Coin gekocht!" to loop-player
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
