@@ -354,12 +354,16 @@ command /crypto [<text>] [<offline player>] [<text>] [<number>]:
                 if player has permission "*" or "crypto.reload":
                     reload script "crypto"
                     send "&aCrypto is succesvol gereload." to player
-            if arg-2 is "config":
-                if player has permission "*" or "crypto.reload":
-                    unload yaml "crypto-config"
-                    load yaml "crypto-config"
-                    save yaml "crypto-config"
-                    send "&aDe config van Crypto is succesvol gereload." to player
+                else:
+                    send "&cSorry, je hebt geen permissies om dit commando uit te voeren."
+        if arg-1 is "config":
+            if player has permission "*" or "crypto.reload":
+                unload yaml "crypto-config"
+                load yaml "crypto-config"
+                save yaml "crypto-config"
+                send "&aDe config van Crypto is succesvol gereload." to player
+            else:
+                send "&cSorry, je hebt geen permissies om dit commando uit te voeren."
         if arg-1 is "open":
             set {_required-level} to yaml value "required-level" in "crypto-config"
             if the minetopiasdb level of player is greater than or equal to {_required-level}:
@@ -367,219 +371,660 @@ command /crypto [<text>] [<offline player>] [<text>] [<number>]:
             else:
                 send "&cJe moet hier level %{_required-level}% voor zijn." to player
 
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Set amount of crypto a player has to a specific amount of crypto (for example, to give a player a certain amount of crypto) (Admin Command)
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
         if arg-1 is "set":
             if arg-2 is set:
                 if arg-3 is "tegoed":
                     if arg-4 is set:
-                        set yaml value "tegoed" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet tegoed van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "tegoed" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet tegoed van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "bitcoin":
                     if arg-4 is set:
-                        set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet bitcoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet bitcoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "ethereum":
                     if arg-4 is set:
-                        set yaml value "ethereum" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet ethereum van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "ethereum" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet ethereum van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "maker":
                     if arg-4 is set:
-                        set yaml value "maker" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet maker van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "maker" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet maker van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "bitcoin-cash":
                     if arg-4 is set:
-                        set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet bitcoin-cash van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet bitcoin-cash van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "litecoin":
                     if arg-4 is set:
-                        set yaml value "litecoin" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet litecoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "litecoin" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet litecoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "dash":
                     if arg-4 is set:
-                        set yaml value "dash" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet dash van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "dash" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet dash van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "cardano":
                     if arg-4 is set:
-                        set yaml value "cardano" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet cardano van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "cardano" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet cardano van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "tether":
                     if arg-4 is set:
-                        set yaml value "tether" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet tether van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "tether" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet tether van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "dogecoin":
                     if arg-4 is set:
-                        set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet dogecoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet dogecoin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "ethereum-classic":
                     if arg-4 is set:
-                        set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet ethereum-classic van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet ethereum-classic van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "vechain":
                     if arg-4 is set:
-                        set yaml value "vechain" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet vechain van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "vechain" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet vechain van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "xrp":
                     if arg-4 is set:
-                        set yaml value "xrp" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet xrp van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "xrp" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet xrp van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "solana":
                     if arg-4 is set:
-                        set yaml value "solana" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet solana van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "solana" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet solana van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "shiba-inu":
                     if arg-4 is set:
-                        set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet shiba-inu van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet shiba-inu van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "binance-coin":
                     if arg-4 is set:
-                        set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to arg-4
-                        save yaml "crypto-%uuid of arg-2%"
-                        send "&aHet binance-coin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
-        if arg-1 is "reset":
+                        if player has permission "*" or "crypto.admin" or "crypto.set":
+                            set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to arg-4
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet binance-coin van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Add crypto currency to player account (Admin Command)
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+        if arg-1 is "add":
             if arg-2 is set:
                 if arg-3 is "tegoed":
-                    set yaml value "tegoed" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                if arg-3 is "all":
-                    set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "ethereum" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "maker" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "litecoin" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "dash" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "cardano" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "tether" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "vechain" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "xrp" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "solana" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to 0
-                    set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-
-                    set {bitcoin.%arg-2%} to yaml value "bitcoin" in "crypto-%uuid of arg-2%"
-                    set {ethereum.%arg-2%} to yaml value "ethereum" in "crypto-%uuid of arg-2%"
-                    set {maker.%arg-2%} to yaml value "maker" in "crypto-%uuid of arg-2%"
-                    set {bitcoin-cash.%arg-2%} to yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%"
-                    set {litecoin.%arg-2%} to yaml value "litecoin" in "crypto-%uuid of arg-2%"
-                    set {dash.%arg-2%} to yaml value "dash" in "crypto-%uuid of arg-2%"
-                    set {cardano.%arg-2%} to yaml value "cardano" in "crypto-%uuid of arg-2%"
-                    set {tether.%arg-2%} to yaml value "tether" in "crypto-%uuid of arg-2%"
-                    set {dogecoin.%arg-2%} to yaml value "dogecoin" in "crypto-%uuid of arg-2%"
-                    set {ethereum-classic.%arg-2%} to yaml value "ethereum-classic" in "crypto-%uuid of arg-2%"
-                    set {vechain.%arg-2%} to yaml value "vechain" in "crypto-%uuid of arg-2%"
-                    set {xrp.%arg-2%} to yaml value "xrp" in "crypto-%uuid of arg-2%"
-                    set {solana.%arg-2%} to yaml value "solana" in "crypto-%uuid of arg-2%"
-                    set {shiba-inu.%arg-2%} to yaml value "shiba-inu" in "crypto-%uuid of arg-2%"
-                    set {binance-coin.%arg-2%} to yaml value "binance-coin" in "crypto-%uuid of arg-2%"
-                    set {api_key} to yaml value "api" in "crypto-config"
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_tegoed} to yaml value "tegoed" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_tegoed}
+                            set yaml value "tegoed" in "crypto-%uuid of arg-2%" to {_tegoed}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aHet tegoed van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "bitcoin":
-                    set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de bitcoin van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_bitcoin}
+                            set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to {_bitcoin}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% bitcoin gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "ethereum":
-                    set yaml value "ethereum" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de ethereum van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_ethereum} to yaml value "ethereum" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_ethereum}
+                            set yaml value "ethereum" in "crypto-%uuid of arg-2%" to {_ethereum}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% ethereum gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "maker":
-                    set yaml value "maker" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de maker van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_maker} to yaml value "maker" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_maker}
+                            set yaml value "maker" in "crypto-%uuid of arg-2%" to {_maker}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% maker gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "bitcoin-cash":
-                    set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de bitcoin-cash van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_bitcoin-cash} to yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_bitcoin-cash}
+                            set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to {_bitcoin-cash}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% bitcoin-cash gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "litecoin":
-                    set yaml value "litecoin" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de litecoin van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_litecoin} to yaml value "litecoin" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_litecoin}
+                            set yaml value "litecoin" in "crypto-%uuid of arg-2%" to {_litecoin}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% litecoin gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "dash":
-                    set yaml value "dash" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de dash van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_dash} to yaml value "dash" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_dash}
+                            set yaml value "dash" in "crypto-%uuid of arg-2%" to {_dash}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% dash gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "cardano":
-                    set yaml value "cardano" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de cardano van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_cardano} to yaml value "cardano" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_cardano}
+                            set yaml value "cardano" in "crypto-%uuid of arg-2%" to {_cardano}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% cardano gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "tether":
-                    set yaml value "tether" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de tether van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_tether} to yaml value "tether" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_tether}
+                            set yaml value "tether" in "crypto-%uuid of arg-2%" to {_tether}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% tether gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "dogecoin":
-                    set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de dogecoin van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_dogecoin} to yaml value "dogecoin" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_dogecoin}
+                            set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to {_dogecoin}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% dogecoin gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "ethereum-classic":
-                    set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de ethereum-classic van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_ethereum-classic} to yaml value "ethereum-classic" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_ethereum-classic}
+                            set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to {_ethereum-classic}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% ethereum-classic gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "vechain":
-                    set yaml value "vechain" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de vechain van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_vechain} to yaml value "vechain" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_vechain}
+                            set yaml value "vechain" in "crypto-%uuid of arg-2%" to {_vechain}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% vechain gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "xrp":
-                    set yaml value "xrp" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de xrp van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_xrp} to yaml value "xrp" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_xrp}
+                            set yaml value "xrp" in "crypto-%uuid of arg-2%" to {_xrp}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% xrp gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "solana":
-                    set yaml value "solana" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de solana van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_solana} to yaml value "solana" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_solana}
+                            set yaml value "solana" in "crypto-%uuid of arg-2%" to {_solana}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% solana gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "shiba-inu":
-                    set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de shiba-inu van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_shiba-inu} to yaml value "shiba-inu" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_shiba-inu}
+                            set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to {_shiba-inu}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% shiba-inu gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "binance-coin":
-                    set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to 0
-                    save yaml "crypto-%uuid of arg-2%"
-                    send "&aJe hebt de binance-coin van %arg-2% succesvol gereset." to player
-                    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-                        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%arg-2's name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%arg-2%}%, ""ethereum"":%{ethereum.%arg-2%}%, ""maker"":%{maker.%arg-2%}%, ""bitcoin-cash"":%{bitcoin-cash.%arg-2%}%, ""litecoin"":%{litecoin.%arg-2%}%, ""dash"":%{dash.%arg-2%}%, ""cardano"":%{cardano.%arg-2%}%, ""tether"":%{tether.%arg-2%}%, ""dogecoin"":%{dogecoin.%arg-2%}%, ""ethereum-classic"":%{ethereum-classic.%arg-2%}%, ""vechain"":%{vechain.%arg-2%}%, ""xrp"":%{xrp.%arg-2%}%, ""solana"":%{solana.%arg-2%}%, ""shiba-inu"":%{shiba-inu.%arg-2%}%, ""binance-coin"":%{binance-coin.%arg-2%}%}}" and the headers "Authorization: %{api_key}%"
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.add":
+                            set {_binance-coin} to yaml value "binance-coin" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_binance-coin}
+                            set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to {_binance-coin}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&a%arg-2% heeft succesvol %arg-4% binance-coin gekregen." to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Remove Crypto Currency from Player Account (Admin Command)
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+        if arg-1 is "remove":
+            if arg-2 is set:
+                if arg-3 is "tegoed":
+                    if arg-4 is set:
+                        set {_tegoed} to yaml value "tegoed" in "crypto-%uuid of arg-2%"
+                        if {_tegoed} is greater than or equal to arg-4:
+                            subtract arg-4 from {_tegoed}
+                            set yaml value "tegoed" in "crypto-%uuid of arg-2%" to {_tegoed}
+                            save yaml "crypto-%uuid of arg-2%"
+                            send "&aJe hebt het succesvol het toegoed van %arg-2% veranderd naar %{_tegoed}%" to player
+                            CryptoPlayerData(player)
+                        else:
+                            send "&c%arg-2% heeft niet genoeg tegoed." to player
+                if arg-3 is "bitcoin":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of arg-2%"
+                            if {_bitcoin} is greater than or equal to arg-4:
+                                subtract arg-4 from {_bitcoin}
+                                set yaml value "bitcoin" in "crypto-%uuid of arg-2%" to {_bitcoin}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal bitcoins van %arg-2% veranderd naar %{_bitcoin}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg bitcoins." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "ethereum":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_ethereum} to yaml value "ethereum" in "crypto-%uuid of arg-2%"
+                            if {_ethereum} is greater than or equal to arg-4:
+                                subtract arg-4 from {_ethereum}
+                                set yaml value "ethereum" in "crypto-%uuid of arg-2%" to {_ethereum}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal ethereum van %arg-2% veranderd naar %{_ethereum}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg ethereum." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "maker":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_maker} to yaml value "maker" in "crypto-%uuid of arg-2%"
+                            if {_maker} is greater than or equal to arg-4:
+                                subtract arg-4 from {_maker}
+                                set yaml value "maker" in "crypto-%uuid of arg-2%" to {_maker}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal maker van %arg-2% veranderd naar %{_maker}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg maker." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "bitcoin-cash":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_bitcoin-cash} to yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%"
+                            if {_bitcoin-cash} is greater than or equal to arg-4:
+                                subtract arg-4 from {_bitcoin-cash}
+                                set yaml value "bitcoin-cash" in "crypto-%uuid of arg-2%" to {_bitcoin-cash}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal bitcoin-cash van %arg-2% veranderd naar %{_bitcoin-cash}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg bitcoin-cash." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "litecoin":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_litecoin} to yaml value "litecoin" in "crypto-%uuid of arg-2%"
+                            if {_litecoin} is greater than or equal to arg-4:
+                                subtract arg-4 from {_litecoin}
+                                set yaml value "litecoin" in "crypto-%uuid of arg-2%" to {_litecoin}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal litecoin van %arg-2% veranderd naar %{_litecoin}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg litecoin." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "dash":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_dash} to yaml value "dash" in "crypto-%uuid of arg-2%"
+                            if {_dash} is greater than or equal to arg-4:
+                                subtract arg-4 from {_dash}
+                                set yaml value "dash" in "crypto-%uuid of arg-2%" to {_dash}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal dash van %arg-2% veranderd naar %{_dash}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg dash." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "cardano":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_cardano} to yaml value "cardano" in "crypto-%uuid of arg-2%"
+                            if {_cardano} is greater than or equal to arg-4:
+                                subtract arg-4 from {_cardano}
+                                set yaml value "cardano" in "crypto-%uuid of arg-2%" to {_cardano}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal cardano van %arg-2% veranderd naar %{_cardano}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg cardano." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "tether":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_tether} to yaml value "tether" in "crypto-%uuid of arg-2%"
+                            if {_tether} is greater than or equal to arg-4:
+                                subtract arg-4 from {_tether}
+                                set yaml value "tether" in "crypto-%uuid of arg-2%" to {_tether}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal tether van %arg-2% veranderd naar %{_tether}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg tether." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "dogecoin":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_dogecoin} to yaml value "dogecoin" in "crypto-%uuid of arg-2%"
+                            if {_dogecoin} is greater than or equal to arg-4:
+                                subtract arg-4 from {_dogecoin}
+                                set yaml value "dogecoin" in "crypto-%uuid of arg-2%" to {_dogecoin}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal dogecoin van %arg-2% veranderd naar %{_dogecoin}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg dogecoin." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "ethereum-classic":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_ethereum-classic} to yaml value "ethereum-classic" in "crypto-%uuid of arg-2%"
+                            if {_ethereum-classic} is greater than or equal to arg-4:
+                                subtract arg-4 from {_ethereum-classic}
+                                set yaml value "ethereum-classic" in "crypto-%uuid of arg-2%" to {_ethereum-classic}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal ethereum-classic van %arg-2% veranderd naar %{_ethereum-classic}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg ethereum-classic." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "vechain":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_vechain} to yaml value "vechain" in "crypto-%uuid of arg-2%"
+                            if {_vechain} is greater than or equal to arg-4:
+                                subtract arg-4 from {_vechain}
+                                set yaml value "vechain" in "crypto-%uuid of arg-2%" to {_vechain}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal vechain van %arg-2% veranderd naar %{_vechain}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg vechain." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "xrp":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_xrp} to yaml value "xrp" in "crypto-%uuid of arg-2%"
+                            if {_xrp} is greater than or equal to arg-4:
+                                subtract arg-4 from {_xrp}
+                                set yaml value "xrp" in "crypto-%uuid of arg-2%" to {_xrp}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal xrp van %arg-2% veranderd naar %{_xrp}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg xrp." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "solana":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_solana} to yaml value "solana" in "crypto-%uuid of arg-2%"
+                            if {_solana} is greater than or equal to arg-4:
+                                subtract arg-4 from {_solana}
+                                set yaml value "solana" in "crypto-%uuid of arg-2%" to {_solana}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal solana van %arg-2% veranderd naar %{_solana}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg solana." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "shiba-inu":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_shiba-inu} to yaml value "shiba-inu" in "crypto-%uuid of arg-2%"
+                            if {_shiba-inu} is greater than or equal to arg-4:
+                                subtract arg-4 from {_shiba-inu}
+                                set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to {_shiba-inu}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal shiba-inu van %arg-2% veranderd naar %{_shiba-inu}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg shiba-inu." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+                if arg-3 is "binance-coin":
+                    if arg-4 is set:
+                        if player has permission "*" or "crypto.admin" or "crypto.remove":
+                            set {_binance-coin} to yaml value "binance-coin" in "crypto-%uuid of arg-2%"
+                            if {_binance-coin} is greater than or equal to arg-4:
+                                subtract arg-4 from {_binance-coin}
+                                set yaml value "binance-coin" in "crypto-%uuid of arg-2%" to {_binance-coin}
+                                save yaml "crypto-%uuid of arg-2%"
+                                send "&aJe hebt het succesvol het aantal binance-coin van %arg-2% veranderd naar %{_binance-coin}%" to player
+                                CryptoPlayerData(player)
+                            else:
+                                send "&c%arg-2% heeft niet genoeg binance-coin." to player
+                        else:
+                            send "&cJe hebt geen toegang tot dit commando." to player
+
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Show the amount of crypto currency a player has. (Admin Command)
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+        if arg-1 is "show":
+            if player has permission "*" or "crypto.admin" or "crypto.reset":
+                if arg-2 is set:
+                    if arg-3 is "tegoed":
+                        set {_tegoed} to yaml value "tegoed" in "crypto-%uuid of arg-2%"
+                        send "&a%arg-2% heeft %{_tegoed}% tegoed." to player
+                    if arg-3 is "bitcoin":
+                        set {_bitcoin} to yaml value "bitcoin" in "crypto-%uuid of arg-2%"
+                        send "&a%arg-2% heeft %{_bitcoin}% bitcoins." to player
+                else:
+                    send "&cJe hebt geen toegang tot dit commando." to player
+            else:
+                send "&cJe hebt geen toegang tot dit commando." to player
+
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
+#
+#
+# Reset a player (Admin Command)
+#
+#
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+                 
+        if arg-1 is "reset":
+            if player has permission "*" or "crypto.admin" or "crypto.reset":
+                if arg-2 is set:
+                    set {crypto.admin.reset.%player%} to true
+                    set {crypto.admin.reset.player.%player%} to arg-2
+                    send "&cWeet je zeker dat je deze spler wilt resetten? Ja / Nee" to player
+                else:
+                    send "&cGebruik: /crypto reset <speler>" to player
+            else:
+                send "&cJe hebt geen toegang tot dit commando." to player
+
+on chat:
+    if {crypto.admin.reset.%player%} is true:
+        if message is "ja" or "JA" or "jA" or "Ja":
+            set yaml value "tegoed" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "bitcoin" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "ethereum" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "maker" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "bitcoin-cash" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "litecoin" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "dash" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "cardano" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "tether" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "dogecoin" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "ethereum-classic" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "vechain" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "xrp" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "solana" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "shiba-inu" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "binance-coin" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            save yaml "crypto-%uuid of {crypto.admin.reset.player.%player%}%"
+
+            send "&aJe hebt %{crypto.admin.reset.player.%player%}% succesvol gereset." to player
+
+            CryptoPlayerData({crypto.admin.reset.player.%player%})
+
+            set {crypto.admin.reset.%player%} to false
+            clear {crypto.admin.reset.player.%player%}
+        else if message is "NEE" or "nEE" or "NeE" or "neE" or "NEe" or "nEe" or "Nee" or "nee":
+            send "&cJe hebt de reset geannuleerd." to player
+            set {crypto.admin.reset.%player%} to false
+            clear {crypto.admin.reset.player.%player%}
+    cancel event
+
+
+on tab complete:
+    if event-string is "/crypto":
+        if player has permission "*" or "crypto.admin" or "crypto.add" or "crypto.remove" or "crypto.set" or "crypto.show" or "crypto.reset" or "crypto.reload":
+            set tab completions for position 1 to "add", "remove", "set", "show", "reset", "reload", "config"
+            set tab completions for position 3 to "tegoed", "bitcoin", "ethereum", "maker", "bitcoin-cash", "litecoin", "dash", "cardano", "tether", "dogecoin", "ethereum-classic", "vechain", "xrp", "solana", "shiba-inu", "binance-coin"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
