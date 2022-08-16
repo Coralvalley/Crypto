@@ -197,19 +197,16 @@ on load:
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-function transaction(p: player, coin: text, amount: number, price: number, type: text, type2: text):
+function transaction(p: player, coin: text, amount: number, price: number, buyprice: number, type: text):
     set {player.%{_p}%} to {_p}
     set {coin.%{_p}%} to {_coin}
     set {amount.%{_p}%} to {_amount}
     set {price.%{_p}%} to {_price}
+    set {buyprice.%{_p}%} to {_buyprice}
     set {type.%{_p}%} to {_type}
-    set {type2.%{_p}%} to {_type2}
     set {time.%{_p}%} to now
 
-    if {type2.%{_p}%} is "eenheden":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}%: %{player.%{player}%}%, %{type.%{player}%}%, %{amount.%{player}%}%, %{coin.%{player}%}%, €%{price.%{player}%}%, %{type2.%{player}%}%"
-    if {type2.%{_p}%} is "bedrag":
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}%: %{player.%{player}%}%, %{type.%{player}%}%, €%{amount.%{player}%}%, %{coin.%{player}%}%, %{price.%{player}%}%, %{type2.%{player}%}%"
+    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%{player}%}%" with the body "%{time.%{player}%}% %{player.%{player}%}% %{amount.%{player}%}% %{coin.%{player}%}% %{price.%{player}%}% %{buyprice.%{player}%}% %{type.%{player}%}%"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -1022,7 +1019,7 @@ on chat:
             clear {crypto.admin.reset.player.%player%}
         else:
             send "&cDit is geen geldige keuze." to player
-    cancel event
+        cancel event
 
 
 on tab complete:
@@ -2674,7 +2671,7 @@ function buyEenheden(coin: text, message: text, p: player):
                 set {crypto.buy.%{_coin}%.eenheden.%{_p}%} to false
 
                 CryptoPlayerData({_p})
-                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "buy", "eenheden")
+                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, {_buyprice}, "buy")
             else:
                 send "&cSorry, je hebt hier niet genoeg geld voor." to {_p}
         else:
@@ -2709,7 +2706,7 @@ function sellEenheden(coin: text, message: text, p: player):
                 set {crypto.sell.%{_coin}%.eenheden.%{_p}%} to false
 
                 CryptoPlayerData({_p})
-                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "sell", "eenheden")
+                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, {_sellPrice}, "sell")
             else:
                 send "&cJe hebt niet genoeg %{_coin}%" to {_p}
         else:
@@ -2739,6 +2736,7 @@ function buyBedrag(coin: text, message: text, p: player):
                 send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% gekocht." to {_p}
 
                 remove {_buyPrice} from {_balance}
+                send "%{_buyPrice}%" to {_p}
                 remove {_fee} from {_balance}
                 set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
                 execute console command "rekening give %{_rekening-id}% %{_fee}%"
@@ -2751,7 +2749,7 @@ function buyBedrag(coin: text, message: text, p: player):
                 set {crypto.buy.%{_coin}%.bedrag.%{_p}%} to false
 
                 CryptoPlayerData({_p})
-                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "buy", "bedrag")
+                transaction({_p}, {_coin}, {_amount}, {%{_coin}%::1::price_eur}, {_buyprice}, "buy")
             else:
                 send "&cSorry je hebt hier niet genoeg geld voor." to {_p}
         else:
@@ -2770,11 +2768,11 @@ function sellBedrag(coin: text, message: text, p: player):
     if {_message} parsed as number is a number:
         if {_message} parsed as number is not 0:
             set {_amount} to {_message} parsed as number / {%{_coin}%::1::price_eur}
-            set {_buyPrice} to {_amount} * {%{_coin}%::1::price_eur}
+            set {_sellPrice} to {_amount} * {%{_coin}%::1::price_eur}
             if yaml value "%{_coin}%" in "crypto-%uuid of {_p}%" is greater than or equal to {_amount}:
                 send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% verkocht." to {_p}
 
-                add {_buyPrice} to {_balance}
+                add {_sellPrice} to {_balance}
                 remove {_fee} from {_balance}
                 set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
                 execute console command "rekening give %{_rekening-id}% %{_fee}%"
@@ -2787,7 +2785,7 @@ function sellBedrag(coin: text, message: text, p: player):
                 set {crypto.sell.%{_coin}%.bedrag.%{_p}%} to false
 
                 CryptoPlayerData({_p})
-                transaction({_p}, {_coin}, {_message} parsed as number, {%{_coin}%::1::price_eur}, "sell", "bedrag")
+                transaction({_p}, {_coin}, {_amount}, {%{_coin}%::1::price_eur}, {_sellPrice}, "sell")
             else:
                 send "&cSorry je hebt niet genoeg %{_coin}%" to {_p}
         else:
@@ -3082,7 +3080,7 @@ on chat:
 
 # Crypto kopen via website testing
 
-every 200 seconds:
+every 100 seconds:
     loop all players:
         send a "get" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/players/%loop-player%.json" with the headers "Content-Type: application/json"
 
@@ -3107,6 +3105,15 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Bitcoin gekocht!" to loop-player
+
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {bitcoin::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "bitcoin"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3131,6 +3138,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Ethereum gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {ethereum::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "bitcoin"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3155,6 +3170,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Maker gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {maker::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "bitcoin"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3180,6 +3203,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Bitcoin-Cash gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {bitcoin-cash::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "bitcoin-cash"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3205,6 +3236,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Litecoin gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {litecoin::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "litecoin"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3229,6 +3268,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Dash gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {dash::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "dash"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3254,6 +3301,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Cardano gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {cardano::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "cardano"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3279,6 +3334,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Tether gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {tether::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "tether"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3304,6 +3367,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Dogecoin gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {dogecoin::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "dogecoin"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3329,6 +3400,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Ethereum-Classic gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {ethereum-classic::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "ethereum-classic"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3354,6 +3433,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% VeChain gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {vechain::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "vechain"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3379,6 +3466,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% XRP gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {xrp::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "xrp"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3404,6 +3499,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Solana gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {solana::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "solana"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3429,6 +3532,14 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Shiba Inu gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {shiba-inu::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "shiba-inu"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
@@ -3454,6 +3565,19 @@ every 200 seconds:
                 save yaml "crypto-%uuid of loop-player%"
 
                 send "&aJe hebt succesvol %{_difference}% Binance Coin gekocht!" to loop-player
+                set {player.%loop-player%} to loop-player
+                set {amount.%loop-player%} to {_difference}
+                set {price.%loop-player%} to {binance-coin::1::price_eur}
+                set {buyprice.%loop-player%} to {_price}
+                set {coin.%loop-player%} to "binance-coin"
+                set {time.%loop-player%} to now
+
+                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
             else:
                 send "&cHelaas! Je hebt niet genoeg tegoed." to loop-player
                 CryptoPlayerData(loop-player)
+
+
+
+
+
