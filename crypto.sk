@@ -98,8 +98,8 @@ on load:
             add "xrp" to skript-yaml list "coins" in "crypto-config"
         if skript-yaml value "coins" in "crypto-config" doesn't contain "solana":
             add "solana" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "shiba-inu":
-            add "shiba-inu" to skript-yaml list "coins" in "crypto-config"
+        if skript-yaml value "coins" in "crypto-config" doesn't contain "cronos":
+            add "cronos" to skript-yaml list "coins" in "crypto-config"
         if skript-yaml value "coins" in "crypto-config" doesn't contain "binance-coin":
             add "binance-coin" to skript-yaml list "coins" in "crypto-config"
 
@@ -129,8 +129,8 @@ on load:
     #     set yaml value "xrp" in "crypto-config" to true
     # if yaml value "solana" in "crypto-config" is not set:
     #     set yaml value "solana" in "crypto-config" to true
-    # if yaml value "shiba-inu" in "crypto-config" is not set:
-    #     set yaml value "shiba-inu" in "crypto-config" to true
+    # if yaml value "cronos" in "crypto-config" is not set:
+    #     set yaml value "cronos" in "crypto-config" to true
     # if yaml value "binance-coin" in "crypto-config" is not set:
     #     set yaml value "binance-coin" in "crypto-config" to true
 
@@ -166,8 +166,8 @@ on load:
         set yaml value "staking.xrp" in "crypto-config" to 0
     if yaml value "staking.solana" in "crypto-config" is not set:
         set yaml value "staking.solana" in "crypto-config" to 0
-    if yaml value "staking.shiba-inu" in "crypto-config" is not set:
-        set yaml value "staking.shiba-inu" in "crypto-config" to 0
+    if yaml value "staking.cronos" in "crypto-config" is not set:
+        set yaml value "staking.cronos" in "crypto-config" to 0
     if yaml value "staking.binance-coin" in "crypto-config" is not set:
         set yaml value "staking.binance-coin" in "crypto-config" to 0
 
@@ -252,8 +252,8 @@ on join:
         set yaml value "xrp" in "crypto-%uuid of player%" to 0
     if yaml value "solana" in "crypto-%uuid of player%" is not set:
         set yaml value "solana" in "crypto-%uuid of player%" to 0
-    if yaml value "shiba-inu" in "crypto-%uuid of player%" is not set:
-        set yaml value "shiba-inu" in "crypto-%uuid of player%" to 0
+    if yaml value "cronos" in "crypto-%uuid of player%" is not set:
+        set yaml value "cronos" in "crypto-%uuid of player%" to 0
     if yaml value "binance-coin" in "crypto-%uuid of player%" is not set:
         set yaml value "binance-coin" in "crypto-%uuid of player%" to 0
 
@@ -282,11 +282,11 @@ function CryptoPlayerData(p: player):
     set {vechain.%{player}%} to yaml value "vechain" in "crypto-%uuid of {player}%"
     set {xrp.%{player}%} to yaml value "xrp" in "crypto-%uuid of {player}%"
     set {solana.%{player}%} to yaml value "solana" in "crypto-%uuid of {player}%"
-    set {shiba-inu.%{player}%} to yaml value "shiba-inu" in "crypto-%uuid of {player}%"
+    set {cronos.%{player}%} to yaml value "cronos" in "crypto-%uuid of {player}%"
     set {binance-coin.%{player}%} to yaml value "binance-coin" in "crypto-%uuid of {player}%"
     set {api_key} to yaml value "api" in "crypto-config"
     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""shiba-inu"":%{shiba-inu.%{player}%}%, ""binance-coin"":%{binance-coin.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""cronos"":%{cronos.%{player}%}%, ""binance-coin"":%{binance-coin.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
 
 every 5 minutes:
     loop all players:
@@ -507,12 +507,12 @@ command /crypto [<text>] [<offline player>] [<text>] [<number>]:
                             CryptoPlayerData(player)
                         else:
                             send "&cJe hebt geen toegang tot dit commando." to player
-                if arg-3 is "shiba-inu":
+                if arg-3 is "cronos":
                     if arg-4 is set:
                         if player has permission "*" or "crypto.admin" or "crypto.set":
-                            set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to arg-4
+                            set yaml value "cronos" in "crypto-%uuid of arg-2%" to arg-4
                             save yaml "crypto-%uuid of arg-2%"
-                            send "&aHet shiba-inu van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
+                            send "&aHet cronos van %arg-2% is succesvol gewijzigd naar %arg-4%." to player
                             CryptoPlayerData(player)
                         else:
                             send "&cJe hebt geen toegang tot dit commando." to player
@@ -690,14 +690,14 @@ command /crypto [<text>] [<offline player>] [<text>] [<number>]:
                             CryptoPlayerData(player)
                         else:
                             send "&cJe hebt geen toegang tot dit commando." to player
-                if arg-3 is "shiba-inu":
+                if arg-3 is "cronos":
                     if arg-4 is set:
                         if player has permission "*" or "crypto.admin" or "crypto.add":
-                            set {_shiba-inu} to yaml value "shiba-inu" in "crypto-%uuid of arg-2%"
-                            add arg-4 to {_shiba-inu}
-                            set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to {_shiba-inu}
+                            set {_cronos} to yaml value "cronos" in "crypto-%uuid of arg-2%"
+                            add arg-4 to {_cronos}
+                            set yaml value "cronos" in "crypto-%uuid of arg-2%" to {_cronos}
                             save yaml "crypto-%uuid of arg-2%"
-                            send "&a%arg-2% heeft succesvol %arg-4% shiba-inu gekregen." to player
+                            send "&a%arg-2% heeft succesvol %arg-4% cronos gekregen." to player
                             CryptoPlayerData(player)
                         else:
                             send "&cJe hebt geen toegang tot dit commando." to player
@@ -916,18 +916,18 @@ command /crypto [<text>] [<offline player>] [<text>] [<number>]:
                                 send "&c%arg-2% heeft niet genoeg solana." to player
                         else:
                             send "&cJe hebt geen toegang tot dit commando." to player
-                if arg-3 is "shiba-inu":
+                if arg-3 is "cronos":
                     if arg-4 is set:
                         if player has permission "*" or "crypto.admin" or "crypto.remove":
-                            set {_shiba-inu} to yaml value "shiba-inu" in "crypto-%uuid of arg-2%"
-                            if {_shiba-inu} is greater than or equal to arg-4:
-                                subtract arg-4 from {_shiba-inu}
-                                set yaml value "shiba-inu" in "crypto-%uuid of arg-2%" to {_shiba-inu}
+                            set {_cronos} to yaml value "cronos" in "crypto-%uuid of arg-2%"
+                            if {_cronos} is greater than or equal to arg-4:
+                                subtract arg-4 from {_cronos}
+                                set yaml value "cronos" in "crypto-%uuid of arg-2%" to {_cronos}
                                 save yaml "crypto-%uuid of arg-2%"
-                                send "&aJe hebt het succesvol het aantal shiba-inu van %arg-2% veranderd naar %{_shiba-inu}%" to player
+                                send "&aJe hebt het succesvol het aantal cronos van %arg-2% veranderd naar %{_cronos}%" to player
                                 CryptoPlayerData(player)
                             else:
-                                send "&c%arg-2% heeft niet genoeg shiba-inu." to player
+                                send "&c%arg-2% heeft niet genoeg cronos." to player
                         else:
                             send "&cJe hebt geen toegang tot dit commando." to player
                 if arg-3 is "binance-coin":
@@ -1003,7 +1003,7 @@ on chat:
             set yaml value "vechain" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
             set yaml value "xrp" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
             set yaml value "solana" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
-            set yaml value "shiba-inu" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
+            set yaml value "cronos" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
             set yaml value "binance-coin" in "crypto-%uuid of {crypto.admin.reset.player.%player%}%" to 0
             save yaml "crypto-%uuid of {crypto.admin.reset.player.%player%}%"
 
@@ -1026,7 +1026,7 @@ on tab complete:
     if event-string is "/crypto":
         if player has permission "*" or "crypto.admin" or "crypto.add" or "crypto.remove" or "crypto.set" or "crypto.show" or "crypto.reset" or "crypto.reload":
             set tab completions for position 1 to "add", "remove", "set", "show", "reset", "reload", "config"
-            set tab completions for position 3 to "tegoed", "bitcoin", "ethereum", "maker", "bitcoin-cash", "litecoin", "dash", "cardano", "tether", "dogecoin", "ethereum-classic", "vechain", "xrp", "solana", "shiba-inu", "binance-coin"
+            set tab completions for position 3 to "tegoed", "bitcoin", "ethereum", "maker", "bitcoin-cash", "litecoin", "dash", "cardano", "tether", "dogecoin", "ethereum-classic", "vechain", "xrp", "solana", "cronos", "binance-coin"
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -1093,13 +1093,13 @@ function wallet(inv: text, p: player):
         set {_solana} to yaml value "solana" in "crypto-%uuid of {_p}%"
         set {_solana.price} to {solana::1::price_eur} * {_solana}
 
-        set {_shiba-inu} to yaml value "solana" in "crypto-%uuid of {_p}%"
-        set {_shiba-inu.price} to {shiba-inu::1::price_eur} * {_shiba-inu}
+        set {_cronos} to yaml value "cronos" in "crypto-%uuid of {_p}%"
+        set {_cronos.price} to {cronos::1::price_eur} * {_cronos}
 
         set {_binance-coin} to yaml value "binance-coin" in "crypto-%uuid of {_p}%"
         set {_binance-coin.price} to {binance-coin::1::price_eur} * {_binance-coin}
 
-        add {_bitcoin.price} and {_ethereum.price} and {_maker.price} and {_bitcoin-cash.price} and {_litecoin.price} and {_dash.price} and {_cardano.price} and {_tether.price} and {_dogecoin.price} and {_ethereum-classic.price} and {_vechain.price} and {_xrp.price} and {_solana.price} and {_shiba-inu.price} and {_binance-coin.price} to {wallet.total.price.%{_p}%}
+        add {_bitcoin.price} and {_ethereum.price} and {_maker.price} and {_bitcoin-cash.price} and {_litecoin.price} and {_dash.price} and {_cardano.price} and {_tether.price} and {_dogecoin.price} and {_ethereum-classic.price} and {_vechain.price} and {_xrp.price} and {_solana.price} and {_cronos.price} and {_binance-coin.price} to {wallet.total.price.%{_p}%}
         wait 1 tick
         open chest with 3 rows named "Totaal: €%{wallet.total.price.%{_p}%}%" to {_p}
         wait 1 tick
@@ -1117,7 +1117,7 @@ function wallet(inv: text, p: player):
         set slot 10 of {_p}'s current inventory to a iron ingot named "&7VeChain" with nbt "{mtcustom:vechain}" with lore "" and "&8Totaal: %{_vechain}%" and "&8Waarde: €%{_vechain.price}%"
         set slot 11 of {_p}'s current inventory to a iron ingot named "&7XRP" with nbt "{mtcustom:xrp}" with lore "" and "&8Totaal: %{_xrp}%" and "&8Waarde: €%{_xrp.price}%"
         set slot 12 of {_p}'s current inventory to a iron ingot named "&7Solana" with nbt "{mtcustom:solana}" with lore "" and "&8Totaal: %{_solana}%" and "&8Waarde: €%{_solana.price}%"
-        set slot 13 of {_p}'s current inventory to a iron ingot named "&7Shiba Inu" with nbt "{mtcustom:shiba-inu}" with lore "" and "&8Totaal: %{_shiba-inu}%" and "&8Waarde: €%{_shiba-inu.price}%"
+        set slot 13 of {_p}'s current inventory to a iron ingot named "&7Cronos" with nbt "{mtcustom:cronos}" with lore "" and "&8Totaal: %{_cronos}%" and "&8Waarde: €%{_cronos.price}%"
         set slot 14 of {_p}'s current inventory to a iron ingot named "&7Binance Coin" with nbt "{mtcustom:binance-coin}" with lore "" and "&8Totaal: %{_binance-coin}%" and "&8Waarde: €%{_binance-coin.price}%"
 
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
@@ -1190,7 +1190,7 @@ on inventory click:
                 cryptoMarket("solanaSell", player)
         if clicked slot is 13:
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("shiba-inutSell", player)
+                cryptoMarket("cronostSell", player)
         if clicked slot is 14:
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("binance-coinSell", player)
@@ -1280,7 +1280,39 @@ on load:
     map json last http response's body to {price_euro-price_usd::*}
     # send "%{price_euro-price_usd::result}%" to console
 
-every 30 seconds in world "world":
+every 60 seconds in world "world":
+    clear {bitcoin::1::price_eur}
+    clear {bitcoin::1::price_usd}
+    clear {ethereum::1::price_eur}
+    clear {ethereum::1::price_usd}
+    clear {maker::1::price_eur}
+    clear {maker::1::price_usd}
+    clear {bitcoin-cash::1::price_eur}
+    clear {bitcoin-cash::1::price_usd}
+    clear {litecoin::1::price_eur}
+    clear {litecoin::1::price_usd}
+    clear {dash::1::price_eur}
+    clear {dash::1::price_usd}
+    clear {cardano::1::price_eur}
+    clear {cardano::1::price_usd}
+    clear {tether::1::price_eur}
+    clear {tether::1::price_usd}
+    clear {dogecoin::1::price_eur}
+    clear {dogecoin::1::price_usd}
+    clear {ethereum-classic::1::price_eur}
+    clear {ethereum-classic::1::price_usd}
+    clear {vechain::1::price_eur}
+    clear {vechain::1::price_usd}
+    clear {xrp::1::price_eur}
+    clear {xrp::1::price_usd}
+    clear {solana::1::price_eur}
+    clear {solana::1::price_usd}
+    clear {cronos::1::price_eur}
+    clear {cronos::1::price_usd}
+    clear {binance-coin::1::price_eur}
+    clear {binance-coin::1::price_usd}
+
+
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
     map json last http response's body to {bitcoin::*}
     set {bitcoin::1::price_eur} to {bitcoin::1::price_usd} parsed as number / 1.02
@@ -1372,10 +1404,10 @@ every 30 seconds in world "world":
 
     wait 0.5 seconds
 
-    send a request to "https://api.coinlore.net/api/ticker/?id=45088" with the headers "Content-Type: application/json"
-    map json last http response's body to {shiba-inu::*}
-    set {shiba-inu::1::price_eur} to {shiba-inu::1::price_usd} parsed as number / 1.02
-    set {shiba-inu::1::volume_eur} to {shiba-inu::1::volume24} parsed as number / 1.02
+    send a request to "https://api.coinlore.net/api/ticker/?id=33819" with the headers "Content-Type: application/json"
+    map json last http response's body to {cronos::*}
+    set {cronos::1::price_eur} to {cronos::1::price_usd} parsed as number / 1.02
+    set {cronos::1::volume_eur} to {cronos::1::volume24} parsed as number / 1.02
 
     wait 0.5 seconds
 
@@ -1507,13 +1539,13 @@ function cryptoMarket(coin: text, p: player):
         else if {_solana::1::percent_change_24h} is equal to 0.0:
             set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&7%%%{solana::1::percent_change_24h}%" and "&fVolume €%{solana::1::volume_eur}%" 
 
-        set {_shiba-inu::1::percent_change_24h} to {shiba-inu::1::percent_change_24h} parsed as number
-        if {_shiba-inu::1::percent_change_24h} is greater than 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&bShiba Inu" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&a%%%{shiba-inu::1::percent_change_24h}%" and "&fVolume €%{shiba-inu::1::volume_eur}%" 
-        else if {_shiba-inu::1::percent_change_24h} is less than 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&bShiba Inu" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&c%%%{shiba-inu::1::percent_change_24h}%" and "&fVolume €%{shiba-inu::1::volume_eur}%" 
-        else if {_shiba-inu::1::percent_change_24h} is equal to 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&bShiba Inu" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&7%%%{shiba-inu::1::percent_change_24h}%" and "&fVolume €%{shiba-inu::1::volume_eur}%" 
+        set {_cronos::1::percent_change_24h} to {cronos::1::percent_change_24h} parsed as number
+        if {_cronos::1::percent_change_24h} is greater than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&a%%%{cronos::1::percent_change_24h}%" and "&fVolume €%{cronos::1::volume_eur}%" 
+        else if {_cronos::1::percent_change_24h} is less than 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&c%%%{cronos::1::percent_change_24h}%" and "&fVolume €%{cronos::1::volume_eur}%" 
+        else if {_cronos::1::percent_change_24h} is equal to 0.0:
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&7%%%{cronos::1::percent_change_24h}%" and "&fVolume €%{cronos::1::volume_eur}%" 
 
         set {_binance-coin::1::percent_change_24h} to {binance-coin::1::percent_change_24h} parsed as number
         if {_binance-coin::1::percent_change_24h} is greater than 0.0:
@@ -2040,43 +2072,43 @@ function cryptoMarket(coin: text, p: player):
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
 
-    if {_coin} is "shiba-inuBuy":
-        open chest with 3 rows named "Shiba Inu kopen" to {_p}
+    if {_coin} is "cronosBuy":
+        open chest with 3 rows named "Cronos kopen" to {_p}
         wait 1 tick
-        set {_shiba-inu::1::percent_change_24h} to {shiba-inu::1::percent_change_24h} parsed as number
-        if {_shiba-inu::1::percent_change_24h} is greater than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&a%%%{shiba-inu::1::percent_change_24h}%" with nbt "{mtcustom:shiba-inu}"
-        else if {_shiba-inu::1::percent_change_24h} is less than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&c%%%{shiba-inu::1::percent_change_24h}%" with nbt "{mtcustom:shiba-inu}"
-        else if {_shiba-inu::1::percent_change_24h} is equal to 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&7%%%{shiba-inu::1::percent_change_24h}%" with nbt "{mtcustom:shiba-inu}"
+        set {_cronos::1::percent_change_24h} to {cronos::1::percent_change_24h} parsed as number
+        if {_cronos::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&a%%%{cronos::1::percent_change_24h}%" with nbt "{mtcustom:cronos}"
+        else if {_cronos::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&c%%%{cronos::1::percent_change_24h}%" with nbt "{mtcustom:cronos}"
+        else if {_cronos::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bEenheden" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&7%%%{cronos::1::percent_change_24h}%" with nbt "{mtcustom:cronos}"
         
-        set {_shiba-inu::1::percent_change_24h} to {shiba-inu::1::percent_change_24h} parsed as number
-        if {_shiba-inu::1::percent_change_24h} is greater than 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&a%%%{shiba-inu::1::percent_change_24h}%"
-        else if {_shiba-inu::1::percent_change_24h} is less than 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&c%%%{shiba-inu::1::percent_change_24h}%"
-        else if {_shiba-inu::1::percent_change_24h} is equal to 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&7%%%{shiba-inu::1::percent_change_24h}%"
+        set {_cronos::1::percent_change_24h} to {cronos::1::percent_change_24h} parsed as number
+        if {_cronos::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&a%%%{cronos::1::percent_change_24h}%"
+        else if {_cronos::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&c%%%{cronos::1::percent_change_24h}%"
+        else if {_cronos::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&bBedrag" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&7%%%{cronos::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
-    if {_coin} is "shiba-inuSell":
-        open chest with 3 rows named "Shiba Inu verkopen" to {_p}
+    if {_coin} is "cronosSell":
+        open chest with 3 rows named "Cronos verkopen" to {_p}
         wait 1 tick
-        set {_shiba-inu::1::percent_change_24h} to {shiba-inu::1::percent_change_24h} parsed as number
-        if {_shiba-inu::1::percent_change_24h} is greater than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&a%%%{shiba-inu::1::percent_change_24h}%" with nbt "{mtcustom:shiba-inu}"
-        else if {_shiba-inu::1::percent_change_24h} is less than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&c%%%{shiba-inu::1::percent_change_24h}%" with nbt "{mtcustom:shiba-inu}"
-        else if {_shiba-inu::1::percent_change_24h} is equal to 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&7%%%{shiba-inu::1::percent_change_24h}%" with nbt "{mtcustom:shiba-inu}"
+        set {_cronos::1::percent_change_24h} to {cronos::1::percent_change_24h} parsed as number
+        if {_cronos::1::percent_change_24h} is greater than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&a%%%{cronos::1::percent_change_24h}%" with nbt "{mtcustom:cronos}"
+        else if {_cronos::1::percent_change_24h} is less than 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&c%%%{cronos::1::percent_change_24h}%" with nbt "{mtcustom:cronos}"
+        else if {_cronos::1::percent_change_24h} is equal to 0.0:
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&aEenheden" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&7%%%{cronos::1::percent_change_24h}%" with nbt "{mtcustom:cronos}"
         
-        set {_shiba-inu::1::percent_change_24h} to {shiba-inu::1::percent_change_24h} parsed as number
-        if {_shiba-inu::1::percent_change_24h} is greater than 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&a%%%{shiba-inu::1::percent_change_24h}%"
-        else if {_shiba-inu::1::percent_change_24h} is less than 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&c%%%{shiba-inu::1::percent_change_24h}%"
-        else if {_shiba-inu::1::percent_change_24h} is equal to 0.0:
-            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{shiba-inu::1::price_eur}%" and "&7%%%{shiba-inu::1::percent_change_24h}%"
+        set {_cronos::1::percent_change_24h} to {cronos::1::percent_change_24h} parsed as number
+        if {_cronos::1::percent_change_24h} is greater than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&a%%%{cronos::1::percent_change_24h}%"
+        else if {_cronos::1::percent_change_24h} is less than 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&c%%%{cronos::1::percent_change_24h}%"
+        else if {_cronos::1::percent_change_24h} is equal to 0.0:
+            set slot 15 of {_p}'s current inventory to a gold ingot named "&aBedrag" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&7%%%{cronos::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
 
     if {_coin} is "binance-coinBuy":
@@ -2200,9 +2232,9 @@ on inventory click:
                 cryptoMarket("solanaSell", player)
         if clicked slot is 13:
             if "%event-clicktype%" is "right mouse button":
-                cryptoMarket("shiba-inuBuy", player)
+                cryptoMarket("cronosBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                cryptoMarket("shiba-inuSell", player)
+                cryptoMarket("cronosSell", player)
         if clicked slot is 14:
             if "%event-clicktype%" is "right mouse button":
                 cryptoMarket("binance-coinBuy", player)
@@ -2585,31 +2617,31 @@ on inventory click:
             cryptoMarket("gui", player)
         cancel event
 
-    else if name of player's current inventory is "Shiba Inu kopen":
+    else if name of player's current inventory is "Cronos kopen":
         if clicked slot is 11:
             close player's inventory
-            set {crypto.buy.shiba-inu.eenheden.%player%} to true
+            set {crypto.buy.cronos.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel shiba-inu wil je kopen?"
+            send "&6Hoeveel cronos wil je kopen?"
         if clicked slot is 15:
             close player's inventory
-            set {crypto.buy.shiba-inu.bedrag.%player%} to true
+            set {crypto.buy.cronos.bedrag.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan shiba-inu wil je kopen?"
+            send "&6Hoeveel euro aan cronos wil je kopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
         cancel event
-    else if name of player's current inventory is "Shiba Inu verkopen":
+    else if name of player's current inventory is "Cronos verkopen":
         if clicked slot is 11:
             close player's inventory
-            set {crypto.sell.shiba-inu.eenheden.%player%} to true
+            set {crypto.sell.cronos.eenheden.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel shiba-inu wil je verkopen?"
+            send "&6Hoeveel cronos wil je verkopen?"
         if clicked slot is 15:
             close player's inventory
-            set {crypto.sell.shiba-inu.bedrag.%player%} to true
+            set {crypto.sell.cronos.bedrag.%player%} to true
             send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan shiba-inu wil je verkopen?"
+            send "&6Hoeveel euro aan cronos wil je verkopen?"
         if clicked slot is 22:
             cryptoMarket("gui", player)
 
@@ -2810,7 +2842,7 @@ on join:
     add "vechain" to {_coins::*}
     add "xrp" to {_coins::*}
     add "solana" to {_coins::*}
-    add "shiba-inu" to {_coins::*}
+    add "cronos" to {_coins::*}
     add "binance-coin" to {_coins::*}
 
     loop {_coins::*}:
@@ -3044,22 +3076,22 @@ on chat:
         set {_message} to message
         sellBedrag("solana", {_message}, player)
 
-    if {crypto.buy.shiba-inu.eenheden.%player%} is true:
+    if {crypto.buy.cronos.eenheden.%player%} is true:
         cancel event
         set {_message} to message
-        buyEenheden("shiba-inu", {_message}, player)
-    if {crypto.buy.shiba-inu.bedrag.%player%} is true:
+        buyEenheden("cronos", {_message}, player)
+    if {crypto.buy.cronos.bedrag.%player%} is true:
         cancel event
         set {_message} to message
-        buyBedrag("shiba-inu", {_message}, player)
-    if {crypto.sell.shiba-inu.eenheden.%player%} is true:
+        buyBedrag("cronos", {_message}, player)
+    if {crypto.sell.cronos.eenheden.%player%} is true:
         cancel event
         set {_message} to message
-        sellEenheden("shiba-inu", {_message}, player)
-    if {crypto.sell.shiba-inu.bedrag.%player%} is true:
+        sellEenheden("cronos", {_message}, player)
+    if {crypto.sell.cronos.bedrag.%player%} is true:
         cancel event
         set {_message} to message
-        sellBedrag("shiba-inu", {_message}, player)
+        sellBedrag("cronos", {_message}, player)
 
     if {crypto.buy.binance-coin.eenheden.%player%} is true:
         cancel event
@@ -3512,13 +3544,13 @@ every 100 seconds:
                 CryptoPlayerData(loop-player)
 
 
-        set {_shiba-inu.%loop-player%} to yaml value "shiba-inu" in "crypto-%uuid of loop-player%"
+        set {_cronos.%loop-player%} to yaml value "cronos" in "crypto-%uuid of loop-player%"
 
-        if {_shiba-inu.%loop-player%} is less than {_crypto.%loop-player%::coins::shiba-inu}:
+        if {_cronos.%loop-player%} is less than {_crypto.%loop-player%::coins::cronos}:
             set {_fee} to yaml value "fee" in "crypto-config"
             set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-player%::coins::shiba-inu} - {_shiba-inu.%loop-player%}
-            set {_price} to {_difference} * {shiba-inu::1::price_eur}
+            set {_difference} to {_crypto.%loop-player%::coins::cronos} - {_cronos.%loop-player%}
+            set {_price} to {_difference} * {cronos::1::price_eur}
             if yaml value "tegoed" in "crypto-%uuid of loop-player%" is greater than or equal to {_price} + {_fee}:
 
                 set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-player%"
@@ -3527,16 +3559,16 @@ every 100 seconds:
                 set yaml value "tegoed" in "crypto-%uuid of loop-player%" to {_balance}
                 execute console command "rekening give %{_rekening-id}% %{_fee}%"
 
-                set yaml value "shiba-inu" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::shiba-inu}
+                set yaml value "cronos" in "crypto-%uuid of loop-player%" to {_crypto.%loop-player%::coins::cronos}
 
                 save yaml "crypto-%uuid of loop-player%"
 
-                send "&aJe hebt succesvol %{_difference}% Shiba Inu gekocht!" to loop-player
+                send "&aJe hebt succesvol %{_difference}% Cronos gekocht!" to loop-player
                 set {player.%loop-player%} to loop-player
                 set {amount.%loop-player%} to {_difference}
-                set {price.%loop-player%} to {shiba-inu::1::price_eur}
+                set {price.%loop-player%} to {cronos::1::price_eur}
                 set {buyprice.%loop-player%} to {_price}
-                set {coin.%loop-player%} to "shiba-inu"
+                set {coin.%loop-player%} to "cronos"
                 set {time.%loop-player%} to now
 
                 send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-player%}%" with the body "%{time.%loop-player%}% %{player.%loop-player%}% %{amount.%loop-player%}% %{coin.%loop-player%}% %{price.%loop-player%}% %{buyprice.%loop-player%}% buy"
