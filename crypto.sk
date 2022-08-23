@@ -265,7 +265,7 @@ on join:
     
     save yaml "crypto-%uuid of player%"
     
-    # CryptoPlayerData(player)
+    CryptoPlayerData(player)
 
 function CryptoPlayerData(p: player):
     set {player} to {_p}
