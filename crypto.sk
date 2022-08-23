@@ -3112,7 +3112,7 @@ on chat:
 
 # Crypto kopen via website testing
 
-every 100 seconds in world "world":
+every 200 seconds in world "world":
     loop all offline players:
         if loop-offline player is offline:
             load yaml "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" as "crypto-%uuid of loop-offline player%"
@@ -3613,3 +3613,8 @@ every 100 seconds in world "world":
 
         if loop-offline player is offline:
             unload yaml "crypto-%uuid of loop-offline player%"
+
+
+
+
+
