@@ -8,18 +8,6 @@
 
 
 on load:
-    # Disable the main plugin file 'crypto.sk'
-    send "Disabling main script" to console
-    if file path "plugins/Skript/scripts/crypto/-crypto.sk" is missing:
-        disable script "crypto/crypto"
-        if file path "plugins/Skript/scripts/crypto/crypto.sk" is missing:
-            send "&aSuccesfully disabled main script" to console
-        else:
-            send "&cUnable to disable main script" to console
-    else:
-        send "&aMain script is already disabled" to console
-    wait 2 seconds
-
     # Disable the website file 'website.sk'
     send "Disabling website script" to console
     if file path "plugins/Skript/scripts/crypto/-website.sk" is missing:
@@ -30,6 +18,18 @@ on load:
             send "&cUnable to disable website script" to console
     else:
         send "&aWebsite script is already disabled" to console
+    wait 2 seconds
+    
+    # Disable the main plugin file 'crypto.sk'
+    send "Disabling main script" to console
+    if file path "plugins/Skript/scripts/crypto/-crypto.sk" is missing:
+        disable script "crypto/crypto"
+        if file path "plugins/Skript/scripts/crypto/crypto.sk" is missing:
+            send "&aSuccesfully disabled main script" to console
+        else:
+            send "&cUnable to disable main script" to console
+    else:
+        send "&aMain script is already disabled" to console
     wait 2 seconds
 
     # Delete the main plugin file now called '-crypto.sk'
