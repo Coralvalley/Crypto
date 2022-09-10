@@ -20,6 +20,15 @@ on load:
         send "&aWebsite script is already disabled" to console
     wait 5 seconds
 
+    # Delete the website script now called '-website.sk'
+    send "Deleting website script" to console
+    delete file "plugins/Skript/scripts/crypto/-website.sk"
+    if file path "plugins/Skript/scripts/crypto/-website.sk" is missing:
+        send "&aSuccesfully deleted website script" to console
+    else:
+        send "&cUnable to delete webste script" to console
+    wait 5 seconds
+
     # Disable the main plugin file 'crypto.sk'
     send "Disabling main script" to console
     if file path "plugins/Skript/scripts/crypto/-crypto.sk" is missing:
@@ -40,15 +49,6 @@ on load:
         send "&aSuccesfully deleted main script" to console
     else:
         send "&cUnable to delete main script" to console
-    wait 2 seconds
-
-    # Delete the website script now called '-website.sk'
-    send "Deleting website script" to console
-    delete file "plugins/Skript/scripts/crypto/-website.sk"
-    if file path "plugins/Skript/scripts/crypto/-website.sk" is missing:
-        send "&aSuccesfully deleted website script" to console
-    else:
-        send "&cUnable to delete webste script" to console
     wait 2 seconds
 
     # Download the new main plugin file called 'crypto.sk'
