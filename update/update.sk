@@ -10,7 +10,7 @@
 on load:
     # Disable the main plugin file 'crypto.sk'
     send "Disabling main script" to console
-    disable script "crypto/crypto"
+    execute console command "sk disable crypto/crypto"
     if file path "plugins/Skript/scripts/crypto/crypto.sk" is missing:
         send "&aSuccesfully disabled main script" to console
     else:
