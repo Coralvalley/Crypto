@@ -11,7 +11,8 @@ on load:
     # Disable the website file 'website.sk'
     send "Disabling website script" to console
     if file path "plugins/Skript/scripts/crypto/-website.sk" is missing:
-        disable script "crypto/website"
+        disable script file "crypto/website"
+        unload script file "crypto/website"
         if file path "plugins/Skript/scripts/crypto/website.sk" is missing:
             send "&aSuccesfully disabled website script" to console
         else:
