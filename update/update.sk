@@ -11,7 +11,7 @@ on load:
     # Disable the main plugin file 'crypto.sk'
     send "Disabling main script" to console
     if file path "plugins/Skript/scripts/crypto/-crypto.sk" is missing:
-        execute console command "sk disable crypto/crypto"
+        disable script "crypto/crypto"
         if file path "plugins/Skript/scripts/crypto/crypto.sk" is missing:
             send "&aSuccesfully disabled main script" to console
         else:
@@ -41,6 +41,15 @@ on load:
         send "&cUnable to delete main script" to console
     wait 2 seconds
 
+    # Delete the website script now called '-website.sk'
+    send "Deleting website script" to console
+    delete file "plugins/Skript/scripts/crypto/-website.sk"
+    if file path "plugins/Skript/scripts/crypto/-website.sk" is missing:
+        send "&aSuccesfully deleted website script" to console
+    else:
+        send "&cUnable to delete webste script" to console
+    wait 2 seconds
+
     # Download the new main plugin file called 'crypto.sk'
     send "Downloading main script" to console
     download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto/crypto.sk"
@@ -48,6 +57,15 @@ on load:
         send "&aSuccesfully downloaded main script" to console
     else:
         send "&cUnable to download main script is website online?" to console
+    wait 2 seconds
+
+    # Download the new website script file called 'website.sk'
+    send "Downloading website script" to console
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website.sk" to file "plugins/Skript/script/crypto/website.sk"
+    if file path "plugins/Skript/scripts/crypto/website.sk" is not missing:
+        send "&aSuccesfully downloaded website script" to console
+    else:
+        send "&cUnable to download website script is website online?" to console
     wait 2 seconds
 
     # Enable and reload the main plugin file 'crypto.sk'
