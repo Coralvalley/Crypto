@@ -3,8 +3,8 @@ every 5 seconds in world "world":
         if loop-offline player is offline:
             if file path "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" is not missing:
                 load yaml "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" as "crypto-%uuid of loop-offline player%"
-                set {_jsonFile.%loop-offline player%} to true
-        if {_jsonFile.%loop-offline player%} is true:
+                set {jsonFile.%loop-offline player%} to true
+        if {jsonFile.%loop-offline player%} is true:
             send a "get" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/players/%loop-offline player%.json" with the headers "Content-Type: application/json"
 
             map json last http response's body to {_crypto.%loop-offline player%::*}
