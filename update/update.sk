@@ -18,8 +18,8 @@ on load:
             send "&cUnable to disable website script" to console
     else:
         send "&aWebsite script is already disabled" to console
-    wait 2 seconds
-    
+    wait 5 seconds
+
     # Disable the main plugin file 'crypto.sk'
     send "Disabling main script" to console
     if file path "plugins/Skript/scripts/crypto/-crypto.sk" is missing:
