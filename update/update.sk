@@ -76,4 +76,6 @@ on load:
     reload script "crypto/website"
 
     # Set the version of the plugin in config.yml to the new version
+    set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
+    set yaml value "DoNotChange.version" in "crypto-config" to {_version}
     save yaml "crypto-config"
