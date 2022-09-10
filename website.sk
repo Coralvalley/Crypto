@@ -1,501 +1,504 @@
-every 200 seconds in world "world":
+every 5 seconds in world "world":
     loop all offline players:
         if loop-offline player is offline:
-            load yaml "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" as "crypto-%uuid of loop-offline player%"
-        send a "get" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/players/%loop-offline player%.json" with the headers "Content-Type: application/json"
-
-        map json last http response's body to {_crypto.%loop-offline player%::*}
-        set {_bitcoin.%loop-offline player%} to yaml value "bitcoin" in "crypto-%uuid of loop-offline player%"
-
-        if {_bitcoin.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::bitcoin}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::bitcoin} - {_bitcoin.%loop-offline player%}
-            set {_price} to {_difference} * {bitcoin::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "bitcoin" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::bitcoin}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Bitcoin gekocht!" to loop-offline player
-
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {bitcoin::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "bitcoin"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-        
-        set {_ethereum.%loop-offline player%} to yaml value "ethereum" in "crypto-%uuid of loop-offline player%"
-
-        if {_ethereum.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::ethereum}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::ethereum} - {_ethereum.%loop-offline player%}
-            set {_price} to {_difference} * {ethereum::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "ethereum" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::ethereum}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Ethereum gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {ethereum::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "bitcoin"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-        set {_maker.%loop-offline player%} to yaml value "maker" in "crypto-%uuid of loop-offline player%"
-
-        if {_maker.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::maker}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::maker} - {_maker.%loop-offline player%}
-            set {_price} to {_difference} * {maker::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "maker" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::maker}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Maker gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {maker::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "bitcoin"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-        
-        set {_bitcoin-cash.%loop-offline player%} to yaml value "bitcoin-cash" in "crypto-%uuid of loop-offline player%"
-
-        if {_bitcoin-cash.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::bitcoin-cash}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::bitcoin-cash} - {_bitcoin-cash.%loop-offline player%}
-            set {_price} to {_difference} * {bitcoin-cash::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "bitcoin-cash" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::bitcoin-cash}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Bitcoin-Cash gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {bitcoin-cash::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "bitcoin-cash"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_litecoin.%loop-offline player%} to yaml value "litecoin" in "crypto-%uuid of loop-offline player%"
-
-        if {_litecoin.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::litecoin}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::litecoin} - {_litecoin.%loop-offline player%}
-            set {_price} to {_difference} * {litecoin::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "litecoin" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::litecoin}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Litecoin gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {litecoin::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "litecoin"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-        set {_dash.%loop-offline player%} to yaml value "dash" in "crypto-%uuid of loop-offline player%"
-
-        if {_dash.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::dash}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::dash} - {_dash.%loop-offline player%}
-            set {_price} to {_difference} * {dash::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "dash" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::dash}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Dash gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {dash::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "dash"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_cardano.%loop-offline player%} to yaml value "cardano" in "crypto-%uuid of loop-offline player%"
-
-        if {_cardano.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::cardano}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::cardano} - {_cardano.%loop-offline player%}
-            set {_price} to {_difference} * {cardano::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "cardano" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::cardano}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Cardano gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {cardano::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "cardano"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_tether.%loop-offline player%} to yaml value "tether" in "crypto-%uuid of loop-offline player%"
-
-        if {_tether.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::tether}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::tether} - {_tether.%loop-offline player%}
-            set {_price} to {_difference} * {tether::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "tether" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::tether}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Tether gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {tether::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "tether"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_dogecoin.%loop-offline player%} to yaml value "dogecoin" in "crypto-%uuid of loop-offline player%"
-
-        if {_dogecoin.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::dogecoin}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::dogecoin} - {_dogecoin.%loop-offline player%}
-            set {_price} to {_difference} * {dogecoin::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "dogecoin" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::dogecoin}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Dogecoin gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {dogecoin::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "dogecoin"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_ethereum-classic.%loop-offline player%} to yaml value "ethereum-classic" in "crypto-%uuid of loop-offline player%"
-
-        if {_ethereum-classic.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::ethereum-classic}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::ethereum-classic} - {_ethereum-classic.%loop-offline player%}
-            set {_price} to {_difference} * {ethereum-classic::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "ethereum-classic" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::ethereum-classic}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Ethereum-Classic gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {ethereum-classic::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "ethereum-classic"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_vechain.%loop-offline player%} to yaml value "vechain" in "crypto-%uuid of loop-offline player%"
-
-        if {_vechain.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::vechain}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::vechain} - {_vechain.%loop-offline player%}
-            set {_price} to {_difference} * {vechain::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "vechain" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::vechain}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% VeChain gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {vechain::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "vechain"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_xrp.%loop-offline player%} to yaml value "xrp" in "crypto-%uuid of loop-offline player%"
-
-        if {_xrp.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::xrp}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::xrp} - {_xrp.%loop-offline player%}
-            set {_price} to {_difference} * {xrp::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "xrp" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::xrp}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% XRP gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {xrp::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "xrp"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_solana.%loop-offline player%} to yaml value "solana" in "crypto-%uuid of loop-offline player%"
-
-        if {_solana.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::solana}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::solana} - {_solana.%loop-offline player%}
-            set {_price} to {_difference} * {solana::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "solana" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::solana}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Solana gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {solana::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "solana"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_cronos.%loop-offline player%} to yaml value "cronos" in "crypto-%uuid of loop-offline player%"
-
-        if {_cronos.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::cronos}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::cronos} - {_cronos.%loop-offline player%}
-            set {_price} to {_difference} * {cronos::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "cronos" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::cronos}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Cronos gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {cronos::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "cronos"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-
-        set {_binance-coin.%loop-offline player%} to yaml value "binance-coin" in "crypto-%uuid of loop-offline player%"
-
-        if {_binance-coin.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::binance-coin}:
-            set {_fee} to yaml value "fee" in "crypto-config"
-            set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
-            set {_difference} to {_crypto.%loop-offline player%::coins::binance-coin} - {_binance-coin.%loop-offline player%}
-            set {_price} to {_difference} * {binance-coin::1::price_eur}
-            if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
-
-                set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
-                remove {_price} from {_balance}
-                remove {_fee} from {_balance}
-                set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
-                execute console command "rekening give %{_rekening-id}% %{_fee}%"
-
-                set yaml value "binance-coin" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::binance-coin}
-
-                save yaml "crypto-%uuid of loop-offline player%"
-
-                send "&aJe hebt succesvol %{_difference}% Binance Coin gekocht!" to loop-offline player
-                set {player.%loop-offline player%} to loop-offline player
-                set {amount.%loop-offline player%} to {_difference}
-                set {price.%loop-offline player%} to {binance-coin::1::price_eur}
-                set {buyprice.%loop-offline player%} to {_price}
-                set {coin.%loop-offline player%} to "binance-coin"
-                set {time.%loop-offline player%} to now
-
-                send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
-            else:
-                send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
-                CryptoPlayerData(loop-offline player)
-
-        if loop-offline player is offline:
-            unload yaml "crypto-%uuid of loop-offline player%"
+            if file path "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" is not missing:
+                load yaml "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" as "crypto-%uuid of loop-offline player%"
+                set {_jsonFile.%loop-offline player%} to true
+        if {_jsonFile.%loop-offline player%} is true:
+            send a "get" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/players/%loop-offline player%.json" with the headers "Content-Type: application/json"
+
+            map json last http response's body to {_crypto.%loop-offline player%::*}
+            set {_bitcoin.%loop-offline player%} to yaml value "bitcoin" in "crypto-%uuid of loop-offline player%"
+
+            if {_bitcoin.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::bitcoin}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::bitcoin} - {_bitcoin.%loop-offline player%}
+                set {_price} to {_difference} * {bitcoin::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "bitcoin" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::bitcoin}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Bitcoin gekocht!" to loop-offline player
+
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {bitcoin::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "bitcoin"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+            
+            set {_ethereum.%loop-offline player%} to yaml value "ethereum" in "crypto-%uuid of loop-offline player%"
+
+            if {_ethereum.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::ethereum}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::ethereum} - {_ethereum.%loop-offline player%}
+                set {_price} to {_difference} * {ethereum::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "ethereum" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::ethereum}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Ethereum gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {ethereum::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "bitcoin"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+            set {_maker.%loop-offline player%} to yaml value "maker" in "crypto-%uuid of loop-offline player%"
+
+            if {_maker.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::maker}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::maker} - {_maker.%loop-offline player%}
+                set {_price} to {_difference} * {maker::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "maker" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::maker}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Maker gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {maker::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "bitcoin"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+            
+            set {_bitcoin-cash.%loop-offline player%} to yaml value "bitcoin-cash" in "crypto-%uuid of loop-offline player%"
+
+            if {_bitcoin-cash.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::bitcoin-cash}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::bitcoin-cash} - {_bitcoin-cash.%loop-offline player%}
+                set {_price} to {_difference} * {bitcoin-cash::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "bitcoin-cash" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::bitcoin-cash}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Bitcoin-Cash gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {bitcoin-cash::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "bitcoin-cash"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_litecoin.%loop-offline player%} to yaml value "litecoin" in "crypto-%uuid of loop-offline player%"
+
+            if {_litecoin.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::litecoin}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::litecoin} - {_litecoin.%loop-offline player%}
+                set {_price} to {_difference} * {litecoin::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "litecoin" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::litecoin}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Litecoin gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {litecoin::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "litecoin"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+            set {_dash.%loop-offline player%} to yaml value "dash" in "crypto-%uuid of loop-offline player%"
+
+            if {_dash.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::dash}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::dash} - {_dash.%loop-offline player%}
+                set {_price} to {_difference} * {dash::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "dash" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::dash}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Dash gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {dash::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "dash"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_cardano.%loop-offline player%} to yaml value "cardano" in "crypto-%uuid of loop-offline player%"
+
+            if {_cardano.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::cardano}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::cardano} - {_cardano.%loop-offline player%}
+                set {_price} to {_difference} * {cardano::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "cardano" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::cardano}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Cardano gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {cardano::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "cardano"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_tether.%loop-offline player%} to yaml value "tether" in "crypto-%uuid of loop-offline player%"
+
+            if {_tether.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::tether}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::tether} - {_tether.%loop-offline player%}
+                set {_price} to {_difference} * {tether::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "tether" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::tether}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Tether gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {tether::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "tether"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_dogecoin.%loop-offline player%} to yaml value "dogecoin" in "crypto-%uuid of loop-offline player%"
+
+            if {_dogecoin.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::dogecoin}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::dogecoin} - {_dogecoin.%loop-offline player%}
+                set {_price} to {_difference} * {dogecoin::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "dogecoin" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::dogecoin}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Dogecoin gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {dogecoin::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "dogecoin"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_ethereum-classic.%loop-offline player%} to yaml value "ethereum-classic" in "crypto-%uuid of loop-offline player%"
+
+            if {_ethereum-classic.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::ethereum-classic}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::ethereum-classic} - {_ethereum-classic.%loop-offline player%}
+                set {_price} to {_difference} * {ethereum-classic::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "ethereum-classic" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::ethereum-classic}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Ethereum-Classic gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {ethereum-classic::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "ethereum-classic"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_vechain.%loop-offline player%} to yaml value "vechain" in "crypto-%uuid of loop-offline player%"
+
+            if {_vechain.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::vechain}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::vechain} - {_vechain.%loop-offline player%}
+                set {_price} to {_difference} * {vechain::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "vechain" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::vechain}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% VeChain gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {vechain::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "vechain"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_xrp.%loop-offline player%} to yaml value "xrp" in "crypto-%uuid of loop-offline player%"
+
+            if {_xrp.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::xrp}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::xrp} - {_xrp.%loop-offline player%}
+                set {_price} to {_difference} * {xrp::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "xrp" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::xrp}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% XRP gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {xrp::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "xrp"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_solana.%loop-offline player%} to yaml value "solana" in "crypto-%uuid of loop-offline player%"
+
+            if {_solana.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::solana}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::solana} - {_solana.%loop-offline player%}
+                set {_price} to {_difference} * {solana::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "solana" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::solana}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Solana gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {solana::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "solana"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_cronos.%loop-offline player%} to yaml value "cronos" in "crypto-%uuid of loop-offline player%"
+
+            if {_cronos.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::cronos}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::cronos} - {_cronos.%loop-offline player%}
+                set {_price} to {_difference} * {cronos::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "cronos" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::cronos}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Cronos gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {cronos::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "cronos"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+
+            set {_binance-coin.%loop-offline player%} to yaml value "binance-coin" in "crypto-%uuid of loop-offline player%"
+
+            if {_binance-coin.%loop-offline player%} is less than {_crypto.%loop-offline player%::coins::binance-coin}:
+                set {_fee} to yaml value "fee" in "crypto-config"
+                set {_rekening-id} to yaml value "rekening-id" in "crypto-config"
+                set {_difference} to {_crypto.%loop-offline player%::coins::binance-coin} - {_binance-coin.%loop-offline player%}
+                set {_price} to {_difference} * {binance-coin::1::price_eur}
+                if yaml value "tegoed" in "crypto-%uuid of loop-offline player%" is greater than or equal to {_price} + {_fee}:
+
+                    set {_balance} to yaml value "tegoed" in "crypto-%uuid of loop-offline player%"
+                    remove {_price} from {_balance}
+                    remove {_fee} from {_balance}
+                    set yaml value "tegoed" in "crypto-%uuid of loop-offline player%" to {_balance}
+                    execute console command "rekening give %{_rekening-id}% %{_fee}%"
+
+                    set yaml value "binance-coin" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::binance-coin}
+
+                    save yaml "crypto-%uuid of loop-offline player%"
+
+                    send "&aJe hebt succesvol %{_difference}% Binance Coin gekocht!" to loop-offline player
+                    set {player.%loop-offline player%} to loop-offline player
+                    set {amount.%loop-offline player%} to {_difference}
+                    set {price.%loop-offline player%} to {binance-coin::1::price_eur}
+                    set {buyprice.%loop-offline player%} to {_price}
+                    set {coin.%loop-offline player%} to "binance-coin"
+                    set {time.%loop-offline player%} to now
+
+                    send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
+                else:
+                    send "&cHelaas! Je hebt niet genoeg tegoed." to loop-offline player
+                    CryptoPlayerData(loop-offline player)
+
+            if loop-offline player is offline:
+                unload yaml "crypto-%uuid of loop-offline player%"
