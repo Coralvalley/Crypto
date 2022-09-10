@@ -9,20 +9,46 @@
 
 on load:
     # Disable the main plugin file 'crypto.sk'
-    disable script "crypto"
-    send "Disabling crypto" to console
+    send "Disabling main script" to console
+    disable script "crypto/crypto"
+    if file path "plugins/Skript/scripts/crypto/crypto.sk" is missing:
+        send "&aSuccesfully disabled main script" to console
+    else:
+        send "&cUnable to disable main script" to console
+    wait 2 seconds
+
+    # Disable the website file 'website.sk'
+    send "Disabling website script" to console
+    disable script "crypto/website"
+    if file path "plugins/Skript/scripts/crypto/website.sk" is missing:
+        send "&aSuccesfully disabled website script" to console
+    else:
+        send "&cUnable to disable website script" to console
     wait 2 seconds
 
     # Delete the main plugin file now called '-crypto.sk'
-    delete file "plugins/Skript/scripts/-crypto.sk"
-    send "Deleting crypto.sk" to console
+    send "Deleting main script" to console
+    delete file "plugins/Skript/scripts/crypto/-crypto.sk"
+    if file path "plugins/Skript/scripts/crypto/-crypto.sk" is missing:
+        send "&aSuccesfully deleted main script" to console
+    else:
+        send "&cUnable to delete main script" to console
     wait 2 seconds
 
     # Download the new main plugin file called 'crypto.sk'
-    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto.sk"
+    send "Downloading main script" to console
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/crypto.sk" to file "plugins/Skript/scripts/crypto/crypto.sk"
+    if file path "plugins/Skript/scripts/crypto/crypto.sk" is not missing:
+        send "&aSuccesfully downloaded main script" to console
+    else:
+        send "&cUnable to download main script is website online?" to console
+    wait 2 seconds
 
     # Enable and reload the main plugin file 'crypto.sk'
-    reload script "crypto"
+    reload script "crypto/crypto"
+
+    # Enable and reload the website script 'website.sk'
+    reload script "crypto/website"
 
     # Set the version of the plugin in config.yml to the new version
     save yaml "crypto-config"
