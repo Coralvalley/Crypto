@@ -34,7 +34,8 @@ on load:
 
     # Delete the main plugin file now called '-crypto.sk'
     send "Deleting main script" to console
-    delete file "plugins/Skript/scripts/crypto/-crypto.sk"
+    if file path "plugins/Skript/scripts/crypto/-crypto.sk" is not missing:
+        delete file "plugins/Skript/scripts/crypto/-crypto.sk"
     if file path "plugins/Skript/scripts/crypto/-crypto.sk" is missing:
         send "&aSuccesfully deleted main script" to console
     else:
@@ -61,7 +62,7 @@ on load:
 
     # Download the new website script file called 'website.sk'
     send "Downloading website script" to console
-    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website.sk" to file "plugins/Skript/script/crypto/website.sk"
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/website.sk" to file "plugins/Skript/scripts/crypto/website.sk"
     if file path "plugins/Skript/scripts/crypto/website.sk" is not missing:
         send "&aSuccesfully downloaded website script" to console
     else:
