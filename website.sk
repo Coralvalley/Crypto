@@ -1,10 +1,10 @@
 every 5 seconds in world "world":
     loop all offline players:
-        if loop-offline player is offline:
-            if file path "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" is not missing:
+        if skutil file "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" exists:
+            yaml "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" is not loaded:
                 load yaml "plugins/crypto/players/%uuid of loop-offline player%:%loop-offline player%.yml" as "crypto-%uuid of loop-offline player%"
-                set {jsonFile.%loop-offline player%} to true
-        if {jsonFile.%loop-offline player%} is true:
+                save yaml "crypto-%uuid of loop-offline player%"
+
             send a "get" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/players/%loop-offline player%.json" with the headers "Content-Type: application/json"
 
             map json last http response's body to {_crypto.%loop-offline player%::*}
@@ -27,8 +27,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Bitcoin gekocht!" to loop-offline player
-
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Bitcoin::%loop-offline player%} to true
+                        set {player::crypto::amount::Bitcoin::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Bitcoin gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {bitcoin::1::price_eur}
@@ -60,12 +63,16 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Ethereum gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Ethereum::%loop-offline player%} to true
+                        set {player::crypto::amount::Ethereum::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Ethereum gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {ethereum::1::price_eur}
                     set {buyprice.%loop-offline player%} to {_price}
-                    set {coin.%loop-offline player%} to "bitcoin"
+                    set {coin.%loop-offline player%} to "ethereum"
                     set {time.%loop-offline player%} to now
 
                     send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
@@ -92,12 +99,16 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Maker gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Maker::%loop-offline player%} to true
+                        set {player::crypto::amount::Maker::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Maker gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {maker::1::price_eur}
                     set {buyprice.%loop-offline player%} to {_price}
-                    set {coin.%loop-offline player%} to "bitcoin"
+                    set {coin.%loop-offline player%} to "maker"
                     set {time.%loop-offline player%} to now
 
                     send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/transaction.php/?name=%{player.%loop-offline player%}%" with the body "%{time.%loop-offline player%}% %{player.%loop-offline player%}% %{amount.%loop-offline player%}% %{coin.%loop-offline player%}% %{price.%loop-offline player%}% %{buyprice.%loop-offline player%}% buy"
@@ -125,7 +136,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Bitcoin-Cash gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Bitcoin-Cash::%loop-offline player%} to true
+                        set {player::crypto::amount::Bitcoin-Cash::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Bitcoin-Cash gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {bitcoin-cash::1::price_eur}
@@ -158,7 +173,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Litecoin gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Litecoin::%loop-offline player%} to true
+                        set {player::crypto::amount::Litecoin::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Litecoin gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {litecoin::1::price_eur}
@@ -190,7 +209,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Dash gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Dash::%loop-offline player%} to true
+                        set {player::crypto::amount::Dash::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Dash gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {dash::1::price_eur}
@@ -223,7 +246,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Cardano gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Cardano::%loop-offline player%} to true
+                        set {player::crypto::amount::Cardano::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Cardano gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {cardano::1::price_eur}
@@ -256,7 +283,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Tether gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Tether::%loop-offline player%} to true
+                        set {player::crypto::amount::Tether::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Tether gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {tether::1::price_eur}
@@ -289,7 +320,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Dogecoin gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Dogecoin::%loop-offline player%} to true
+                        set {player::crypto::amount::Dogecoin::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Dogecoin gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {dogecoin::1::price_eur}
@@ -322,7 +357,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Ethereum-Classic gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Ethereum-Classic::%loop-offline player%} to true
+                        set {player::crypto::amount::Ethereum-Classic::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Ethereum-Classic gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {ethereum-classic::1::price_eur}
@@ -354,8 +393,12 @@ every 5 seconds in world "world":
                     set yaml value "vechain" in "crypto-%uuid of loop-offline player%" to {_crypto.%loop-offline player%::coins::vechain}
 
                     save yaml "crypto-%uuid of loop-offline player%"
-
-                    send "&aJe hebt succesvol %{_difference}% VeChain gekocht!" to loop-offline player
+                    
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::VeChain::%loop-offline player%} to true
+                        set {player::crypto::amount::VeChain::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% VeChain gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {vechain::1::price_eur}
@@ -388,7 +431,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% XRP gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::XRP::%loop-offline player%} to true
+                        set {player::crypto::amount::XRP::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% XRP gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {xrp::1::price_eur}
@@ -421,7 +468,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Solana gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Solana::%loop-offline player%} to true
+                        set {player::crypto::amount::Solana::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Solana gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {solana::1::price_eur}
@@ -454,7 +505,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Cronos gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Cronos::%loop-offline player%} to true
+                        set {player::crypto::amount::Cronos::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Cronos gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {cronos::1::price_eur}
@@ -487,7 +542,11 @@ every 5 seconds in world "world":
 
                     save yaml "crypto-%uuid of loop-offline player%"
 
-                    send "&aJe hebt succesvol %{_difference}% Binance Coin gekocht!" to loop-offline player
+                    if loop-offline player is offline:
+                        set {player::crypto::buy::Binance Coin::%loop-offline player%} to true
+                        set {player::crypto::amount::Binance Coin::%loop-offline player%} to {_difference}
+                    else:
+                        send "&aJe hebt succesvol %{_difference}% Binance Coin gekocht!" to loop-offline player
                     set {player.%loop-offline player%} to loop-offline player
                     set {amount.%loop-offline player%} to {_difference}
                     set {price.%loop-offline player%} to {binance-coin::1::price_eur}
@@ -502,3 +561,26 @@ every 5 seconds in world "world":
 
             if loop-offline player is offline:
                 unload yaml "crypto-%uuid of loop-offline player%"
+
+
+on join:
+    add "Bitcoin" to {_coins::*}
+    add "Ethereum" to {_coins::*}
+    add "Maker" to {_coins::*}
+    add "Bitcoin-Cash" to {_coins::*}
+    add "Litecoin" to {_coins::*}
+    add "Dash" to {_coins::*}
+    add "Cardano" to {_coins::*}
+    add "Tether" to {_coins::*}
+    add "Dogecoin" to {_coins::*}
+    add "Ethereum-Classic" to {_coins::*}
+    add "VeChain" to {_coins::*}
+    add "XRP" to {_coins::*}
+    add "Solana" to {_coins::*}
+    add "Cronos" to {_coins::*}
+    add "Binance Coin" to {_coins::*}
+    loop {_coins::*}:
+        if {player::crypto::buy::%loop-value%::%player%} is true:
+            wait 1 seconds
+            send "&aJe hebt succesvol %{player::crypto::amount::%loop-value%::%player%}% %loop-value% gekocht!" to player
+            set {player::crypto::buy::%loop-value%::%player%} to false
