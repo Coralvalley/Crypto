@@ -286,6 +286,11 @@ command /crypto [<text>] [<offline player>] [<text>] [<number>]:
             # Help bericht
         if arg-1 is "update":
             if executor is console:
+                loop all players:
+                    add 1 to {_players}
+                if {_players} is greater than or equal to 5:
+                    send "&cEr zijn te veel spelers online om de data te updaten."
+                    stop
                 set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
                 set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
 
