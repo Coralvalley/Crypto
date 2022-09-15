@@ -1252,36 +1252,36 @@ on load:
     # send "%{price_euro-price_usd::result}%" to console
 
 every 60 seconds in world "world":
-    clear {bitcoin::1::price_eur}
-    clear {bitcoin::1::price_usd}
-    clear {ethereum::1::price_eur}
-    clear {ethereum::1::price_usd}
-    clear {maker::1::price_eur}
-    clear {maker::1::price_usd}
-    clear {bitcoin-cash::1::price_eur}
-    clear {bitcoin-cash::1::price_usd}
-    clear {litecoin::1::price_eur}
-    clear {litecoin::1::price_usd}
-    clear {dash::1::price_eur}
-    clear {dash::1::price_usd}
-    clear {cardano::1::price_eur}
-    clear {cardano::1::price_usd}
-    clear {tether::1::price_eur}
-    clear {tether::1::price_usd}
-    clear {dogecoin::1::price_eur}
-    clear {dogecoin::1::price_usd}
-    clear {ethereum-classic::1::price_eur}
-    clear {ethereum-classic::1::price_usd}
-    clear {vechain::1::price_eur}
-    clear {vechain::1::price_usd}
-    clear {xrp::1::price_eur}
-    clear {xrp::1::price_usd}
-    clear {solana::1::price_eur}
-    clear {solana::1::price_usd}
-    clear {cronos::1::price_eur}
-    clear {cronos::1::price_usd}
-    clear {binance-coin::1::price_eur}
-    clear {binance-coin::1::price_usd}
+    # clear {bitcoin::1::price_eur}
+    # clear {bitcoin::1::price_usd}
+    # clear {ethereum::1::price_eur}
+    # clear {ethereum::1::price_usd}
+    # clear {maker::1::price_eur}
+    # clear {maker::1::price_usd}
+    # clear {bitcoin-cash::1::price_eur}
+    # clear {bitcoin-cash::1::price_usd}
+    # clear {litecoin::1::price_eur}
+    # clear {litecoin::1::price_usd}
+    # clear {dash::1::price_eur}
+    # clear {dash::1::price_usd}
+    # clear {cardano::1::price_eur}
+    # clear {cardano::1::price_usd}
+    # clear {tether::1::price_eur}
+    # clear {tether::1::price_usd}
+    # clear {dogecoin::1::price_eur}
+    # clear {dogecoin::1::price_usd}
+    # clear {ethereum-classic::1::price_eur}
+    # clear {ethereum-classic::1::price_usd}
+    # clear {vechain::1::price_eur}
+    # clear {vechain::1::price_usd}
+    # clear {xrp::1::price_eur}
+    # clear {xrp::1::price_usd}
+    # clear {solana::1::price_eur}
+    # clear {solana::1::price_usd}
+    # clear {cronos::1::price_eur}
+    # clear {cronos::1::price_usd}
+    # clear {binance-coin::1::price_eur}
+    # clear {binance-coin::1::price_usd}
 
 
     send a request to "https://api.coinlore.net/api/ticker/?id=90" with the headers "Content-Type: application/json"
