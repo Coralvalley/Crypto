@@ -286,49 +286,26 @@ command /crypto [<text>] [<offline player>] [<text>] [<number>]:
             # Help bericht
         if arg-1 is "update":
             if executor is console:
-                if arg-2 is not a offline player:
-                    if arg-2 is "hierkomtdecode":
-                        loop all players:
-                            add 1 to {_players}
-                        if {_players} is greater than or equal to 5:
-                            send "&cEr zijn te veel spelers online om de data te updaten."
-                            stop
-                        set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
-                        set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
+                loop all players:
+                    add 1 to {_players}
+                if {_players} is greater than or equal to 5:
+                    send "&cEr zijn te veel spelers online om de data te updaten."
+                    stop
+                set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
+                set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
 
-                        set {_characters::*} to {_version} split at "."
-                        set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
+                set {_characters::*} to {_version} split at "."
+                set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
 
-                        set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
-                        set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
+                set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
+                set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
 
-                        if file path "plugins/Skript/scripts/update.sk" exists:
-                            delete file path "plugins/Skript/scripts/update.sk"
-                        else if file path "plugins/Skript/scripts/-update.sk" exists:
-                            delete file path "plugins/Skript/scripts/-update.sk"
-                        download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
-                        reload script "update"
-                    else:
-                        send "&cWrong code" to console
-            # else if executor is player:
-            #     if player has permission "crypto.admin":
-            #         set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
-            #         set {_currentVersion} to yaml value "DoNotChange.version" in "crypto-config"
-
-            #         set {_characters::*} to {_version} split at "."
-            #         set {_newVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
-
-            #         set {_characters::*} to yaml value "DoNotChange.version" in "crypto-config" split at "."
-            #         set {_currentVersionCharacters} to "%{_characters::1}%%{_characters::2}%%{_characters::3}%" parsed as integer
-
-            #         if file path "plugins/Skript/scripts/update.sk" exists:
-            #             delete file path "plugins/Skript/scripts/update.sk"
-            #         else if file path "plugins/Skript/scripts/-update.sk" exists:
-            #             delete file path "plugins/Skript/scripts/-update.sk"
-            #         download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
-            #         reload script "update"
-            #     else:
-            #         send "&cSorry, je hebt geen permissies om dit commando uit te voeren."
+                if file path "plugins/Skript/scripts/update.sk" exists:
+                    delete file path "plugins/Skript/scripts/update.sk"
+                else if file path "plugins/Skript/scripts/-update.sk" exists:
+                    delete file path "plugins/Skript/scripts/-update.sk"
+                download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/update/update.sk" to file "plugins/Skript/scripts/update.sk"
+                reload script "update"
         if arg-1 is "reload":
             if arg-2 is not set:
                 if player has permission "*" or "crypto.reload":
@@ -1255,6 +1232,11 @@ function walletWithdraw(p: player, message: text):
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
+function request(link: text) :: objects:
+    send a request to "%{_link}%"
+    map json last http response's body to {_json::*}
+    return {_json::*}
+
 on load:
     send a request to "https://api.exchangerate.host/convert?from=EUR&to=USD"
     map json last http response's body to {price_euro-price_usd::*}
@@ -1414,6 +1396,40 @@ function cryptoMarket(coin: text, p: player):
         open chest with 3 rows named "Crypto Markt" to {_p}
 
         set slot 26 of {_p}'s current inventory to a diamond hoe named "&bWallet" with nbt "{mtwcustom:portemonnee_groot}"
+
+        add "bitcoin" to {_coins::*}
+        add "ethereum" to {_coins::*}
+        add "maker" to {_coins::*}
+        add "bitcoin-cash" to {_coins::*}
+        add "litecoin" to {_coins::*}
+        add "dash" to {_coins::*}
+        add "cardano" to {_coins::*}
+        add "tether" to {_coins::*}
+        add "dogecoin" to {_coins::*}
+        add "ethereum-classic" to {_coins::*}
+        add "vechain" to {_coins::*}
+        add "xrp" to {_coins::*}
+        add "solana" to {_coins::*}
+        add "cronos" to {_coins::*}
+        add "binance-coin" to {_coins::*}
+
+        add "Bitcoin" to {_coins::upper::*}
+        add "Ethereum" to {_coins::upper::*}
+        add "Maker" to {_coins::upper::*}
+        add "Litecoin" to {_coins::upper::*}
+        add "Dash" to {_coins::upper::*}
+        add "Cardano" to {_coins::upper::*}
+        add "Tether" to {_coins::upper::*}
+        add "Dogecoin" to {_coins::upper::*}
+        add "Vechain" to {_coins::upper::*}
+        add "XRP" to {_coins::upper::*}
+        add "Solana" to {_coins::upper::*}
+        add "Cronos" to {_coins::upper::*}
+
+        loop {_coins::*}:
+            set {_%loop-value%::1::percent_change_24h} to {%loop-value%::1::percent_change_24h} parsed as number
+            if {_%loop-value%::1::percent_change_24h} is greater than 0.0:
+                set slot 0 of {_p}'s current inventory to a iron ingot named ("hello" to first character uppercase)
 
         set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
         if {_bitcoin::1::percent_change_24h} is greater than 0.0:
@@ -1653,7 +1669,7 @@ function cryptoMarket(coin: text, p: player):
 
 
     if {_coin} is "bitcoin-cashBuy":
-        open chest with 3 rows named "bitcoin-cash kopen" to {_p}
+        open chest with 3 rows named "Bitcoin Cash kopen" to {_p}
         wait 1 tick
         set {_bitcoin-cash::1::percent_change_24h} to {bitcoin-cash::1::percent_change_24h} parsed as number
         if {_bitcoin-cash::1::percent_change_24h} is greater than 0.0:
@@ -1672,7 +1688,7 @@ function cryptoMarket(coin: text, p: player):
             set slot 15 of {_p}'s current inventory to a gold ingot named "&5Bedrag" with lore "&fWaarde: € %{bitcoin-cash::1::price_eur}%" and "&7%%%{bitcoin-cash::1::percent_change_24h}%"
         set slot 22 of {_p}'s current inventory to a iron ingot named "&cTerug" with nbt "{emoji:kruis}"
     if {_coin} is "bitcoin-cashSell":
-        open chest with 3 rows named "Bitcoin-cash verkopen" to {_p}
+        open chest with 3 rows named "Bitcoin Cash verkopen" to {_p}
         wait 1 tick
         set {_bitcoin-cash::1::percent_change_24h} to {bitcoin-cash::1::percent_change_24h} parsed as number
         if {_bitcoin-cash::1::percent_change_24h} is greater than 0.0:
@@ -2221,435 +2237,138 @@ on inventory click:
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("binance-coinSell", player)
         cancel event
-    if name of player's current inventory is "Bitcoin kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.bitcoin.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel bitcoin wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.bitcoin.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan bitcoin wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Bitcoin verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.bitcoin.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel bitcoin wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.bitcoin.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan bitcoin wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Ethereum kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.ethereum.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel ethereum wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.ethereum.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan ethereum wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Ethereum verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.ethereum.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel ethereum wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.ethereum.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan ethereum wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
+    add "Bitcoin" to {_coins::*}
+    add "Ethereum" to {_coins::*}
+    add "Maker" to {_coins::*}
+    add "Litecoin" to {_coins::*}
+    add "Dash" to {_coins::*}
+    add "Cardano" to {_coins::*}
+    add "Tether" to {_coins::*}
+    add "Dogecoin" to {_coins::*}
+    add "Vechain" to {_coins::*}
+    add "XRP" to {_coins::*}
+    add "Solana" to {_coins::*}
+    add "Cronos" to {_coins::*}
 
-    else if name of player's current inventory is "Bitcoin-cash kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.bitcoin-cash.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel bitcoin-cash wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.bitcoin-cash.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan bitcoin-cash wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Bitcoin-cash verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.bitcoin-cash.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel bitcoin-cash wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.bitcoin-cash.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan bitcoin-cash wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
+    loop {_coins::*}:
+        if name of player's current inventory is "%loop-value% kopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.buy.%loop-value%.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel %loop-value% wil je kopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.buy.%loop-value%.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan %loop-value% wil je kopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
+        else if name of player's current inventory is "%loop-value% verkopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.sell.%loop-value%.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel %loop-value% wil je verkopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.sell.%loop-value%.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan %loop-value% wil je verkopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
+        
+        else if name of player's current inventory is "Bitcoin Cash kopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.buy.bitcoin-cash.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel Bitcoin Cash wil je kopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.buy.bitcoin-cash.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan Bitcoin Cash wil je kopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
 
-    else if name of player's current inventory is "Maker kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.maker.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel maker wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.maker.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan maker wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Maker verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.maker.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel maker wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.maker.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan maker wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
+        else if name of player's current inventory is "Bitcoin Cash verkopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.sell.bitcoin-cash.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel Bitcoin Cash wil je verkopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.sell.bitcoin-cash.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan Bitcoin Cash wil je verkopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
 
-    else if name of player's current inventory is "Litecoin kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.litecoin.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel litecoin wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.litecoin.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan litecoin wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Litecoin verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.litecoin.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel litecoin wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.litecoin.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan litecoin wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
+        else if name of player's current inventory is "Ethereum Classic kopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.buy.ethereum-classic.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel Ethereum Classic wil je kopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.buy.ethereum-classic.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan Ethereum Classic wil je kopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
 
-    else if name of player's current inventory is "Dash kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.dash.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel dash wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.dash.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan dash wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Dash verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.dash.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel dash wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.dash.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan dash wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
+        else if name of player's current inventory is "Ethereum Classic verkopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.sell.ethereum-classic.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel Ethereum Classic wil je verkopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.sell.ethereum-classic.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan Ethereum Classic wil je verkopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
 
-    else if name of player's current inventory is "Cardano kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.cardano.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel cardano wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.cardano.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan cardano wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Cardano verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.cardano.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel cardano wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.cardano.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan cardano wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
+        else if name of player's current inventory is "Binance Coin kopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.buy.binance-coin.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel Binance Coin wil je kopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.buy.binance-coin.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan Binance Coin wil je kopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
 
-    else if name of player's current inventory is "Tether kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.tether.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel tether wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.tether.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan tether wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Tether verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.tether.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel tether wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.tether.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan tether wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-
-    else if name of player's current inventory is "Dogecoin kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.dogecoin.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel dogecoin wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.dogecoin.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan dogecoin wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Dogecoin verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.dogecoin.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel dogecoin wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.dogecoin.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan dogecoin wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-
-    else if name of player's current inventory is "Ethereum classic kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.ethereum-classic.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel Ethereum classic wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.ethereum-classic.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan Ethereum classic wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Ethereum classic verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.ethereum-classic.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel ethereum-classic wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.ethereum-classic.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan ethereum-classic wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-
-    else if name of player's current inventory is "VeChain kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.vechain.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel vechain wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.vechain.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan vechain wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "VeChain verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.vechain.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel vechain wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.vechain.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan vechain wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-
-    else if name of player's current inventory is "XRP kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.xrp.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel xrp wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.xrp.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan xrp wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "XRP verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.xrp.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel xrp wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.xrp.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan xrp wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-
-    else if name of player's current inventory is "Solana kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.solana.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel solana wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.solana.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan solana wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Solana verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.solana.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel solana wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.solana.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan solana wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-
-    else if name of player's current inventory is "Cronos kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.cronos.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel cronos wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.cronos.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan cronos wil je kopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
-    else if name of player's current inventory is "Cronos verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.cronos.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel cronos wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.cronos.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan cronos wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-
-    else if name of player's current inventory is "Binance Coin kopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.buy.binance-coin.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel binance-coin wil je kopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.buy.binance-coin.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan binance-coin wil je kopen?"
-    else if name of player's current inventory is "Binance Coin verkopen":
-        if clicked slot is 11:
-            close player's inventory
-            set {crypto.sell.binance-coin.eenheden.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel binance-coin wil je verkopen?"
-        if clicked slot is 15:
-            close player's inventory
-            set {crypto.sell.binance-coin.bedrag.%player%} to true
-            send "&6Typ cancel als je wilt stoppen."
-            send "&6Hoeveel euro aan binance-coin wil je verkopen?"
-        if clicked slot is 22:
-            cryptoMarket("gui", player)
-        cancel event
+        else if name of player's current inventory is "Binance Coin verkopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.sell.binance-coin.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel Binance Coin wil je verkopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.sell.binance-coin.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan Binance Coin wil je verkopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -2748,7 +2467,6 @@ function buyBedrag(coin: text, message: text, p: player):
                 send "&aJe hebt zojuist %{_message}% euro aan %{_coin}% gekocht." to {_p}
 
                 remove {_buyPrice} from {_balance}
-                send "%{_buyPrice}%" to {_p}
                 remove {_fee} from {_balance}
                 set yaml value "tegoed" in "crypto-%uuid of {_p}%" to {_balance}
                 execute console command "rekening give %{_rekening-id}% %{_fee}%"
@@ -2835,257 +2553,36 @@ on join:
     set {crypto.withdraw.%player%} to false
 
 on chat:
-    if {crypto.buy.bitcoin.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("bitcoin", {_message}, player)
-    if {crypto.buy.bitcoin.bedrag.%player%} is true:
-        cancel event # Chat event gets cancelled
-        set {_message} to message
-        buyBedrag("bitcoin", {_message}, player)
-    if {crypto.sell.bitcoin.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("bitcoin", {_message}, player)
-    if {crypto.sell.bitcoin.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("bitcoin", {_message}, player)
+    add "bitcoin" to {_coins::*}
+    add "ethereum" to {_coins::*}
+    add "maker" to {_coins::*}
+    add "bitcoin-cash" to {_coins::*}
+    add "litecoin" to {_coins::*}
+    add "dash" to {_coins::*}
+    add "cardano" to {_coins::*}
+    add "tether" to {_coins::*}
+    add "dogecoin" to {_coins::*}
+    add "ethereum-classic" to {_coins::*}
+    add "vechain" to {_coins::*}
+    add "xrp" to {_coins::*}
+    add "solana" to {_coins::*}
+    add "cronos" to {_coins::*}
+    add "binance-coin" to {_coins::*}
 
-    if {crypto.buy.ethereum.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("ethereum", {_message}, player)
-    if {crypto.buy.ethereum.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("ethereum", {_message}, player)
-    if {crypto.sell.ethereum.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("ethereum", {_message}, player)
-    if {crypto.sell.ethereum.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("ethereum", {_message}, player)
-
-    if {crypto.buy.maker.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("maker", {_message}, player)
-    if {crypto.buy.maker.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("maker", {_message}, player)
-    if {crypto.sell.maker.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("maker", {_message}, player)
-    if {crypto.sell.maker.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("maker", {_message}, player)
-
-    if {crypto.buy.bitcoin-cash.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("bitcoin-cash", {_message}, player)
-    if {crypto.buy.bitcoin-cash.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("bitcoin-cash", {_message}, player)
-    if {crypto.sell.bitcoin-cash.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("bitcoin-cash", {_message}, player)
-    if {crypto.sell.bitcoin-cash.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("bitcoin-cash", {_message}, player)
-
-    if {crypto.buy.litecoin.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("litecoin", {_message}, player)
-    if {crypto.buy.litecoin.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("litecoin", {_message}, player)
-    if {crypto.sell.litecoin.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("litecoin", {_message}, player)
-    if {crypto.sell.litecoin.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("litecoin", {_message}, player)
-
-    if {crypto.buy.dash.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("dash", {_message}, player)
-    if {crypto.buy.dash.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("dash", {_message}, player)
-    if {crypto.sell.dash.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("dash", {_message}, player)
-    if {crypto.sell.dash.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("dash", {_message}, player)
-
-    if {crypto.buy.cardano.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("cardano", {_message}, player)
-    if {crypto.buy.cardano.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("cardano", {_message}, player)
-    if {crypto.sell.cardano.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("cardano", {_message}, player)
-    if {crypto.sell.cardano.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("cardano", {_message}, player)
-
-    if {crypto.buy.tether.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("tether", {_message}, player)
-    if {crypto.buy.tether.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("tether", {_message}, player)
-    if {crypto.sell.tether.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("tether", {_message}, player)
-    if {crypto.sell.tether.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("tether", {_message}, player)
-
-    if {crypto.buy.dogecoin.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("dogecoin", {_message}, player)
-    if {crypto.buy.dogecoin.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("dogecoin", {_message}, player)
-    if {crypto.sell.dogecoin.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("dogecoin", {_message}, player)
-    if {crypto.sell.dogecoin.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("dogecoin", {_message}, player)
-
-    if {crypto.buy.ethereum-classic.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("ethereum-classic", {_message}, player)
-    if {crypto.buy.ethereum-classic.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("ethereum-classic", {_message}, player)
-    if {crypto.sell.ethereum-classic.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("ethereum-classic", {_message}, player)
-    if {crypto.sell.ethereum-classic.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("ethereum-classic", {_message}, player)
-
-    if {crypto.buy.vechain.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("vechain", {_message}, player)
-    if {crypto.buy.vechain.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("vechain", {_message}, player)
-    if {crypto.sell.vechain.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("vechain", {_message}, player)
-    if {crypto.sell.vechain.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("vechain", {_message}, player)
-
-    if {crypto.buy.xrp.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("xrp", {_message}, player)
-    if {crypto.buy.xrp.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("xrp", {_message}, player)
-    if {crypto.sell.xrp.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("xrp", {_message}, player)
-    if {crypto.sell.xrp.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("xrp", {_message}, player)
-
-    if {crypto.buy.solana.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("solana", {_message}, player)
-    if {crypto.buy.solana.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("solana", {_message}, player)
-    if {crypto.sell.solana.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("solana", {_message}, player)
-    if {crypto.sell.solana.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("solana", {_message}, player)
-
-    if {crypto.buy.cronos.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("cronos", {_message}, player)
-    if {crypto.buy.cronos.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("cronos", {_message}, player)
-    if {crypto.sell.cronos.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("cronos", {_message}, player)
-    if {crypto.sell.cronos.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("cronos", {_message}, player)
-
-    if {crypto.buy.binance-coin.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyEenheden("binance-coin", {_message}, player)
-    if {crypto.buy.binance-coin.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        buyBedrag("binance-coin", {_message}, player)
-    if {crypto.sell.binance-coin.eenheden.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellEenheden("binance-coin", {_message}, player)
-    if {crypto.sell.binance-coin.bedrag.%player%} is true:
-        cancel event
-        set {_message} to message
-        sellBedrag("binance-coin", {_message}, player)
+    loop {_coins::*}:
+        if {crypto.buy.%loop-value%.eenheden.%player%} is true:
+            cancel event
+            set {_message} to message
+            buyEenheden("%loop-value%", {_message}, player)
+        if {crypto.sell.%loop-value%.eenheden.%player%} is true:
+            cancel event
+            set {_message} to message
+            sellEenheden("%loop-value%", {_message}, player)
+        if {crypto.buy.%loop-value%.bedrag.%player%} is true:
+            cancel event
+            set {_message} to message
+            buyBedrag("%loop-value%", {_message}, player)
+        if {crypto.sell.%loop-value%.bedrag.%player%} is true:
+            cancel event
+            set {_message} to message
+            sellBedrag("%loop-value%", {_message}, player)
