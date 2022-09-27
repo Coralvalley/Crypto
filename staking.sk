@@ -1,0 +1,89 @@
+every 1 minute in world "world":
+    if checkTime(setTime(), "00:00") is true:
+        loop all offline players:
+            if loop-offline player is offline:
+                if yamlExists(loop-offline player) is true:
+                    if isYamlLoaded(loop-offline player) is false:
+                        loadYaml(loop-offline player)
+                        saveYaml(loop-offline player)
+            if hasPremium(loop-offline player) is false:
+                loop {coins::*}:
+                    if checkForUpperCase("%loop-value-2%") is false:
+                        if hasCrypto(loop-offline player, "%loop-value-2%") is true:
+                            if isStakable("%loop-value-2%") is true:
+                                set {_staking} to getStaking("%loop-value-2%") / 365
+                                addBalance(loop-offline player, "%loop-value-2%", getBalance(loop-offline player, "%loop-value-2%") * {_staking} / 100)
+                                saveYaml(loop-offline player)
+            if loop-offline player is offline:
+                if yamlExists(loop-offline player) is true:
+                    if isYamlLoaded(loop-offline player) is true:
+                        saveYaml(loop-offline player)
+                        unloadYaml(loop-offline player)
+            
+
+function checkTime(time: text, checkedTime: text) :: boolean:
+    if {_time} is equal to {_checkedTime}:
+        return true
+    else:
+        return false
+
+function setTime() :: text:
+    set {_now} to now
+    add 2 hours to {_now}
+    set {_now} to {_now} formatted as "HH:mm"
+    return {_now}
+
+function hasPremium(p: offline player) :: boolean:
+    if yamlExists({_p}) is true:
+        if yaml value "premium" in "crypto-%uuid of {_p}%" is true:
+            return true
+        else:
+            return false
+
+function hasCrypto(p: offline player, crypto: text) :: boolean:
+    if yamlExists({_p}) is true:
+        if yaml value "%{_crypto}%" in "crypto-%uuid of {_p}%" is greater than 0.0:
+            return true
+        else:
+            return false
+
+function isStakable(crypto: text) :: boolean:
+    if yaml value "staking.%{_crypto}%" in "crypto-config" is greater than 0.0:
+        return true
+    else:
+        return false
+
+function getStaking(crypto: text) :: number:
+    return yaml value "staking.%{_crypto}%" from "crypto-config"
+
+function getBalance(p: offline player, crypto: text) :: number:
+    if yamlExists({_p}) is true:
+        return yaml value "%{_crypto}%" in "crypto-%uuid of {_p}%"
+
+function addBalance(p: offline player, crypto: text, amount: number):
+    if yamlExists({_p}) is true:
+        set {_balance} to getBalance({_p}, {_crypto})
+        set {_balance} to {_balance} + {_amount}
+        set yaml value "%{_crypto}%" in "crypto-%uuid of {_p}%" to {_balance}
+        save yaml "crypto-%uuid of {_p}%"
+
+function isYamlLoaded(p: offline player) :: boolean:
+    yaml "crypto-%uuid of {_p}%" is loaded:
+        return true
+    else:
+        return false
+
+function yamlExists(p: offline player) :: boolean:
+    if skutil file "plugins/crypto/players/%uuid of {_p}%.yml" exists:
+        return true
+    else:
+        return false
+
+function loadYaml(p: offline player):
+    load yaml "plugins/crypto/players/%uuid of {_p}%:%{_p}%.yml" as "crypto-%uuid of {_p}%"
+
+function saveYaml(p: offline player):
+    save yaml "crypto-%uuid of {_p}%"
+
+function unloadYaml(p: offline player):
+    unload yaml "crypto-%uuid of {_p}%"

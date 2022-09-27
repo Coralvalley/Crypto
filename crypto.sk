@@ -315,8 +315,9 @@ command /crypto [<text>] [<offline player>] [<text>] [<number>]:
                     send "&cSorry, je hebt geen permissies om dit commando uit te voeren."
         if arg-1 is "config":
             if player has permission "*" or "crypto.reload":
+                save yaml "crypto-config"
                 unload yaml "crypto-config"
-                load yaml "crypto-config"
+                load yaml "plugins/crypto/config.yml" as "crypto-config"
                 save yaml "crypto-config"
                 send "&aDe config van Crypto is succesvol gereload." to player
             else:

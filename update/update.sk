@@ -27,7 +27,51 @@ on load:
     if file path "plugins/Skript/scripts/crypto/-website.sk" is missing:
         send "&aSuccesfully deleted website script" to console
     else:
-        send "&cUnable to delete webste script" to console
+        send "&cUnable to delete website script" to console
+    wait 5 seconds
+
+    # Delete the staking file 'staking.sk'
+    send "Disabling staking script" to console
+    if file path "plugins/Skript/scripts/crypto/-staking.sk" is missing:
+        disable script file "crypto/staking.sk"
+        unload script file "crypto/staking.sk"
+        if file path "plugins/Skript/scripts/crypto/staking.sk" is missing:
+            send "&aSuccesfully disabled staking script" to console
+        else:
+            send "&cUnable to disable staking script" to console
+    else:
+        send "&aStaking script is already disabled" to console
+    wait 5 seconds
+
+    # Delete the website script now called '-staking.sk'
+    send "Deleting staking script" to console
+    delete file "plugins/Skript/scripts/crypto/-staking.sk"
+    if file path "plugins/Skript/scripts/crypto/-staking.sk" is missing:
+        send "&aSuccesfully deleted staking script" to console
+    else:
+        send "&cUnable to delete staking script" to console
+    wait 5 seconds
+
+    # Delete the staking file 'playerdata.sk'
+    send "Disabling playerdata script" to console
+    if file path "plugins/Skript/scripts/crypto/-playerdata.sk" is missing:
+        disable script file "crypto/playerdata.sk"
+        unload script file "crypto/playerdata.sk"
+        if file path "plugins/Skript/scripts/crypto/playerdata.sk" is missing:
+            send "&aSuccesfully disabled playerdata script" to console
+        else:
+            send "&cUnable to disable playerdata script" to console
+    else:
+        send "&aPlayerdata script is already disabled" to console
+    wait 5 seconds
+
+    # Delete the website script now called '-staking.sk'
+    send "Deleting playerdata script" to console
+    delete file "plugins/Skript/scripts/crypto/-playerdata.sk"
+    if file path "plugins/Skript/scripts/crypto/-playerdata.sk" is missing:
+        send "&aSuccesfully deleted playerdata script" to console
+    else:
+        send "&cUnable to delete playerdata script" to console
     wait 5 seconds
 
     # Disable the main plugin file 'crypto.sk'
@@ -70,11 +114,35 @@ on load:
         send "&cUnable to download website script is website online?" to console
     wait 2 seconds
 
+    # Download the new website script file called 'website.sk'
+    send "Downloading website script" to console
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/staking.sk" to file "plugins/Skript/scripts/crypto/staking.sk"
+    if file path "plugins/Skript/scripts/crypto/staking.sk" is not missing:
+        send "&aSuccesfully downloaded staking script" to console
+    else:
+        send "&cUnable to download staking script is website online?" to console
+    wait 2 seconds
+
+    # Download the new website script file called 'website.sk'
+    send "Downloading playerdata script" to console
+    download file from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/playerdata.sk" to file "plugins/Skript/scripts/crypto/playerdata.sk"
+    if file path "plugins/Skript/scripts/crypto/playerdata.sk" is not missing:
+        send "&aSuccesfully downloaded playerdata script" to console
+    else:
+        send "&cUnable to download playerdata script is website online?" to console
+    wait 2 seconds
+
     # Enable and reload the main plugin file 'crypto.sk'
     reload script "crypto/crypto"
 
     # Enable and reload the website script 'website.sk'
     reload script "crypto/website"
+
+    # Enable and reload the staking script 'staking.sk'
+    reload script "crypto/staking"
+
+    # Enable and reload the playerdata script 'playerdata.sk'
+    reload script "crypto/playerdata"
 
     # Set the version of the plugin in config.yml to the new version
     set {_version} to text from "https://raw.githubusercontent.com/Coralvalley/Crypto/main/version.yml"
