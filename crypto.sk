@@ -1392,164 +1392,152 @@ every 60 seconds in world "world":
 
 function cryptoMarket(coin: text, p: player):
     set {_u} to uuid of {_p}
+    set {_slot} to 0
+    set {_amount} to 0
     if {_coin} is "gui":
         open chest with 3 rows named "Crypto Markt" to {_p}
+        wait 1 tick
 
         set slot 26 of {_p}'s current inventory to a diamond hoe named "&bWallet" with nbt "{mtwcustom:portemonnee_groot}"
 
-        add "bitcoin" to {_coins::*}
-        add "ethereum" to {_coins::*}
-        add "maker" to {_coins::*}
-        add "bitcoin-cash" to {_coins::*}
-        add "litecoin" to {_coins::*}
-        add "dash" to {_coins::*}
-        add "cardano" to {_coins::*}
-        add "tether" to {_coins::*}
-        add "dogecoin" to {_coins::*}
-        add "ethereum-classic" to {_coins::*}
-        add "vechain" to {_coins::*}
-        add "xrp" to {_coins::*}
-        add "solana" to {_coins::*}
-        add "cronos" to {_coins::*}
-        add "binance-coin" to {_coins::*}
+        # set {_coins::*} to {coins::*}
 
-        add "Bitcoin" to {_coins::upper::*}
-        add "Ethereum" to {_coins::upper::*}
-        add "Maker" to {_coins::upper::*}
-        add "Litecoin" to {_coins::upper::*}
-        add "Dash" to {_coins::upper::*}
-        add "Cardano" to {_coins::upper::*}
-        add "Tether" to {_coins::upper::*}
-        add "Dogecoin" to {_coins::upper::*}
-        add "Vechain" to {_coins::upper::*}
-        add "XRP" to {_coins::upper::*}
-        add "Solana" to {_coins::upper::*}
-        add "Cronos" to {_coins::upper::*}
+        # loop {_coins::*}:
 
-        loop {_coins::*}:
-            set {_%loop-value%::1::percent_change_24h} to {%loop-value%::1::percent_change_24h} parsed as number
-            if {_%loop-value%::1::percent_change_24h} is greater than 0.0:
-                set slot 0 of {_p}'s current inventory to a iron ingot named ("hello" to first character uppercase)
+        #     if checkForUpperCase("%loop-value%") is false:
+        #         set {_coinLowerCase} to "%loop-value%"
 
+        #     if checkForUpperCase("%loop-value%") is true:
+        #         if {_amount} is not equal to amountOfCoins({_coins::*}):
+        #             set {_loopIndex} to "%loop-value%"
+        #             send "%{%{_coinLowerCase}%::1::percent_change_24h}%" to {_p}
+        #             if {%{_coinLowerCase}%::1::percent_change_24h} parsed as number is greater than 0.0:
+        #                 set slot {_slot} of {_p}'s current inventory to a iron ingot named "&b%loop-value%" with lore "&fWaarde: € %{%{_coinLowerCase}%::1::price_eur}%" and "&a%%%{%{_coinLowerCase}%::1::percent_change_24h}%" with nbt "{mtcustom:%{_coinLowerCase}%}"
+        #             else if {%{_coinLowerCase}%::1::percent_change_24h} parsed as number is less than 0.0:
+        #                 set slot {_slot} of {_p}'s current inventory to a iron ingot named "&b%loop-value%" with lore "&fWaarde: € %{%{_coinLowerCase}%::1::price_eur}%" and "&c%%%{%{_coinLowerCase}%::1::percent_change_24h}%" with nbt "{mtcustom:%{_coinLowerCase}%}"
+        #             else if {%{_coinLowerCase}%::1::percent_change_24h} parsed as number is equal to 0.0:
+        #                 set slot {_slot} of {_p}'s current inventory to a iron ingot named "&b%loop-value%" with lore "&fWaarde: € %{%{_coinLowerCase}%::1::price_eur}%" and "&7%%%{%{_coinLowerCase}%::1::percent_change_24h}%" with nbt "{mtcustom:%{_coinLowerCase}%}"
+        #             add 1 to {_slot}
+        #             add 1 to {_amount}
         set {_bitcoin::1::percent_change_24h} to {bitcoin::1::percent_change_24h} parsed as number
         if {_bitcoin::1::percent_change_24h} is greater than 0.0:
-            set slot 0 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %{bitcoin::1::price_eur}%" and "&a%%%{bitcoin::1::percent_change_24h}%" and "&fVolume €%{bitcoin::1::volume_eur}%" with nbt "{mtcustom:bitcoin}"
+            set slot 0 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %(rounded down {bitcoin::1::price_eur}*100)/100%" and "&a%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
         else if {_bitcoin::1::percent_change_24h} is less than 0.0:
-            set slot 0 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %{bitcoin::1::price_eur}%" and "&c%%%{bitcoin::1::percent_change_24h}%" and "&fVolume €%{bitcoin::1::volume_eur}%" with nbt "{mtcustom:bitcoin}"
+            set slot 0 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %(rounded down {bitcoin::1::price_eur}*100)/100%" and "&c%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
         else if {_bitcoin::1::percent_change_24h} is equal to 0.0:
-            set slot 0 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %{bitcoin::1::price_eur}%" and "&7%%%{bitcoin::1::percent_change_24h}%" and "&fVolume €%{bitcoin::1::volume_eur}%" with nbt "{mtcustom:bitcoin}"
+            set slot 0 of {_p}'s current inventory to a iron ingot named "&dBitcoin" with lore "&fWaarde: € %(rounded down {bitcoin::1::price_eur}*100)/100%" and "&7%%%{bitcoin::1::percent_change_24h}%" with nbt "{mtcustom:bitcoin}"
 
         set {_ethereum::1::percent_change_24h} to {ethereum::1::percent_change_24h} parsed as number
         if {_ethereum::1::percent_change_24h} is greater than 0.0:
-            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_eur}%" and "&a%%%{ethereum::1::percent_change_24h}%" and "&fVolume €%{ethereum::1::volume_eur}%" with nbt "{mtcustom:ethereum}"
+            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %(rounded down {ethereum::1::price_eur}*100)/100%" and "&a%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
         else if {_ethereum::1::percent_change_24h} is less than 0.0:
-            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_eur}%" and "&c%%%{ethereum::1::percent_change_24h}%" and "&fVolume €%{ethereum::1::volume_eur}%" with nbt "{mtcustom:ethereum}"
+            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %(rounded down {ethereum::1::price_eur}*100)/100%" and "&c%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
         else if {_ethereum::1::percent_change_24h} is equal to 0.0:
-            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %{ethereum::1::price_eur}%" and "&7%%%{ethereum::1::percent_change_24h}%" and "&fVolume €%{ethereum::1::volume_eur}%" with nbt "{mtcustom:ethereum}"
+            set slot 1 of {_p}'s current inventory to a iron ingot named "&eEthereum" with lore "&fWaarde: € %(rounded down {ethereum::1::price_eur}*100)/100%" and "&7%%%{ethereum::1::percent_change_24h}%" with nbt "{mtcustom:ethereum}"
 
         set {_maker::1::percent_change_24h} to {maker::1::percent_change_24h} parsed as number
         if {_maker::1::percent_change_24h} is greater than 0.0:
-            set slot 2 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&fWaarde: € %{maker::1::price_eur}%" and "&a%%%{maker::1::percent_change_24h}%" and "&fVolume €%{maker::1::volume_eur}%" with nbt "{mtcustom:maker}"
+            set slot 2 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&fWaarde: € %(rounded down {maker::1::price_eur}*100)/100%" and "&a%%%{maker::1::percent_change_24h}%" with nbt "{mtcustom:maker}"
         else if {_maker::1::percent_change_24h} is less than 0.0:
-            set slot 2 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&fWaarde: € %{maker::1::price_eur}%" and "&c%%%{maker::1::percent_change_24h}%" and "&fVolume €%{maker::1::volume_eur}%" with nbt "{mtcustom:maker}"
+            set slot 2 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&fWaarde: € %(rounded down {maker::1::price_eur}*100)/100%" and "&c%%%{maker::1::percent_change_24h}%" with nbt "{mtcustom:maker}"
         else if {_maker::1::percent_change_24h} is equal to 0.0:
-            set slot 2 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&fWaarde: € %{maker::1::price_eur}%" and "&7%%%{maker::1::percent_change_24h}%" and "&fVolume €%{maker::1::volume_eur}%" with nbt "{mtcustom:maker}"
+            set slot 2 of {_p}'s current inventory to a iron ingot named "&aMaker" with lore "&fWaarde: € %(rounded down {maker::1::price_eur}*100)/100%" and "&7%%%{maker::1::percent_change_24h}%" with nbt "{mtcustom:maker}"
 
         set {_bitcoin-cash::1::percent_change_24h} to {bitcoin-cash::1::percent_change_24h} parsed as number
         if {_bitcoin-cash::1::percent_change_24h} is greater than 0.0:
-            set slot 3 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&fWaarde: € %{bitcoin-cash::1::price_eur}%" and "&a%%%{bitcoin-cash::1::percent_change_24h}%" and "&fVolume €%{bitcoin-cash::1::volume_eur}%" with nbt "{mtcustom:bitcoincash}"
+            set slot 3 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&fWaarde: € %(rounded down {bitcoin-cash::1::price_eur}*100)/100%" and "&a%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoincash}"
         else if {_bitcoin-cash::1::percent_change_24h} is less than 0.0:
-            set slot 3 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&fWaarde: € %{bitcoin-cash::1::price_eur}%" and "&c%%%{bitcoin-cash::1::percent_change_24h}%" and "&fVolume €%{bitcoin-cash::1::volume_eur}%" with nbt "{mtcustom:bitcoincash}"
+            set slot 3 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&fWaarde: € %(rounded down {bitcoin-cash::1::price_eur}*100)/100%" and "&c%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoincash}"
         else if {_bitcoin-cash::1::percent_change_24h} is equal to 0.0:
-            set slot 3 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&fWaarde: € %{bitcoin-cash::1::price_eur}%" and "&7%%%{bitcoin-cash::1::percent_change_24h}%" and "&fVolume €%{bitcoin-cash::1::volume_eur}%" with nbt "{mtcustom:bitcoincash}"
+            set slot 3 of {_p}'s current inventory to a iron ingot named "&5Bitcoin-Cash" with lore "&fWaarde: € %(rounded down {bitcoin-cash::1::price_eur}*100)/100%" and "&7%%%{bitcoin-cash::1::percent_change_24h}%" with nbt "{mtcustom:bitcoincash}"
 
         set {_litecoin::1::percent_change_24h} to {litecoin::1::percent_change_24h} parsed as number
         if {_litecoin::1::percent_change_24h} is greater than 0.0:
-            set slot 4 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&fWaarde: € %{litecoin::1::price_eur}%" and "&a%%%{litecoin::1::percent_change_24h}%" and "&fVolume €%{litecoin::1::volume_eur}%" with nbt "{mtcustom:litecoin}"
+            set slot 4 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&fWaarde: € %(rounded down {litecoin::1::price_eur}*100)/100%" and "&a%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
         else if {_litecoin::1::percent_change_24h} is less than 0.0:
-            set slot 4 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&fWaarde: € %{litecoin::1::price_eur}%" and "&c%%%{litecoin::1::percent_change_24h}%" and "&fVolume €%{litecoin::1::volume_eur}%" with nbt "{mtcustom:litecoin}"
+            set slot 4 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&fWaarde: € %(rounded down {litecoin::1::price_eur}*100)/100%" and "&c%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
         else if {_litecoin::1::percent_change_24h} is equal to 0.0:
-            set slot 4 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&fWaarde: € %{litecoin::1::price_eur}%" and "&7%%%{litecoin::1::percent_change_24h}%" and "&fVolume €%{litecoin::1::volume_eur}%" with nbt "{mtcustom:litecoin}"
+            set slot 4 of {_p}'s current inventory to a iron ingot named "&1Litecoin" with lore "&fWaarde: € %(rounded down {litecoin::1::price_eur}*100)/100%" and "&7%%%{litecoin::1::percent_change_24h}%" with nbt "{mtcustom:litecoin}"
 
         set {_dash::1::percent_change_24h} to {dash::1::percent_change_24h} parsed as number
         if {_dash::1::percent_change_24h} is greater than 0.0:
-            set slot 5 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&fWaarde: € %{dash::1::price_eur}%" and "&a%%%{dash::1::percent_change_24h}%" and "&fVolume €%{dash::1::volume_eur}%" with nbt "{mtcustom:dashcoin}"
+            set slot 5 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&fWaarde: € %(rounded down {dash::1::price_eur}*100)/100%" and "&a%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
         else if {_dash::1::percent_change_24h} is less than 0.0:
-            set slot 5 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&fWaarde: € %{dash::1::price_eur}%" and "&c%%%{dash::1::percent_change_24h}%" and "&fVolume €%{dash::1::volume_eur}%" with nbt "{mtcustom:dashcoin}"
+            set slot 5 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&fWaarde: € %(rounded down {dash::1::price_eur}*100)/100%" and "&c%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
         else if {_dash::1::percent_change_24h} is equal to 0.0:
-            set slot 5 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&fWaarde: € %{dash::1::price_eur}%" and "&7%%%{dash::1::percent_change_24h}%" and "&fVolume €%{dash::1::volume_eur}%" with nbt "{mtcustom:dashcoin}"
+            set slot 5 of {_p}'s current inventory to a iron ingot named "&cDash" with lore "&fWaarde: € %(rounded down {dash::1::price_eur}*100)/100%" and "&7%%%{dash::1::percent_change_24h}%" with nbt "{mtcustom:dashcoin}"
 
         set {_cardano::1::percent_change_24h} to {cardano::1::percent_change_24h} parsed as number
         if {_cardano::1::percent_change_24h} is greater than 0.0:
-            set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %{cardano::1::price_eur}%" and "&a%%%{cardano::1::percent_change_24h}%" and "&fVolume €%{cardano::1::volume_eur}%"  
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %(rounded down {cardano::1::price_eur}*100)/100%" and "&a%%%{cardano::1::percent_change_24h}%"
         else if {_cardano::1::percent_change_24h} is less than 0.0:
-            set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %{cardano::1::price_eur}%" and "&c%%%{cardano::1::percent_change_24h}%" and "&fVolume €%{cardano::1::volume_eur}%" 
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %(rounded down {cardano::1::price_eur}*100)/100%" and "&c%%%{cardano::1::percent_change_24h}%"
         else if {_cardano::1::percent_change_24h} is equal to 0.0:
-            set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %{cardano::1::price_eur}%" and "&7%%%{cardano::1::percent_change_24h}%" and "&fVolume €%{cardano::1::volume_eur}%" 
+            set slot 6 of {_p}'s current inventory to a iron ingot named "&bCardano" with lore "&fWaarde: € %(rounded down {cardano::1::price_eur}*100)/100%" and "&7%%%{cardano::1::percent_change_24h}%"
 
         set {_tether::1::percent_change_24h} to {tether::1::percent_change_24h} parsed as number
         if {_tether::1::percent_change_24h} is greater than 0.0:
-            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %{tether::1::price_eur}%" and "&a%%%{tether::1::percent_change_24h}%" and "&fVolume €%{tether::1::volume_eur}%" 
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %(rounded down {tether::1::price_eur}*100)/100%" and "&a%%%{tether::1::percent_change_24h}%"
         else if {_tether::1::percent_change_24h} is less than 0.0:
-            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %{tether::1::price_eur}%" and "&c%%%{tether::1::percent_change_24h}%" and "&fVolume €%{tether::1::volume_eur}%" 
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %(rounded down {tether::1::price_eur}*100)/100%" and "&c%%%{tether::1::percent_change_24h}%"
         else if {_tether::1::percent_change_24h} is equal to 0.0:
-            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %{tether::1::price_eur}%" and "&7%%%{tether::1::percent_change_24h}%" and "&fVolume €%{tether::1::volume_eur}%" 
+            set slot 7 of {_p}'s current inventory to a iron ingot named "&bTether" with lore "&fWaarde: € %(rounded down {tether::1::price_eur}*100)/100%" and "&7%%%{tether::1::percent_change_24h}%"
 
         set {_dogecoin::1::percent_change_24h} to {dogecoin::1::percent_change_24h} parsed as number
         if {_dogecoin::1::percent_change_24h} is greater than 0.0:
-            set slot 8 of {_p}'s current inventory to a iron ingot named "&bDogecoin" with lore "&fWaarde: € %{dogecoin::1::price_eur}%" and "&a%%%{dogecoin::1::percent_change_24h}%" and "&fVolume €%{dogecoin::1::volume_eur}%" 
+            set slot 8 of {_p}'s current inventory to a iron ingot named "&bDogecoin" with lore "&fWaarde: € %(rounded down {dogecoin::1::price_eur}*100)/100%" and "&a%%%{dogecoin::1::percent_change_24h}%"
         else if {_dogecoin::1::percent_change_24h} is less than 0.0:
-            set slot 8 of {_p}'s current inventory to a iron ingot named "&bDogecoin" with lore "&fWaarde: € %{dogecoin::1::price_eur}%" and "&c%%%{dogecoin::1::percent_change_24h}%" and "&fVolume €%{dogecoin::1::volume_eur}%" 
+            set slot 8 of {_p}'s current inventory to a iron ingot named "&bDogecoin" with lore "&fWaarde: € %(rounded down {dogecoin::1::price_eur}*100)/100%" and "&c%%%{dogecoin::1::percent_change_24h}%"
         else if {_dogecoin::1::percent_change_24h} is equal to 0.0:
-            set slot 8 of {_p}'s current inventory to a iron ingot named "&bDogecoin" with lore "&fWaarde: € %{dogecoin::1::price_eur}%" and "&7%%%{dogecoin::1::percent_change_24h}%" and "&fVolume €%{dogecoin::1::volume_eur}%" 
+            set slot 8 of {_p}'s current inventory to a iron ingot named "&bDogecoin" with lore "&fWaarde: € %(rounded down {dogecoin::1::price_eur}*100)/100%" and "&7%%%{dogecoin::1::percent_change_24h}%"
 
         set {_ethereum-classic::1::percent_change_24h} to {ethereum-classic::1::percent_change_24h} parsed as number
         if {_ethereum-classic::1::percent_change_24h} is greater than 0.0:
-            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_eur}%" and "&a%%%{ethereum-classic::1::percent_change_24h}%" and "&fVolume €%{ethereum-classic::1::volume_eur}%" 
+            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %(rounded down {ethereum-classic::1::price_eur}*100)/100%" and "&a%%%{ethereum-classic::1::percent_change_24h}%"
         else if {_ethereum-classic::1::percent_change_24h} is less than 0.0:
-            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_eur}%" and "&c%%%{ethereum-classic::1::percent_change_24h}%" and "&fVolume €%{ethereum-classic::1::volume_eur}%" 
+            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %(rounded down {ethereum-classic::1::price_eur}*100)/100%" and "&c%%%{ethereum-classic::1::percent_change_24h}%"
         else if {_ethereum-classic::1::percent_change_24h} is equal to 0.0:
-            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %{ethereum-classic::1::price_eur}%" and "&7%%%{ethereum-classic::1::percent_change_24h}%" and "&fVolume €%{ethereum-classic::1::volume_eur}%" 
+            set slot 9 of {_p}'s current inventory to a iron ingot named "&bEthereum classic" with lore "&fWaarde: € %(rounded down {ethereum-classic::1::price_eur}*100)/100%" and "&7%%%{ethereum-classic::1::percent_change_24h}%" 
 
         set {_vechain::1::percent_change_24h} to {vechain::1::percent_change_24h} parsed as number
         if {_vechain::1::percent_change_24h} is greater than 0.0:
-            set slot 10 of {_p}'s current inventory to a iron ingot named "&bVeChain" with lore "&fWaarde: € %{vechain::1::price_eur}%" and "&a%%%{vechain::1::percent_change_24h}%" and "&fVolume €%{vechain::1::volume_eur}%" 
+            set slot 10 of {_p}'s current inventory to a iron ingot named "&bVeChain" with lore "&fWaarde: € %(rounded down {vechain::1::price_eur}*100)/100%" and "&a%%%{vechain::1::percent_change_24h}%"
         else if {_vechain::1::percent_change_24h} is less than 0.0:
-            set slot 10 of {_p}'s current inventory to a iron ingot named "&bVeChain" with lore "&fWaarde: € %{vechain::1::price_eur}%" and "&c%%%{vechain::1::percent_change_24h}%" and "&fVolume €%{vechain::1::volume_eur}%" 
+            set slot 10 of {_p}'s current inventory to a iron ingot named "&bVeChain" with lore "&fWaarde: € %(rounded down {vechain::1::price_eur}*100)/100%" and "&c%%%{vechain::1::percent_change_24h}%"
         else if {_vechain::1::percent_change_24h} is equal to 0.0:
-            set slot 10 of {_p}'s current inventory to a iron ingot named "&bVeChain" with lore "&fWaarde: € %{vechain::1::price_eur}%" and "&7%%%{vechain::1::percent_change_24h}%" and "&fVolume €%{vechain::1::volume_eur}%" 
+            set slot 10 of {_p}'s current inventory to a iron ingot named "&bVeChain" with lore "&fWaarde: € %(rounded down {vechain::1::price_eur}*100)/100%" and "&7%%%{vechain::1::percent_change_24h}%"
 
         set {_xrp::1::percent_change_24h} to {xrp::1::percent_change_24h} parsed as number
         if {_xrp::1::percent_change_24h} is greater than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %{xrp::1::price_eur}%" and "&a%%%{xrp::1::percent_change_24h}%" and "&fVolume €%{xrp::1::volume_eur}%" 
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %(rounded down {xrp::1::price_eur}*100)/100%" and "&a%%%{xrp::1::percent_change_24h}%"
         else if {_xrp::1::percent_change_24h} is less than 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %{xrp::1::price_eur}%" and "&c%%%{xrp::1::percent_change_24h}%" and "&fVolume €%{xrp::1::volume_eur}%" 
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %(rounded down {xrp::1::price_eur}*100)/100%" and "&c%%%{xrp::1::percent_change_24h}%"
         else if {_xrp::1::percent_change_24h} is equal to 0.0:
-            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %{xrp::1::price_eur}%" and "&7%%%{xrp::1::percent_change_24h}%" and "&fVolume €%{xrp::1::volume_eur}%" 
+            set slot 11 of {_p}'s current inventory to a iron ingot named "&bXRP" with lore "&fWaarde: € %(rounded down {xrp::1::price_eur}*100)/100%" and "&7%%%{xrp::1::percent_change_24h}%"
 
         set {_solana::1::percent_change_24h} to {solana::1::percent_change_24h} parsed as number
         if {_solana::1::percent_change_24h} is greater than 0.0:
-            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&a%%%{solana::1::percent_change_24h}%" and "&fVolume €%{solana::1::volume_eur}%" 
+            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %(rounded down {solana::1::price_eur}*100)/100%" and "&a%%%{solana::1::percent_change_24h}%"
         else if {_solana::1::percent_change_24h} is less than 0.0:
-            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&c%%%{solana::1::percent_change_24h}%" and "&fVolume €%{solana::1::volume_eur}%" 
+            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %(rounded down {solana::1::price_eur}*100)/100%" and "&c%%%{solana::1::percent_change_24h}%"
         else if {_solana::1::percent_change_24h} is equal to 0.0:
-            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %{solana::1::price_eur}%" and "&7%%%{solana::1::percent_change_24h}%" and "&fVolume €%{solana::1::volume_eur}%" 
+            set slot 12 of {_p}'s current inventory to a iron ingot named "&bSolana" with lore "&fWaarde: € %(rounded down {solana::1::price_eur}*100)/100%" and "&7%%%{solana::1::percent_change_24h}%"
 
         set {_cronos::1::percent_change_24h} to {cronos::1::percent_change_24h} parsed as number
         if {_cronos::1::percent_change_24h} is greater than 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&a%%%{cronos::1::percent_change_24h}%" and "&fVolume €%{cronos::1::volume_eur}%" 
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %(rounded down {cronos::1::price_eur}*100)/100%" and "&a%%%{cronos::1::percent_change_24h}%"
         else if {_cronos::1::percent_change_24h} is less than 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&c%%%{cronos::1::percent_change_24h}%" and "&fVolume €%{cronos::1::volume_eur}%" 
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %(rounded down {cronos::1::price_eur}*100)/100%" and "&c%%%{cronos::1::percent_change_24h}%"
         else if {_cronos::1::percent_change_24h} is equal to 0.0:
-            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %{cronos::1::price_eur}%" and "&7%%%{cronos::1::percent_change_24h}%" and "&fVolume €%{cronos::1::volume_eur}%" 
+            set slot 13 of {_p}'s current inventory to a iron ingot named "&bCronos" with lore "&fWaarde: € %(rounded down {cronos::1::price_eur}*100)/100%" and "&7%%%{cronos::1::percent_change_24h}%"
 
         set {_binance-coin::1::percent_change_24h} to {binance-coin::1::percent_change_24h} parsed as number
         if {_binance-coin::1::percent_change_24h} is greater than 0.0:
-            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&a%%%{binance-coin::1::percent_change_24h}%" and "&fVolume €%{binance-coin::1::volume_eur}%" 
+            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %(rounded down {binance-coin::1::price_eur}*100)/100%" and "&a%%%{binance-coin::1::percent_change_24h}%"
         else if {_binance-coin::1::percent_change_24h} is less than 0.0:
-            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&c%%%{binance-coin::1::percent_change_24h}%" and "&fVolume €%{binance-coin::1::volume_eur}%" 
+            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %(rounded down {binance-coin::1::price_eur}*100)/100%" and "&c%%%{binance-coin::1::percent_change_24h}%" 
         else if {_binance-coin::1::percent_change_24h} is equal to 0.0:
-            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %{binance-coin::1::price_eur}%" and "&7%%%{binance-coin::1::percent_change_24h}%" and "&fVolume €%{binance-coin::1::volume_eur}%" 
+            set slot 14 of {_p}'s current inventory to a iron ingot named "&bBinance Coin" with lore "&fWaarde: € %(rounded down {binance-coin::1::price_eur}*100)/100%" and "&7%%%{binance-coin::1::percent_change_24h}%" 
         
 
 
@@ -2218,8 +2206,12 @@ on inventory click:
                 cryptoMarket("vechainSell", player)
         if clicked slot is 11:
             if "%event-clicktype%" is "right mouse button":
+                close player's inventory
+                wait 5 ticks
                 cryptoMarket("xrpBuy", player)
             if "%event-clicktype%" is "left mouse button":
+                close player's inventory
+                wait 5 ticks
                 cryptoMarket("xrpSell", player)
         if clicked slot is 12:
             if "%event-clicktype%" is "right mouse button":
@@ -2246,13 +2238,13 @@ on inventory click:
     add "Tether" to {_coins::*}
     add "Dogecoin" to {_coins::*}
     add "Vechain" to {_coins::*}
-    add "XRP" to {_coins::*}
     add "Solana" to {_coins::*}
     add "Cronos" to {_coins::*}
 
     loop {_coins::*}:
         if name of player's current inventory is "%loop-value% kopen":
             if clicked slot is 11:
+                wait 50 ticks
                 close player's inventory
                 set {crypto.buy.%loop-value%.eenheden.%player%} to true
                 send "&6Typ cancel als je wilt stoppen."
@@ -2336,6 +2328,36 @@ on inventory click:
                 set {crypto.sell.ethereum-classic.bedrag.%player%} to true
                 send "&6Typ cancel als je wilt stoppen."
                 send "&6Hoeveel euro aan Ethereum Classic wil je verkopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
+
+        else if name of player's current inventory is "XRP kopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.buy.xrp.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel XRP wil je kopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.buy.xrp.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan XRP wil je kopen?"
+            if clicked slot is 22:
+                cryptoMarket("gui", player)
+            cancel event
+
+        else if name of player's current inventory is "XRP verkopen":
+            if clicked slot is 11:
+                close player's inventory
+                set {crypto.sell.xrp.eenheden.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel XRP wil je verkopen?"
+            if clicked slot is 15:
+                close player's inventory
+                set {crypto.sell.xrp.bedrag.%player%} to true
+                send "&6Typ cancel als je wilt stoppen."
+                send "&6Hoeveel euro aan XRP wil je verkopen?"
             if clicked slot is 22:
                 cryptoMarket("gui", player)
             cancel event
@@ -2527,62 +2549,79 @@ function sellBedrag(coin: text, message: text, p: player):
         send "&cDit is geen geldig bedrag." to {_p}
 
 on join:
-    add "bitcoin" to {_coins::*}
-    add "ethereum" to {_coins::*}
-    add "maker" to {_coins::*}
-    add "bitcoin-cash" to {_coins::*}
-    add "litecoin" to {_coins::*}
-    add "dash" to {_coins::*}
-    add "cardano" to {_coins::*}
-    add "tether" to {_coins::*}
-    add "dogecoin" to {_coins::*}
-    add "ethereum-classic" to {_coins::*}
-    add "vechain" to {_coins::*}
-    add "xrp" to {_coins::*}
-    add "solana" to {_coins::*}
-    add "cronos" to {_coins::*}
-    add "binance-coin" to {_coins::*}
-
-    loop {_coins::*}:
-        set {crypto.buy.%loop-value%.eenheden.%player%} to false
-        set {crypto.buy.%loop-value%.bedrag.%player%} to false
-        set {crypto.sell.%loop-value%.eenheden.%player%} to false
-        set {crypto.sell.%loop-value%.bedrag.%player%} to false
+    loop {coins::*}:
+        if checkForUpperCase("%loop-value%") is false:
+            set {crypto.buy.%loop-value%.eenheden.%player%} to false
+            set {crypto.buy.%loop-value%.bedrag.%player%} to false
+            set {crypto.sell.%loop-value%.eenheden.%player%} to false
+            set {crypto.sell.%loop-value%.bedrag.%player%} to false
     
     set {crypto.deposit.%player%} to false
     set {crypto.withdraw.%player%} to false
 
 on chat:
-    add "bitcoin" to {_coins::*}
-    add "ethereum" to {_coins::*}
-    add "maker" to {_coins::*}
-    add "bitcoin-cash" to {_coins::*}
-    add "litecoin" to {_coins::*}
-    add "dash" to {_coins::*}
-    add "cardano" to {_coins::*}
-    add "tether" to {_coins::*}
-    add "dogecoin" to {_coins::*}
-    add "ethereum-classic" to {_coins::*}
-    add "vechain" to {_coins::*}
-    add "xrp" to {_coins::*}
-    add "solana" to {_coins::*}
-    add "cronos" to {_coins::*}
-    add "binance-coin" to {_coins::*}
+    loop {coins::*}:
+        if checkForUpperCase("%loop-value%") is false:
+            if {crypto.buy.%loop-value%.eenheden.%player%} is true:
+                cancel event
+                set {_message} to message
+                buyEenheden("%loop-value%", {_message}, player)
+            if {crypto.sell.%loop-value%.eenheden.%player%} is true:
+                cancel event
+                set {_message} to message
+                sellEenheden("%loop-value%", {_message}, player)
+            if {crypto.buy.%loop-value%.bedrag.%player%} is true:
+                cancel event
+                set {_message} to message
+                buyBedrag("%loop-value%", {_message}, player)
+            if {crypto.sell.%loop-value%.bedrag.%player%} is true:
+                cancel event
+                set {_message} to message
+                sellBedrag("%loop-value%", {_message}, player)
 
-    loop {_coins::*}:
-        if {crypto.buy.%loop-value%.eenheden.%player%} is true:
-            cancel event
-            set {_message} to message
-            buyEenheden("%loop-value%", {_message}, player)
-        if {crypto.sell.%loop-value%.eenheden.%player%} is true:
-            cancel event
-            set {_message} to message
-            sellEenheden("%loop-value%", {_message}, player)
-        if {crypto.buy.%loop-value%.bedrag.%player%} is true:
-            cancel event
-            set {_message} to message
-            buyBedrag("%loop-value%", {_message}, player)
-        if {crypto.sell.%loop-value%.bedrag.%player%} is true:
-            cancel event
-            set {_message} to message
-            sellBedrag("%loop-value%", {_message}, player)
+on load:
+    clear {coins::*}
+    add "bitcoin" to {coins::*}
+    add "Bitcoin" to {coins::*}
+    add "ethereum" to {coins::*}
+    add "Ethereum" to {coins::*}
+    add "maker" to {coins::*}
+    add "Maker" to {coins::*}
+    add "bitcoin-cash" to {coins::*}
+    add "Bitcoin Cash" to {coins::*}
+    add "litecoin" to {coins::*}
+    add "Litecoin" to {coins::*}
+    add "dash" to {coins::*}
+    add "Dash" to {coins::*}
+    add "cardano" to {coins::*}
+    add "Cardano" to {coins::*}
+    add "tether" to {coins::*}
+    add "Tether" to {coins::*}
+    add "dogecoin" to {coins::*}
+    add "Dogecoin" to {coins::*}
+    add "ethereum-classic" to {coins::*}
+    add "Ethereum Classic" to {coins::*}
+    add "vechain" to {coins::*}
+    add "Vechain" to {coins::*}
+    add "xrp" to {coins::*}
+    add "XRP" to {coins::*}
+    add "solana" to {coins::*}
+    add "Solana" to {coins::*}
+    add "cronos" to {coins::*}
+    add "Cronos" to {coins::*}
+    add "binance-coin" to {coins::*}
+    add "Binance Coin" to {coins::*}
+
+function checkForUpperCase(string: text) :: boolean:
+    if "%number of uppercase characters in {_string}%" parsed as number is 0:
+        # If there is no uppercase in the string it returns false
+        return false
+    else:
+        return true
+
+function amountOfCoins(list: objects) :: number:
+    set {_amount} to 0
+    loop {coins::*}:
+        if checkForUpperCase("%loop-value%") is false:
+            add 1 to {_amount}
+    return {_amount}
