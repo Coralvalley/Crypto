@@ -152,4 +152,4 @@ on load:
     set yaml value "DoNotChange.version" in "crypto-config" to {_version}
     save yaml "crypto-config"
 
-    rreload script "crypto/"
+    reload script "crypto/"
