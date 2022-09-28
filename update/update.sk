@@ -65,9 +65,10 @@ on load:
         send "&aPlayerdata script is already disabled" to console
     wait 5 seconds
 
-    # Delete the website script now called '-staking.sk'
+    # Delete the website script now called '-playerdata.sk'
     send "Deleting playerdata script" to console
-    delete file "plugins/Skript/scripts/crypto/-playerdata.sk"
+    if file path "plugins/Skript/scripts/crypto/-playerdata.sk" is not missing:
+        delete file "plugins/Skript/scripts/crypto/-playerdata.sk"
     if file path "plugins/Skript/scripts/crypto/-playerdata.sk" is missing:
         send "&aSuccesfully deleted playerdata script" to console
     else:
