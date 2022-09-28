@@ -1,52 +1,52 @@
-# on join:
-#     if file path "plugins/crypto/players/%uuid of player%:%player%.yml" is missing:
-#         create file "plugins/crypto/players/%uuid of player%:%player%.yml"
-#     load yaml "plugins/crypto/players/%uuid of player%:%player%.yml" as "crypto-%uuid of player%"
+on join:
+    if file path "plugins/crypto/players/%uuid of player%:%player%.yml" is missing:
+        create file "plugins/crypto/players/%uuid of player%:%player%.yml"
+    load yaml "plugins/crypto/players/%uuid of player%:%player%.yml" as "crypto-%uuid of player%"
 
-#     if yaml value "name" in "crypto-%uuid of player%" is not set:
-#         set yaml value "name" in "crypto-%uuid of player%" to name of player
-#     if yaml value "uuid" in "crypto-%uuid of player%" is not set:
-#         set yaml value "uuid" in "crypto-%uuid of player%" to uuid of player
+    if yaml value "name" in "crypto-%uuid of player%" is not set:
+        set yaml value "name" in "crypto-%uuid of player%" to name of player
+    if yaml value "uuid" in "crypto-%uuid of player%" is not set:
+        set yaml value "uuid" in "crypto-%uuid of player%" to uuid of player
 
-#     loop {coins::*}:
-#         if checkForUpperCase("%loop-value%") is false:
-#             if yaml value "%loop-value%" in "crypto-%uuid of player%" is not set:
-#                 set yaml value "bitcoin" in "crypto-%uuid of player%" to 0
+    loop {coins::*}:
+        if checkForUpperCase("%loop-value%") is false:
+            if yaml value "%loop-value%" in "crypto-%uuid of player%" is not set:
+                set yaml value "%loop-value%" in "crypto-%uuid of player%" to 0
 
-#     if yaml value "tegoed" in "crypto-%uuid of player%" is not set:
-#         set yaml value "tegoed" in "crypto-%uuid of player%" to 0
+    if yaml value "tegoed" in "crypto-%uuid of player%" is not set:
+        set yaml value "tegoed" in "crypto-%uuid of player%" to 0
 
-#     if yaml value "staking" in "crypto-%uuid of player%" is not set:
-#         set yaml value "staking" in "crypto-%uuid of player%" to false
+    if yaml value "staking" in "crypto-%uuid of player%" is not set:
+        set yaml value "staking" in "crypto-%uuid of player%" to false
 
-#     if yaml value "premium" in "crypto-%uuid of player%" is not set:
-#         set yaml value "premium" in "crypto-%uuid of player%" to false
+    if yaml value "premium" in "crypto-%uuid of player%" is not set:
+        set yaml value "premium" in "crypto-%uuid of player%" to false
     
-#     save yaml "crypto-%uuid of player%"
+    save yaml "crypto-%uuid of player%"
     
-#     CryptoPlayerData(player)
+    CryptoPlayerData(player)
 
-# function CryptoPlayerData(p: player):
-#     set {player} to {_p}
-#     loop {coins::*}:
-#         if checkForUpperCase("%loop-value%") is false:
-#             set {%loop-value%.%{player}%} to yaml value "%loop-value%" in "crypto-%uuid of player%"
-#     set {api_key} to yaml value "api" in "crypto-config"
-#     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-#         send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""cronos"":%{cronos.%{player}%}%, ""binance-coin"":%{binance-coin.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
+function CryptoPlayerData(p: player):
+    set {player} to {_p}
+    loop {coins::*}:
+        if checkForUpperCase("%loop-value%") is false:
+            set {%loop-value%.%{player}%} to yaml value "%loop-value%" in "crypto-%uuid of player%"
+    set {api_key} to yaml value "api" in "crypto-config"
+    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""cronos"":%{cronos.%{player}%}%, ""binance-coin"":%{binance-coin.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
 
-# every 5 minutes:
-#     loop all players:
-#         save yaml "crypto-%uuid of loop-player%"
+every 5 minutes:
+    loop all players:
+        save yaml "crypto-%uuid of loop-player%"
 
-# on quit:
-#     save yaml "crypto-%uuid of player%"
-#     unload yaml "crypto-%uuid of player%"
+on quit:
+    save yaml "crypto-%uuid of player%"
+    unload yaml "crypto-%uuid of player%"
 
-#     set {crypto.deposit.%player%} to false
-#     set {crypto.withdraw.%player%} to false
+    set {crypto.deposit.%player%} to false
+    set {crypto.withdraw.%player%} to false
 
-# on unload:
-#     loop all players:
-#         save yaml "crypto-%uuid of loop-player%"
-#         unload yaml "crypto-%player%"
+on unload:
+    loop all players:
+        save yaml "crypto-%uuid of loop-player%"
+        unload yaml "crypto-%player%"
