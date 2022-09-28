@@ -19,16 +19,17 @@ on load:
             send "&cUnable to disable website script" to console
     else:
         send "&aWebsite script is already disabled" to console
-    wait 5 seconds
+    wait 2 seconds
 
     # Delete the website script now called '-website.sk'
     send "Deleting website script" to console
-    delete file "plugins/Skript/scripts/crypto/-website.sk"
+    if "plugins/Skript/scripts/crypto/-website.sk" is not missing:
+        delete file "plugins/Skript/scripts/crypto/-website.sk"
     if file path "plugins/Skript/scripts/crypto/-website.sk" is missing:
         send "&aSuccesfully deleted website script" to console
     else:
         send "&cUnable to delete website script" to console
-    wait 5 seconds
+    wait 2 seconds
 
     # Delete the staking file 'staking.sk'
     send "Disabling staking script" to console
@@ -41,16 +42,17 @@ on load:
             send "&cUnable to disable staking script" to console
     else:
         send "&aStaking script is already disabled" to console
-    wait 5 seconds
+    wait 2 seconds
 
     # Delete the website script now called '-staking.sk'
     send "Deleting staking script" to console
-    delete file "plugins/Skript/scripts/crypto/-staking.sk"
+    if "plugins/Skript/scripts/crypto/-staking.sk" is not missing:
+        delete file "plugins/Skript/scripts/crypto/-staking.sk"
     if file path "plugins/Skript/scripts/crypto/-staking.sk" is missing:
         send "&aSuccesfully deleted staking script" to console
     else:
         send "&cUnable to delete staking script" to console
-    wait 5 seconds
+    wait 2 seconds
 
     # Delete the staking file 'playerdata.sk'
     send "Disabling playerdata script" to console
