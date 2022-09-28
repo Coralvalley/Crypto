@@ -2,10 +2,10 @@ every 1 minute in world "world":
     if checkTime(setTime(), "00:00") is true:
         loop all offline players:
             if loop-offline player is offline:
-                if yamlExists(loop-offline player) is true:
-                    if isYamlLoaded(loop-offline player) is false:
-                        loadYaml(loop-offline player)
-                        saveYaml(loop-offline player)
+                if cryptoYamlExists(loop-offline player) is true:
+                    if isCryptoYamlLoaded(loop-offline player) is false:
+                        loadCryptoYaml(loop-offline player)
+                        saveCryptoYaml(loop-offline player)
             if hasPremium(loop-offline player) is false:
                 loop {coins::*}:
                     if checkForUpperCase("%loop-value-2%") is false:
@@ -13,12 +13,12 @@ every 1 minute in world "world":
                             if isStakable("%loop-value-2%") is true:
                                 set {_staking} to getStaking("%loop-value-2%") / 365
                                 addBalance(loop-offline player, "%loop-value-2%", getBalance(loop-offline player, "%loop-value-2%") * {_staking} / 100)
-                                saveYaml(loop-offline player)
+                                saveCryptoYaml(loop-offline player)
             if loop-offline player is offline:
-                if yamlExists(loop-offline player) is true:
-                    if isYamlLoaded(loop-offline player) is true:
-                        saveYaml(loop-offline player)
-                        unloadYaml(loop-offline player)
+                if cryptoYamlExists(loop-offline player) is true:
+                    if isCryptoYamlLoaded(loop-offline player) is true:
+                        saveCryptoYaml(loop-offline player)
+                        unloadCryptoYaml(loop-offline player)
             
 
 function checkTime(time: text, checkedTime: text) :: boolean:
@@ -67,23 +67,23 @@ function addBalance(p: offline player, crypto: text, amount: number):
         set yaml value "%{_crypto}%" in "crypto-%uuid of {_p}%" to {_balance}
         save yaml "crypto-%uuid of {_p}%"
 
-function isYamlLoaded(p: offline player) :: boolean:
+function isCryptoYamlLoaded(p: offline player) :: boolean:
     yaml "crypto-%uuid of {_p}%" is loaded:
         return true
     else:
         return false
 
-function yamlExists(p: offline player) :: boolean:
+function cryptoYamlExists(p: offline player) :: boolean:
     if skutil file "plugins/crypto/players/%uuid of {_p}%.yml" exists:
         return true
     else:
         return false
 
-function loadYaml(p: offline player):
+function loadCryptoYaml(p: offline player):
     load yaml "plugins/crypto/players/%uuid of {_p}%:%{_p}%.yml" as "crypto-%uuid of {_p}%"
 
-function saveYaml(p: offline player):
+function saveCryptoYaml(p: offline player):
     save yaml "crypto-%uuid of {_p}%"
 
-function unloadYaml(p: offline player):
+function unloadCryptoYaml(p: offline player):
     unload yaml "crypto-%uuid of {_p}%"
