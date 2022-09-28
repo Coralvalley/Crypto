@@ -23,8 +23,7 @@ on load:
 
     # Delete the website script now called '-website.sk'
     send "Deleting website script" to console
-    if "plugins/Skript/scripts/crypto/-website.sk" is not missing:
-        delete file "plugins/Skript/scripts/crypto/-website.sk"
+    delete file "plugins/Skript/scripts/crypto/-website.sk"
     if file path "plugins/Skript/scripts/crypto/-website.sk" is missing:
         send "&aSuccesfully deleted website script" to console
     else:
@@ -46,8 +45,7 @@ on load:
 
     # Delete the website script now called '-staking.sk'
     send "Deleting staking script" to console
-    if "plugins/Skript/scripts/crypto/-staking.sk" is not missing:
-        delete file "plugins/Skript/scripts/crypto/-staking.sk"
+    delete file "plugins/Skript/scripts/crypto/-staking.sk"
     if file path "plugins/Skript/scripts/crypto/-staking.sk" is missing:
         send "&aSuccesfully deleted staking script" to console
     else:
@@ -69,8 +67,7 @@ on load:
 
     # Delete the website script now called '-playerdata.sk'
     send "Deleting playerdata script" to console
-    if file path "plugins/Skript/scripts/crypto/-playerdata.sk" is not missing:
-        delete file "plugins/Skript/scripts/crypto/-playerdata.sk"
+    delete file "plugins/Skript/scripts/crypto/-playerdata.sk"
     if file path "plugins/Skript/scripts/crypto/-playerdata.sk" is missing:
         send "&aSuccesfully deleted playerdata script" to console
     else:
@@ -91,8 +88,7 @@ on load:
 
     # Delete the main plugin file now called '-crypto.sk'
     send "Deleting main script" to console
-    if file path "plugins/Skript/scripts/crypto/-crypto.sk" is not missing:
-        delete file "plugins/Skript/scripts/crypto/-crypto.sk"
+    delete file "plugins/Skript/scripts/crypto/-crypto.sk"
     if file path "plugins/Skript/scripts/crypto/-crypto.sk" is missing:
         send "&aSuccesfully deleted main script" to console
     else:
