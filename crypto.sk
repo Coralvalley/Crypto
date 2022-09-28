@@ -38,68 +38,13 @@ on load:
     #
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
-    if skript-yaml value "coins" in "crypto-config" is not set:
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "bitcoin":
-            add "bitcoin" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "ethereum":
-            add "ethereum" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "maker":
-            add "maker" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "bitcoin-cash":
-            add "bitcoin-cash" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "litecoin":
-            add "litecoin" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "dash":
-            add "dash" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "cardano":
-            add "cardano" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "tether":
-            add "tether" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "dogecoin":
-            add "dogecoin" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "ethereum-classic":
-            add "ethereum-classic" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "vechain":
-            add "vechain" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "xrp":
-            add "xrp" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "solana":
-            add "solana" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "cronos":
-            add "cronos" to skript-yaml list "coins" in "crypto-config"
-        if skript-yaml value "coins" in "crypto-config" doesn't contain "binance-coin":
-            add "binance-coin" to skript-yaml list "coins" in "crypto-config"
-
-    # if yaml value "bitcoin" in "crypto-config" is not set:
-    #     set yaml value "bitcoin" in "crypto-config" to true
-    # if yaml value "ethereum" in "crypto-config" is not set:
-    #     set yaml value "ethereum" in "crypto-config" to true
-    # if yaml value "maker" in "crypto-config" is not set:
-    #     set yaml value "maker" in "crypto-config" to true
-    # if yaml value "bitcoin-cash" in "crypto-config" is not set:
-    #     set yaml value "bitcoin-cash" in "crypto-config" to true
-    # if yaml value "litecoin" in "crypto-config" is not set:
-    #     set yaml value "litecoin" in "crypto-config" to true
-    # if yaml value "dash" in "crypto-config" is not set:
-    #     set yaml value "dash" in "crypto-config" to true
-    # if yaml value "cardano" in "crypto-config" is not set:
-    #     set yaml value "cardano" in "crypto-config" to true
-    # if yaml value "tether" in "crypto-config" is not set:
-    #     set yaml value "tether" in "crypto-config" to true
-    # if yaml value "dogecoin" in "crypto-config" is not set:
-    #     set yaml value "dogecoin" in "crypto-config" to true
-    # if yaml value "ethereum-classic" in "crypto-config" is not set:
-    #     set yaml value "ethereum-classic" in "crypto-config" to true
-    # if yaml value "vechain" in "crypto-config" is not set:
-    #     set yaml value "vechain" in "crypto-config" to true
-    # if yaml value "xrp" in "crypto-config" is not set:
-    #     set yaml value "xrp" in "crypto-config" to true
-    # if yaml value "solana" in "crypto-config" is not set:
-    #     set yaml value "solana" in "crypto-config" to true
-    # if yaml value "cronos" in "crypto-config" is not set:
-    #     set yaml value "cronos" in "crypto-config" to true
-    # if yaml value "binance-coin" in "crypto-config" is not set:
-    #     set yaml value "binance-coin" in "crypto-config" to true
+    loop {coins::*}:
+        if checkForUpperCase("%loop-value%") is false:
+            if skript-yaml value "coins" in "crypto-config" is not set:
+                add "%loop-value%" to skript-yaml list "coins" in "crypto-config"
+            else:
+                if skript-yaml list "coins" in "crypto-config" doesn't contain "%loop-value%":
+                    add "%loop-value%" to skript-yaml list "coins" in "crypto-config"
 
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     #
@@ -107,36 +52,10 @@ on load:
     #
     # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
-    if yaml value "staking.bitcoin" in "crypto-config" is not set:
-        set yaml value "staking.bitcoin" in "crypto-config" to 0
-    if yaml value "staking.ethereum" in "crypto-config" is not set:
-        set yaml value "staking.ethereum" in "crypto-config" to 0
-    if yaml value "staking.maker" in "crypto-config" is not set:
-        set yaml value "staking.maker" in "crypto-config" to 0
-    if yaml value "staking.bitcoin-cash" in "crypto-config" is not set:
-        set yaml value "staking.bitcoin-cash" in "crypto-config" to 0
-    if yaml value "staking.litecoin" in "crypto-config" is not set:
-        set yaml value "staking.litecoin" in "crypto-config" to 0
-    if yaml value "staking.dash" in "crypto-config" is not set:
-        set yaml value "staking.dash" in "crypto-config" to 0
-    if yaml value "staking.cardano" in "crypto-config" is not set:
-        set yaml value "staking.cardano" in "crypto-config" to 0
-    if yaml value "staking.tether" in "crypto-config" is not set:
-        set yaml value "staking.tether" in "crypto-config" to 0
-    if yaml value "staking.dogecoin" in "crypto-config" is not set:
-        set yaml value "staking.dogecoin" in "crypto-config" to 0
-    if yaml value "staking.ethereum-classic" in "crypto-config" is not set:
-        set yaml value "staking.ethereum-classic" in "crypto-config" to 0
-    if yaml value "staking.vechain" in "crypto-config" is not set:
-        set yaml value "staking.vechain" in "crypto-config" to 0
-    if yaml value "staking.xrp" in "crypto-config" is not set:
-        set yaml value "staking.xrp" in "crypto-config" to 0
-    if yaml value "staking.solana" in "crypto-config" is not set:
-        set yaml value "staking.solana" in "crypto-config" to 0
-    if yaml value "staking.cronos" in "crypto-config" is not set:
-        set yaml value "staking.cronos" in "crypto-config" to 0
-    if yaml value "staking.binance-coin" in "crypto-config" is not set:
-        set yaml value "staking.binance-coin" in "crypto-config" to 0
+    loop {coins::*}:
+        if checkForUpperCase("%loop-value%") is false:
+            if yaml value "staking.%loop-value%" in "crypto-config" is not set:
+                set yaml value "staking.%loop-value%" in "crypto-config" to 0
 
     if yaml value "fee" in "crypto-config" is not set:
         set yaml value "fee" in "crypto-config" to 0
@@ -183,88 +102,88 @@ function transaction(p: player, coin: text, amount: number, price: number, buypr
 #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-on join:
-    if file path "plugins/crypto/players/%uuid of player%:%player%.yml" is missing:
-        create file "plugins/crypto/players/%uuid of player%:%player%.yml"
-    load yaml "plugins/crypto/players/%uuid of player%:%player%.yml" as "crypto-%uuid of player%"
+# on join:
+#     if file path "plugins/crypto/players/%uuid of player%:%player%.yml" is missing:
+#         create file "plugins/crypto/players/%uuid of player%:%player%.yml"
+#     load yaml "plugins/crypto/players/%uuid of player%:%player%.yml" as "crypto-%uuid of player%"
 
-    if yaml value "name" in "crypto-%uuid of player%" is not set:
-        set yaml value "name" in "crypto-%uuid of player%" to name of player
-    if yaml value "uuid" in "crypto-%uuid of player%" is not set:
-        set yaml value "uuid" in "crypto-%uuid of player%" to uuid of player
+#     if yaml value "name" in "crypto-%uuid of player%" is not set:
+#         set yaml value "name" in "crypto-%uuid of player%" to name of player
+#     if yaml value "uuid" in "crypto-%uuid of player%" is not set:
+#         set yaml value "uuid" in "crypto-%uuid of player%" to uuid of player
     
-    if yaml value "bitcoin" in "crypto-%uuid of player%" is not set:
-        set yaml value "bitcoin" in "crypto-%uuid of player%" to 0
-    if yaml value "ethereum" in "crypto-%uuid of player%" is not set:
-        set yaml value "ethereum" in "crypto-%uuid of player%" to 0
-    if yaml value "maker" in "crypto-%uuid of player%" is not set:
-        set yaml value "maker" in "crypto-%uuid of player%" to 0
-    if yaml value "bitcoin-cash" in "crypto-%uuid of player%" is not set:
-        set yaml value "bitcoin-cash" in "crypto-%uuid of player%" to 0
-    if yaml value "litecoin" in "crypto-%uuid of player%" is not set:
-        set yaml value "litecoin" in "crypto-%uuid of player%" to 0
-    if yaml value "dash" in "crypto-%uuid of player%" is not set:
-        set yaml value "dash" in "crypto-%uuid of player%" to 0
-    if yaml value "cardano" in "crypto-%uuid of player%" is not set:
-        set yaml value "cardano" in "crypto-%uuid of player%" to 0
-    if yaml value "tether" in "crypto-%uuid of player%" is not set:
-        set yaml value "tether" in "crypto-%uuid of player%" to 0
-    if yaml value "dogecoin" in "crypto-%uuid of player%" is not set:
-        set yaml value "dogecoin" in "crypto-%uuid of player%" to 0
-    if yaml value "ethereum-classic" in "crypto-%uuid of player%" is not set:
-        set yaml value "ethereum-classic" in "crypto-%uuid of player%" to 0
-    if yaml value "vechain" in "crypto-%uuid of player%" is not set:
-        set yaml value "vechain" in "crypto-%uuid of player%" to 0
-    if yaml value "xrp" in "crypto-%uuid of player%" is not set:
-        set yaml value "xrp" in "crypto-%uuid of player%" to 0
-    if yaml value "solana" in "crypto-%uuid of player%" is not set:
-        set yaml value "solana" in "crypto-%uuid of player%" to 0
-    if yaml value "cronos" in "crypto-%uuid of player%" is not set:
-        set yaml value "cronos" in "crypto-%uuid of player%" to 0
-    if yaml value "binance-coin" in "crypto-%uuid of player%" is not set:
-        set yaml value "binance-coin" in "crypto-%uuid of player%" to 0
+#     if yaml value "bitcoin" in "crypto-%uuid of player%" is not set:
+#         set yaml value "bitcoin" in "crypto-%uuid of player%" to 0
+#     if yaml value "ethereum" in "crypto-%uuid of player%" is not set:
+#         set yaml value "ethereum" in "crypto-%uuid of player%" to 0
+#     if yaml value "maker" in "crypto-%uuid of player%" is not set:
+#         set yaml value "maker" in "crypto-%uuid of player%" to 0
+#     if yaml value "bitcoin-cash" in "crypto-%uuid of player%" is not set:
+#         set yaml value "bitcoin-cash" in "crypto-%uuid of player%" to 0
+#     if yaml value "litecoin" in "crypto-%uuid of player%" is not set:
+#         set yaml value "litecoin" in "crypto-%uuid of player%" to 0
+#     if yaml value "dash" in "crypto-%uuid of player%" is not set:
+#         set yaml value "dash" in "crypto-%uuid of player%" to 0
+#     if yaml value "cardano" in "crypto-%uuid of player%" is not set:
+#         set yaml value "cardano" in "crypto-%uuid of player%" to 0
+#     if yaml value "tether" in "crypto-%uuid of player%" is not set:
+#         set yaml value "tether" in "crypto-%uuid of player%" to 0
+#     if yaml value "dogecoin" in "crypto-%uuid of player%" is not set:
+#         set yaml value "dogecoin" in "crypto-%uuid of player%" to 0
+#     if yaml value "ethereum-classic" in "crypto-%uuid of player%" is not set:
+#         set yaml value "ethereum-classic" in "crypto-%uuid of player%" to 0
+#     if yaml value "vechain" in "crypto-%uuid of player%" is not set:
+#         set yaml value "vechain" in "crypto-%uuid of player%" to 0
+#     if yaml value "xrp" in "crypto-%uuid of player%" is not set:
+#         set yaml value "xrp" in "crypto-%uuid of player%" to 0
+#     if yaml value "solana" in "crypto-%uuid of player%" is not set:
+#         set yaml value "solana" in "crypto-%uuid of player%" to 0
+#     if yaml value "cronos" in "crypto-%uuid of player%" is not set:
+#         set yaml value "cronos" in "crypto-%uuid of player%" to 0
+#     if yaml value "binance-coin" in "crypto-%uuid of player%" is not set:
+#         set yaml value "binance-coin" in "crypto-%uuid of player%" to 0
 
-    if yaml value "tegoed" in "crypto-%uuid of player%" is not set:
-        set yaml value "tegoed" in "crypto-%uuid of player%" to 0
+#     if yaml value "tegoed" in "crypto-%uuid of player%" is not set:
+#         set yaml value "tegoed" in "crypto-%uuid of player%" to 0
 
-    if yaml value "staking" in "crypto-%uuid of player%" is not set:
-        set yaml value "staking" in "crypto-%uuid of player%" to false
+#     if yaml value "staking" in "crypto-%uuid of player%" is not set:
+#         set yaml value "staking" in "crypto-%uuid of player%" to false
     
-    save yaml "crypto-%uuid of player%"
+#     save yaml "crypto-%uuid of player%"
     
-    CryptoPlayerData(player)
+#     CryptoPlayerData(player)
 
-function CryptoPlayerData(p: player):
-    set {player} to {_p}
-    set {bitcoin.%{player}%} to yaml value "bitcoin" in "crypto-%uuid of {player}%"
-    set {ethereum.%{player}%} to yaml value "ethereum" in "crypto-%uuid of {player}%"
-    set {maker.%{player}%} to yaml value "maker" in "crypto-%uuid of {player}%"
-    set {bitcoin-cash.%{player}%} to yaml value "bitcoin-cash" in "crypto-%uuid of {player}%"
-    set {litecoin.%{player}%} to yaml value "litecoin" in "crypto-%uuid of {player}%"
-    set {dash.%{player}%} to yaml value "dash" in "crypto-%uuid of {player}%"
-    set {cardano.%{player}%} to yaml value "cardano" in "crypto-%uuid of {player}%"
-    set {tether.%{player}%} to yaml value "tether" in "crypto-%uuid of {player}%"
-    set {dogecoin.%{player}%} to yaml value "dogecoin" in "crypto-%uuid of {player}%"
-    set {ethereum-classic.%{player}%} to yaml value "ethereum-classic" in "crypto-%uuid of {player}%"
-    set {vechain.%{player}%} to yaml value "vechain" in "crypto-%uuid of {player}%"
-    set {xrp.%{player}%} to yaml value "xrp" in "crypto-%uuid of {player}%"
-    set {solana.%{player}%} to yaml value "solana" in "crypto-%uuid of {player}%"
-    set {cronos.%{player}%} to yaml value "cronos" in "crypto-%uuid of {player}%"
-    set {binance-coin.%{player}%} to yaml value "binance-coin" in "crypto-%uuid of {player}%"
-    set {api_key} to yaml value "api" in "crypto-config"
-    if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
-        send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""cronos"":%{cronos.%{player}%}%, ""binance-coin"":%{binance-coin.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
+# function CryptoPlayerData(p: player):
+#     set {player} to {_p}
+#     set {bitcoin.%{player}%} to yaml value "bitcoin" in "crypto-%uuid of {player}%"
+#     set {ethereum.%{player}%} to yaml value "ethereum" in "crypto-%uuid of {player}%"
+#     set {maker.%{player}%} to yaml value "maker" in "crypto-%uuid of {player}%"
+#     set {bitcoin-cash.%{player}%} to yaml value "bitcoin-cash" in "crypto-%uuid of {player}%"
+#     set {litecoin.%{player}%} to yaml value "litecoin" in "crypto-%uuid of {player}%"
+#     set {dash.%{player}%} to yaml value "dash" in "crypto-%uuid of {player}%"
+#     set {cardano.%{player}%} to yaml value "cardano" in "crypto-%uuid of {player}%"
+#     set {tether.%{player}%} to yaml value "tether" in "crypto-%uuid of {player}%"
+#     set {dogecoin.%{player}%} to yaml value "dogecoin" in "crypto-%uuid of {player}%"
+#     set {ethereum-classic.%{player}%} to yaml value "ethereum-classic" in "crypto-%uuid of {player}%"
+#     set {vechain.%{player}%} to yaml value "vechain" in "crypto-%uuid of {player}%"
+#     set {xrp.%{player}%} to yaml value "xrp" in "crypto-%uuid of {player}%"
+#     set {solana.%{player}%} to yaml value "solana" in "crypto-%uuid of {player}%"
+#     set {cronos.%{player}%} to yaml value "cronos" in "crypto-%uuid of {player}%"
+#     set {binance-coin.%{player}%} to yaml value "binance-coin" in "crypto-%uuid of {player}%"
+#     set {api_key} to yaml value "api" in "crypto-config"
+#     if online status of url "https://crypto-playerdata.silvinvanhaestr.repl.co/" is true:
+#         send a "post" request to "https://crypto-playerdata.silvinvanhaestr.repl.co/?name=%{player}'s name%" with the body "{""name"": ""%{player}'s name%"",""uuid"": ""%uuid of {player}%"", ""coins"": { ""bitcoin"":%{bitcoin.%{player}%}%, ""ethereum"":%{ethereum.%{player}%}%, ""maker"":%{maker.%{player}%}%, ""bitcoin-cash"":%{bitcoin-cash.%{player}%}%, ""litecoin"":%{litecoin.%{player}%}%, ""dash"":%{dash.%{player}%}%, ""cardano"":%{cardano.%{player}%}%, ""tether"":%{tether.%{player}%}%, ""dogecoin"":%{dogecoin.%{player}%}%, ""ethereum-classic"":%{ethereum-classic.%{player}%}%, ""vechain"":%{vechain.%{player}%}%, ""xrp"":%{xrp.%{player}%}%, ""solana"":%{solana.%{player}%}%, ""cronos"":%{cronos.%{player}%}%, ""binance-coin"":%{binance-coin.%{player}%}%}}" and the headers "Authorization: %{api_key}%"
 
-every 5 minutes:
-    loop all players:
-        save yaml "crypto-%uuid of loop-player%"
+# every 5 minutes:
+#     loop all players:
+#         save yaml "crypto-%uuid of loop-player%"
 
-on quit:
-    save yaml "crypto-%uuid of player%"
-    unload yaml "crypto-%uuid of player%"
+# on quit:
+#     save yaml "crypto-%uuid of player%"
+#     unload yaml "crypto-%uuid of player%"
 
-    set {crypto.deposit.%player%} to false
-    set {crypto.withdraw.%player%} to false
+#     set {crypto.deposit.%player%} to false
+#     set {crypto.withdraw.%player%} to false
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
@@ -2207,12 +2126,8 @@ on inventory click:
                 cryptoMarket("vechainSell", player)
         if clicked slot is 11:
             if "%event-clicktype%" is "right mouse button":
-                close player's inventory
-                wait 5 ticks
                 cryptoMarket("xrpBuy", player)
             if "%event-clicktype%" is "left mouse button":
-                close player's inventory
-                wait 5 ticks
                 cryptoMarket("xrpSell", player)
         if clicked slot is 12:
             if "%event-clicktype%" is "right mouse button":
@@ -2230,168 +2145,47 @@ on inventory click:
             if "%event-clicktype%" is "left mouse button":
                 cryptoMarket("binance-coinSell", player)
         cancel event
-    add "Bitcoin" to {_coins::*}
-    add "Ethereum" to {_coins::*}
-    add "Maker" to {_coins::*}
-    add "Litecoin" to {_coins::*}
-    add "Dash" to {_coins::*}
-    add "Cardano" to {_coins::*}
-    add "Tether" to {_coins::*}
-    add "Dogecoin" to {_coins::*}
-    add "Vechain" to {_coins::*}
-    add "Solana" to {_coins::*}
-    add "Cronos" to {_coins::*}
 
-    loop {_coins::*}:
-        if name of player's current inventory is "%loop-value% kopen":
-            if clicked slot is 11:
-                wait 50 ticks
-                close player's inventory
-                set {crypto.buy.%loop-value%.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel %loop-value% wil je kopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.buy.%loop-value%.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan %loop-value% wil je kopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-        else if name of player's current inventory is "%loop-value% verkopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.sell.%loop-value%.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel %loop-value% wil je verkopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.sell.%loop-value%.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan %loop-value% wil je verkopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-        
-        else if name of player's current inventory is "Bitcoin Cash kopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.buy.bitcoin-cash.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel Bitcoin Cash wil je kopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.buy.bitcoin-cash.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan Bitcoin Cash wil je kopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-
-        else if name of player's current inventory is "Bitcoin Cash verkopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.sell.bitcoin-cash.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel Bitcoin Cash wil je verkopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.sell.bitcoin-cash.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan Bitcoin Cash wil je verkopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-
-        else if name of player's current inventory is "Ethereum Classic kopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.buy.ethereum-classic.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel Ethereum Classic wil je kopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.buy.ethereum-classic.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan Ethereum Classic wil je kopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-
-        else if name of player's current inventory is "Ethereum Classic verkopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.sell.ethereum-classic.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel Ethereum Classic wil je verkopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.sell.ethereum-classic.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan Ethereum Classic wil je verkopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-
-        else if name of player's current inventory is "XRP kopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.buy.xrp.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel XRP wil je kopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.buy.xrp.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan XRP wil je kopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-
-        else if name of player's current inventory is "XRP verkopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.sell.xrp.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel XRP wil je verkopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.sell.xrp.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan XRP wil je verkopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-
-        else if name of player's current inventory is "Binance Coin kopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.buy.binance-coin.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel Binance Coin wil je kopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.buy.binance-coin.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan Binance Coin wil je kopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
-
-        else if name of player's current inventory is "Binance Coin verkopen":
-            if clicked slot is 11:
-                close player's inventory
-                set {crypto.sell.binance-coin.eenheden.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel Binance Coin wil je verkopen?"
-            if clicked slot is 15:
-                close player's inventory
-                set {crypto.sell.binance-coin.bedrag.%player%} to true
-                send "&6Typ cancel als je wilt stoppen."
-                send "&6Hoeveel euro aan Binance Coin wil je verkopen?"
-            if clicked slot is 22:
-                cryptoMarket("gui", player)
-            cancel event
+    loop {coins::*}:
+        if checkForUpperCase("%loop-value%") is false:
+            set {_coin} to loop-value
+        else:
+            if name of player's current inventory is "%loop-value% kopen":
+                if clicked slot is 11:
+                    cancel event
+                    wait 1 ticks
+                    close player's inventory
+                    set {crypto.buy.%{_coin}%.eenheden.%player%} to true
+                    send "&6Typ cancel als je wilt stoppen."
+                    send "&6Hoeveel %loop-value% wil je kopen?"
+                if clicked slot is 15:
+                    cancel event
+                    wait 1 ticks
+                    close player's inventory
+                    set {crypto.buy.%{_coin}%.bedrag.%player%} to true
+                    send "&6Typ cancel als je wilt stoppen."
+                    send "&6Hoeveel euro aan %loop-value% wil je kopen?"
+                if clicked slot is 22:
+                    cryptoMarket("gui", player)
+                cancel event
+            else if name of player's current inventory is "%loop-value% verkopen":
+                if clicked slot is 11:
+                    cancel event
+                    wait 1 ticks
+                    close player's inventory
+                    set {crypto.sell.%{_coin}%.eenheden.%player%} to true
+                    send "&6Typ cancel als je wilt stoppen."
+                    send "&6Hoeveel %loop-value% wil je verkopen?"
+                if clicked slot is 15:
+                    cancel event
+                    wait 1 ticks
+                    close player's inventory
+                    set {crypto.sell.%{_coin}%.bedrag.%player%} to true
+                    send "&6Typ cancel als je wilt stoppen."
+                    send "&6Hoeveel euro aan %loop-value% wil je verkopen?"
+                if clicked slot is 22:
+                    cryptoMarket("gui", player)
+                cancel event
 
 # /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ #
 #
